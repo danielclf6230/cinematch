@@ -4,18 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cm.cinematchapp.constants.EntityConstants;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -72,6 +61,12 @@ public class User {
     private String email;
 
     //profilePicture;
+
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    private List<FriendRequest> sentFriendRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
 
 
 

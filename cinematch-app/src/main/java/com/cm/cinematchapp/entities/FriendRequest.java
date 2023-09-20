@@ -18,15 +18,31 @@ import lombok.Setter;
 @Data
 public class FriendRequest {
 
-
+    @Id
+    @Column(name="request_id", nullable=false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Setter(AccessLevel.NONE)
     private Long requestId;
 
-    private Long requesterId;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
+    private User requester;
 
-    private Long requestStatus;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="request_status", nullable=false)
+    private FriendRequestStatus requestStatus;
 
     //date
+
+    public enum FriendRequestStatus {
+        PENDING, // Request is pending
+        ACCEPTED, // Request has been accepted
+        REJECTED // Request has been rejected
+    }
 
 }

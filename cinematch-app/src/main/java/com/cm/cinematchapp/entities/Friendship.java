@@ -25,13 +25,17 @@ public class Friendship {
     private Long friendshipId;
 
     @Column(name="user_id", nullable=false)
-    @JoinColumn(name="user_id")
     private Long userId;
 
     @Column(name="friendship_user_id", nullable=false)
     private Long friendUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="friendship_status", nullable=false)
     private String friendshipStatus;
 
+    public enum FriendshipStatus {
+        ACCEPTED,
+        REMOVED
+    }
 }
