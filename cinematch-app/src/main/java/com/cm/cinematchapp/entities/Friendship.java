@@ -32,7 +32,7 @@ public class Friendship {
 
     @Enumerated(EnumType.STRING)
     @Column(name="friendship_status", nullable=false)
-    private String friendshipStatus;
+    private FriendshipStatus friendshipStatus;
 
     public enum FriendshipStatus {
         ACCEPTED,
