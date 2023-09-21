@@ -3,9 +3,12 @@ package com.cm.cinematchapp;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.cm.cinematchapp.entities.FriendRequest;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateObjectException;
+import com.cm.cinematchapp.repositories.FriendRequestRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
+import com.cm.cinematchapp.services.FriendRequestService;
 import com.cm.cinematchapp.services.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
@@ -34,6 +37,12 @@ class EntityTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @InjectMocks
+    private FriendRequestService friendRequestService;
+
+    @Mock
+    private FriendRequestRepository friendRequestRepository;
 
     /**
      * @throws java.lang.Exception
@@ -147,6 +156,40 @@ class EntityTest {
         verify(userRepository, never()).save(user);
     }
 
+
+    @Test
+    void testGetFriendRequestsByUserId() {
+        // Given a user's ID
+        Long userId = 123L;
+
+        User requester = new User();
+        requester.setFirstName("John");
+        requester.setLastName("Doe");
+        requester.setUsername("johndoe");
+        requester.setPassword("password");
+        requester.setEmail("johndoe@example.com");
+
+        System.out.println(requester.getUserId());
+
+        User user = new User();
+        user.setFirstName("Jane");
+        user.setLastName("Doe");
+        user.setUsername("janedoe");
+        user.setPassword("password");
+        user.setEmail("janedoe@example.com");
+
+        System.out.println(requester.getUserId());
+
+        when(userRepository.save(requester)).thenReturn(requester);
+        User createdRequester = userService.createUser(requester);
+
+        when(userRepository.save(user)).thenReturn(user);
+        User createdUser = userService.createUser(user);
+
+
+
+
+    }
 
 
 }
