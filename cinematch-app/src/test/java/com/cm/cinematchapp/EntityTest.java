@@ -1,11 +1,14 @@
 package com.cm.cinematchapp;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.cm.cinematchapp.entities.User;
+import com.cm.cinematchapp.exceptions.DuplicateObjectException;
 import com.cm.cinematchapp.repositories.UserRepository;
 import com.cm.cinematchapp.services.UserService;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -36,6 +42,12 @@ class EntityTest {
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this); // Initialize mocks
     }
+
+    @AfterEach
+    void tearDown() {
+        testEntityManager.clear();
+    }
+
 
     /**
      * Test method for {@link com.cm.cinematchapp.services.UserService#createUser(User)}
@@ -66,6 +78,75 @@ class EntityTest {
         assertEquals("password", createdUser.getPassword());
         assertEquals("johndoe@example.com", createdUser.getEmail());
     }
+
+
+    @Test
+    void testExistsByEmail() {
+        // Create a sample user
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setUsername("johndoe");
+        user.setPassword("ValidPass123");
+        user.setEmail("johndoe@example.com");
+
+        // Mock the behavior of existsByEmail
+        when(userRepository.existsByEmail("johndoe@example.com")).thenReturn(true);
+        when(userRepository.existsByEmail("nonexistent@example.com")).thenReturn(false);
+
+        // Check if email exists
+        assertTrue(userRepository.existsByEmail("johndoe@example.com"));
+        assertFalse(userRepository.existsByEmail("nonexistent@example.com"));
+    }
+
+    /**
+     * Test creating a user with a duplicate email.
+     */
+    @Test
+    void testCreateUserWithDuplicateEmail() {
+
+
+        // Create a new user with the same email
+        User newUser = new User();
+        newUser.setFirstName("John");
+        newUser.setLastName("Doe");
+        newUser.setUsername("johndoe");
+        newUser.setPassword("NewPass123");
+        newUser.setEmail("johndoe@example.com"); // Duplicate email
+
+        when(userRepository.existsByEmail("johndoe@example.com")).thenReturn(true);
+
+        // Ensure that creating the user with a duplicate email throws an exception
+        assertThrows(DuplicateObjectException.class, () -> {
+            userService.createUser(newUser);
+        });
+
+
+
+        // Verify that userRepository.save() was not called for the new user
+        verify(userRepository, never()).save(newUser);
+    }
+
+
+    /**
+     * Test creating a user with invalid email.
+     */
+    @Test
+    void testCreateUserWithInvalidEmail() {
+        User user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setUsername("johndoe");
+        user.setPassword("password");
+        user.setEmail("invalid-email"); // Invalid email
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            userService.createUser(user);
+        });
+
+        verify(userRepository, never()).save(user);
+    }
+
 
 
 }
