@@ -5,6 +5,7 @@ import com.cm.cinematchapp.entities.Friendship;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.repositories.FriendRequestRepository;
 import com.cm.cinematchapp.repositories.FriendshipRepository;
+import com.cm.cinematchapp.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,58 +24,68 @@ public class FriendRequestService {
     private FriendshipRepository friendshipRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
 
-    public List<FriendRequest> getFriendRequestsByUserId(Long userId) {
-        return friendRequestRepository.getFriendRequestsByUserId(userId);
+    public List<FriendRequest> getFriendRequestsByRecipientId(Long recipientId) {
+        return friendRequestRepository.getFriendRequestsByRecipientUserId(recipientId);
     }
 
-    public FriendRequest sendFriendRequest(Long requesterId, Long userId) {
-        // Retrieve the requester and the user by their IDs
-        User requester = userService.getUserById(requesterId);
-        User user = userService.getUserById(userId);
+    public FriendRequest sendFriendRequest(Long requesterId, Long recipientId) {
+        // Retrieve the requester and the recipient by their IDs
+        User requester = userRepository.getUserByUserId(requesterId);
+        User recipient = userRepository.getUserByUserId(recipientId);
 
-//        // Check if the requester and user exist
-//        if (requester == null || user == null) {
-//            throw new IllegalArgumentException("Invalid requesterId or userId");
+//        // Check if the requester and recipient exist
+//        if (requester == null || recipient == null) {
+//            throw new IllegalArgumentException("Invalid requesterId or recipientId");
 //        }
 //
-//        // Check if a friend request already exists between the requester and user
-//        if (friendRequestRepository.existsByRequesterAndUser(requester, user)) {
+//        // Check if a friend request already exists between the requester and recipient
+//        if (friendRequestRepository.existsByRequesterAndRecipient(requester, recipient)) {
 //            throw new IllegalArgumentException("Friend request already exists");
 //        }
 
         // Create a new friend request
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setRequester(requester);
-        friendRequest.setUser(user);
+        friendRequest.setRecipient(recipient);
         friendRequest.setRequestStatus(FriendRequest.FriendRequestStatus.PENDING);
 
         // Save the friend request to the repository
         return friendRequestRepository.save(friendRequest);
     }
 
-//    //accepting friend req.
-//    public void acceptFriendRequest(Long friendRequestId) {
-//        FriendRequest friendRequest = friendRequestRepository.findById(friendRequestId).orElse(null);
-//
-//        if (friendRequest != null) {
-//            if (friendRequest.getRequestStatus() == FriendRequest.FriendRequestStatus.PENDING) {
-//                // Update the request status to "Accepted"
-//                friendRequest.setRequestStatus(FriendRequest.FriendRequestStatus.ACCEPTED);
-//                friendRequestRepository.save(friendRequest);
-//
-//                // Create an entry in the Friendship table
-//                Friendship friendship = new Friendship();
-//                friendship.setUserId(friendRequest.getRequester().getUserId());
-//                friendship.setFriendUserId(friendRequest.getUser().getUserId());
-//                friendshipRepository.save(friendship);
-//            } else {
-//                // Request is already accepted or rejected, remove it from the table
-//                friendRequestRepository.delete(friendRequest);
-//            }
-//        }
-//    }
+
+    public void acceptFriendRequest(Long friendRequestId) {
+
+        // Retrieve the friend request by its ID from the repository, or set it to null if not found
+        FriendRequest friendRequest = friendRequestRepository.getByRequestId(friendRequestId);
+
+        // Check if the friend request exists and is in a PENDING status
+        if (friendRequest != null && friendRequest.getRequestStatus() == FriendRequest.FriendRequestStatus.PENDING) {
+            // Update the request status to "Accepted"
+            friendRequest.setRequestStatus(FriendRequest.FriendRequestStatus.ACCEPTED);
+            friendRequestRepository.save(friendRequest);
+
+            // Create an entry in the Friendship table for userA (the requester)
+            Friendship friendshipA = new Friendship();
+            friendshipA.setUser(friendRequest.getRequester());
+            friendshipA.setFriendUser(friendRequest.getRecipient());
+            friendshipA.setFriendshipStatus(Friendship.FriendshipStatus.ACCEPTED);
+            friendshipRepository.save(friendshipA);
+
+            // Create an entry in the Friendship table for userB (the recipient)
+            Friendship friendshipB = new Friendship();
+            friendshipB.setUser(friendRequest.getRecipient());
+            friendshipB.setFriendUser(friendRequest.getRequester());
+            friendshipB.setFriendshipStatus(Friendship.FriendshipStatus.ACCEPTED);
+            friendshipRepository.save(friendshipB);
+
+            // Remove the friend request from the FriendRequest table
+            friendRequestRepository.delete(friendRequest);
+        }
+    }
+
 
 }

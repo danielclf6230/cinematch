@@ -20,22 +20,24 @@ public class Friendship {
 
     @Id
     @Column(name="friendship_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long friendshipId;
 
-    @Column(name="user_id", nullable=false)
-    private Long userId;
+    // Define the two users involved in the friendship
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
-    @Column(name="friendship_user_id", nullable=false)
-    private Long friendUserId;
+    @ManyToOne
+    @JoinColumn(name = "friend_user_id", referencedColumnName = "user_id")
+    private User friendUser;
 
     @Enumerated(EnumType.STRING)
     @Column(name="friendship_status", nullable=false)
     private FriendshipStatus friendshipStatus;
 
     public enum FriendshipStatus {
-        ACCEPTED,
-        REMOVED
+        ACCEPTED
     }
 }

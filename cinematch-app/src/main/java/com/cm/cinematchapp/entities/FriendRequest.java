@@ -20,18 +20,17 @@ public class FriendRequest {
 
     @Id
     @Column(name="request_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long requestId;
-
 
     @ManyToOne
     @JoinColumn(name = "requester_id")
     private User requester;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "recipient_id")
+    private User recipient;
 
     @Enumerated(EnumType.STRING)
     @Column(name="request_status", nullable=false)

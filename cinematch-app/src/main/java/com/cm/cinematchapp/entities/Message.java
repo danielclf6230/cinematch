@@ -20,7 +20,7 @@
 //
 //    @Id
 //    @Column(name="message_id", nullable=false)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Setter(AccessLevel.NONE)
 //    private Long messageId;
 //

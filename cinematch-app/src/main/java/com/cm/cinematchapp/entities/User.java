@@ -35,7 +35,7 @@ public class User {
 
     @Id
     @Column(name="user_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long userId;
 
@@ -76,8 +76,13 @@ public class User {
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
     private List<FriendRequest> sentFriendRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
     private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
+
+    // Define the friendships associated with this user
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Friendship> friendships = new ArrayList<>();
+
 
 
 
