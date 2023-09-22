@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.cm.cinematchapp.entities.FriendRequest;
+import com.cm.cinematchapp.entities.Friendship;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateObjectException;
 import com.cm.cinematchapp.repositories.FriendRequestRepository;
+import com.cm.cinematchapp.repositories.FriendshipRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
 import com.cm.cinematchapp.services.FriendRequestService;
 import com.cm.cinematchapp.services.UserService;
@@ -14,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,7 +26,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -44,12 +49,41 @@ class EntityTest {
     @Mock
     private FriendRequestRepository friendRequestRepository;
 
+    @Mock
+    private FriendshipRepository friendshipRepository;
+
+    private User user;
+    private User user2;
+
+
+
     /**
      * @throws java.lang.Exception
      */
     @BeforeEach
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this); // Initialize mocks
+
+        // Sample user 1
+        user = new User();
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setUsername("johndoe");
+        user.setPassword("ValidPass123");
+        user.setEmail("johndoe@example.com");
+
+        // Sample user 2
+        user2 = new User();
+        user2.setFirstName("Jane");
+        user2.setLastName("Doe");
+        user2.setUsername("janedoe");
+        user2.setPassword("password");
+        user2.setEmail("janedoe@example.com");
+
+        // Mock the behavior of userRepository.save() to return the user object
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(user2)).thenReturn(user2);
+
     }
 
     @AfterEach
@@ -62,14 +96,15 @@ class EntityTest {
      * Test method for {@link com.cm.cinematchapp.services.UserService#createUser(User)}
      */
     @Test
-    void testCreateUser() {
+    void testCreateValidUser() {
+
         // Create a user object for testing
-        User user = new User();
-        user.setFirstName("John");
+        user = new User();
+        user.setFirstName("Juan");
         user.setLastName("Doe");
-        user.setUsername("johndoe");
+        user.setUsername("juandoe");
         user.setPassword("password");
-        user.setEmail("johndoe@example.com");
+        user.setEmail("juandoe@example.com");
 
         // Mock the behavior of userRepository.save() to return the user object
         when(userRepository.save(user)).thenReturn(user);
@@ -81,23 +116,19 @@ class EntityTest {
         verify(userRepository, times(1)).save(user);
 
         // Check if the returned user matches the original user
-        assertEquals("John", createdUser.getFirstName());
+        assertEquals("Juan", createdUser.getFirstName());
         assertEquals("Doe", createdUser.getLastName());
-        assertEquals("johndoe", createdUser.getUsername());
+        assertEquals("juandoe", createdUser.getUsername());
         assertEquals("password", createdUser.getPassword());
-        assertEquals("johndoe@example.com", createdUser.getEmail());
+        assertEquals("juandoe@example.com", createdUser.getEmail());
     }
 
 
+    /**
+     * Test checking email existence.
+     */
     @Test
     void testExistsByEmail() {
-        // Create a sample user
-        User user = new User();
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setUsername("johndoe");
-        user.setPassword("ValidPass123");
-        user.setEmail("johndoe@example.com");
 
         // Mock the behavior of existsByEmail
         when(userRepository.existsByEmail("johndoe@example.com")).thenReturn(true);
@@ -109,17 +140,16 @@ class EntityTest {
     }
 
     /**
-     * Test creating a user with a duplicate email.
+     * Test creating a user with a duplicate email, which should throw an exception.
      */
     @Test
-    void testCreateUserWithDuplicateEmail() {
-
+    void testCreateUserWithDuplicateEmailThrowsException() {
 
         // Create a new user with the same email
         User newUser = new User();
-        newUser.setFirstName("John");
+        newUser.setFirstName("Johnny");
         newUser.setLastName("Doe");
-        newUser.setUsername("johndoe");
+        newUser.setUsername("johnnydoe");
         newUser.setPassword("NewPass123");
         newUser.setEmail("johndoe@example.com"); // Duplicate email
 
@@ -138,10 +168,10 @@ class EntityTest {
 
 
     /**
-     * Test creating a user with invalid email.
+     * Test creating a user with an invalid email, which should throw an exception.
      */
     @Test
-    void testCreateUserWithInvalidEmail() {
+    void testCreateUserWithInvalidEmailThrowsException() {
         User user = new User();
         user.setFirstName("John");
         user.setLastName("Doe");
@@ -157,38 +187,105 @@ class EntityTest {
     }
 
 
+    /**
+     * Test getting friend requests by recipient ID.
+     */
     @Test
-    void testGetFriendRequestsByUserId() {
-        // Given a user's ID
-        Long userId = 123L;
+    void testGetFriendRequestsByRecipientId() {
 
-        User requester = new User();
-        requester.setFirstName("John");
-        requester.setLastName("Doe");
-        requester.setUsername("johndoe");
-        requester.setPassword("password");
-        requester.setEmail("johndoe@example.com");
+        // Simulate saving the friend request. user sends request to user2.
+        FriendRequest friendRequest = new FriendRequest();
+        friendRequest.setRequester(user);
+        friendRequest.setRecipient(user2);
+        friendRequest.setRequestStatus(FriendRequest.FriendRequestStatus.PENDING);
 
-        System.out.println(requester.getUserId());
+        // Get the IDs of the sender (requester) and recipient.
+        Long requesterId = user.getUserId();
+        Long recipientId = user2.getUserId();
 
-        User user = new User();
-        user.setFirstName("Jane");
-        user.setLastName("Doe");
-        user.setUsername("janedoe");
-        user.setPassword("password");
-        user.setEmail("janedoe@example.com");
+        // Mock the behavior of friendRequestRepository.save() to return the friendRequest object.
+        when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(friendRequest);
+        // Send the friend request
+        FriendRequest sentFriendRequest = friendRequestService.sendFriendRequest(requesterId, recipientId);
 
-        System.out.println(requester.getUserId());
+        // Simulate getting friend requests by user ID
+        when(friendRequestRepository.getFriendRequestsByRecipientUserId(recipientId)).thenReturn(List.of(sentFriendRequest));
+        List<FriendRequest> friendRequests = friendRequestService.getFriendRequestsByRecipientId(recipientId);
 
-        when(userRepository.save(requester)).thenReturn(requester);
-        User createdRequester = userService.createUser(requester);
-
-        when(userRepository.save(user)).thenReturn(user);
-        User createdUser = userService.createUser(user);
-
-
+        // Assertions
+        assertEquals(1, friendRequests.size());
+        FriendRequest friendRequestFromDB = friendRequests.get(0);
+        assertEquals(requesterId, friendRequestFromDB.getRequester().getUserId());
+        assertEquals(recipientId, friendRequestFromDB.getRecipient().getUserId());
+    }
 
 
+
+    /**
+     * Test accepting a friend request and creating friendships accordingly.
+     */
+    @Test
+    void testAcceptFriendRequestAndCreatingFriendships() {
+        // Simulate saving the friend request. user sends request to user2.
+        FriendRequest friendRequest = new FriendRequest();
+        friendRequest.setRequester(user);
+        friendRequest.setRecipient(user2);
+        friendRequest.setRequestStatus(FriendRequest.FriendRequestStatus.PENDING);
+
+        // Get the IDs of the sender (requester) and recipient.
+        Long requesterId = user.getUserId();
+        Long recipientId = user2.getUserId();
+
+        // Mock the behavior of friendRequestRepository.save() to return the friendRequest object.
+        when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(friendRequest);
+
+        FriendRequest sentFriendRequest = friendRequestService.sendFriendRequest(requesterId, recipientId);
+
+        // Mock the behavior of friendRequestRepository.getByRequestId() to return the sentFriendRequest
+        when(friendRequestRepository.getByRequestId(sentFriendRequest.getRequestId())).thenReturn(sentFriendRequest);
+
+        friendRequestService.acceptFriendRequest(sentFriendRequest.getRequestId());
+
+        // Retrieve the updated friend request from the repository
+        FriendRequest updatedFriendRequest = friendRequestRepository.getByRequestId(sentFriendRequest.getRequestId());
+
+        // Verify that the friend request status is updated to ACCEPTED
+        assertEquals(FriendRequest.FriendRequestStatus.ACCEPTED, updatedFriendRequest.getRequestStatus());
+
+        // Verify that a friendship entry is created in the repository
+        verify(friendshipRepository, times(2)).save(any(Friendship.class));
+
+        // Additional Assertions:
+        // Verify that the user IDs in the friendship entry match the sender and recipient IDs
+
+        // Create a list of Friendship objects to return when findByUserUserId is called for requester
+        List<Friendship> expectedFriendshipsRequester = new ArrayList<>();
+        Friendship friendshipRequester = new Friendship();
+        friendshipRequester.setUser(user);
+        friendshipRequester.setFriendUser(user2);
+        friendshipRequester.setFriendshipStatus(Friendship.FriendshipStatus.ACCEPTED);
+        expectedFriendshipsRequester.add(friendshipRequester);
+
+        // Mock the behavior of the findByUserUserId method for requester
+        when(friendshipRepository.findByUserUserId(requesterId)).thenReturn(expectedFriendshipsRequester);
+
+        // Create a list of Friendship objects to return when findByUserUserId is called for recipient
+        List<Friendship> expectedFriendshipsRecipient = new ArrayList<>();
+        Friendship friendshipRecipient = new Friendship();
+        friendshipRecipient.setUser(user2);
+        friendshipRecipient.setFriendUser(user);
+        friendshipRecipient.setFriendshipStatus(Friendship.FriendshipStatus.ACCEPTED);
+        expectedFriendshipsRecipient.add(friendshipRecipient);
+
+        // Mock the behavior of the findByUserUserId method for recipient
+        when(friendshipRepository.findByUserUserId(recipientId)).thenReturn(expectedFriendshipsRecipient);
+
+        // Now, let's check if the expected friendships are saved for both users
+        List<Friendship> savedFriendshipsRequester = friendshipRepository.findByUserUserId(requesterId);
+        List<Friendship> savedFriendshipsRecipient = friendshipRepository.findByUserUserId(recipientId);
+
+        assertEquals(1, savedFriendshipsRequester.size());
+        assertEquals(1, savedFriendshipsRecipient.size());
     }
 
 
