@@ -20,7 +20,7 @@ public class FriendRequest {
 
     @Id
     @Column(name="request_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
     private Long requestId;
 

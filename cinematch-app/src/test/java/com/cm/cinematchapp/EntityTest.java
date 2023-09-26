@@ -6,17 +6,15 @@ import static org.mockito.Mockito.*;
 import com.cm.cinematchapp.entities.FriendRequest;
 import com.cm.cinematchapp.entities.Friendship;
 import com.cm.cinematchapp.entities.User;
-import com.cm.cinematchapp.exceptions.DuplicateObjectException;
+import com.cm.cinematchapp.exceptions.DuplicateEmailException;
 import com.cm.cinematchapp.repositories.FriendRequestRepository;
 import com.cm.cinematchapp.repositories.FriendshipRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
 import com.cm.cinematchapp.services.FriendRequestService;
 import com.cm.cinematchapp.services.UserService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -28,7 +26,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -156,7 +153,7 @@ class EntityTest {
         when(userRepository.existsByEmail("johndoe@example.com")).thenReturn(true);
 
         // Ensure that creating the user with a duplicate email throws an exception
-        assertThrows(DuplicateObjectException.class, () -> {
+        assertThrows(DuplicateEmailException.class, () -> {
             userService.createUser(newUser);
         });
 
@@ -173,9 +170,9 @@ class EntityTest {
     @Test
     void testCreateUserWithInvalidEmailThrowsException() {
         User user = new User();
-        user.setFirstName("John");
+        user.setFirstName("Johnny");
         user.setLastName("Doe");
-        user.setUsername("johndoe");
+        user.setUsername("johnnydoe");
         user.setPassword("password");
         user.setEmail("invalid-email"); // Invalid email
 
@@ -184,6 +181,15 @@ class EntityTest {
         });
 
         verify(userRepository, never()).save(user);
+    }
+
+    void testCreateUserWithInvalidPasswordPattern() {
+        User user = new User();
+        user.setFirstName("Johnny");
+        user.setLastName("Doe");
+        user.setUsername("johnnydoe");
+        user.setPassword("password");
+        user.setEmail("johnnydoe@gmail.com");
     }
 
 

@@ -35,7 +35,7 @@ public class User {
 
     @Id
     @Column(name="user_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Setter(AccessLevel.NONE)
     private Long userId;
 
@@ -51,7 +51,7 @@ public class User {
         max=EntityConstants.kMaxNameLen)
     private String lastName;
 
-    @Column(name="username", nullable=false)
+    @Column(name="username", nullable=false, unique=true)
     @NotNull(message="Last name cannot be empty.")
     @Size(min=EntityConstants.kMinUsernameLen,
             max=EntityConstants.kMaxUsernameLen)
@@ -65,6 +65,8 @@ public class User {
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
             message = "Password must contain at least one letter and one number")
     private String password;
+    //invalid password and email should still be handled with the client-side to produce a graceful message
+
 
     @Column(name="email", nullable=false, unique=true)
     @NotNull(message="Email cannot be empty .")
