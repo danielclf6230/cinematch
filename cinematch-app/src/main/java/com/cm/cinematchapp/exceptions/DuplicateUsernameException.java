@@ -6,18 +6,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.Serial;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class DuplicateObjectException extends RuntimeException {
-
+public class DuplicateUsernameException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public DuplicateObjectException() {
+    public DuplicateUsernameException() {
         this("This object already exists");
     }
-    public DuplicateObjectException(String message) {
+    public DuplicateUsernameException(String message) {
         this(message, null);
     }
-    public DuplicateObjectException(String message, Throwable cause) {
+    public DuplicateUsernameException(String message, Throwable cause) {
         super(message, cause);
     }
 }
