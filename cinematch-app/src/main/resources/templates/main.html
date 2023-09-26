@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+</head>
+<body>
+<h1>Welcome to CinematchApp</h1>
+
+<!-- Display user information -->
+<div th:if="${user}">
+  <p th:text="'Hello, ' + ${username}"></p>
+  <!-- Add other content for the main page -->
+</div>
+
+<a href="/logout">Logout</a>
+
+</body>
+</html>
