@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 @Slf4j
@@ -18,9 +20,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
+
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
 
     public User createUser(User user) {
 
@@ -53,7 +61,7 @@ public class UserService {
     }
 
     public User authenticateUser(String username, String password) {
-        User user = userRepository.getUserByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         if (user != null && user.getPassword().equals(password)) {
             return user;
@@ -63,8 +71,4 @@ public class UserService {
     }
 
 
-
-    public User getUserById(Long userId) {
-       return userRepository.getUserByUserId(userId);
-    }
 }

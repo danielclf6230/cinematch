@@ -11,21 +11,14 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class FriendshipService {
 
     @Autowired
     private FriendshipRepository friendshipRepository;
 
-//    List<Friendship> getFriendshipsByUserId(Long userId) {
-//        return friendshipRepository.getFriendshipsByUserIdAndFriendUserId(userId);
-//    }
-
-    Friendship getFriendshipByFriendshipId(Long friendshipId) {
-        return friendshipRepository.getFriendshipByFriendshipId(friendshipId);
+    public List<Friendship> getFriendshipsByUserId(Long userId) {
+        return friendshipRepository.findByUserUserId(userId);
     }
-
-//    Friendship getFriendshipByUserIds() {
-//
-//    }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
-    Friendship getFriendshipByFriendshipId(Long friendshipId);
+    Friendship findByFriendshipId(Long friendshipId);
 
     List<Friendship> findByUserUserId(Long userId);
 

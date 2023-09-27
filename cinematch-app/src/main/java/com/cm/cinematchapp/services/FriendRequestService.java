@@ -15,6 +15,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class FriendRequestService {
 
     @Autowired
@@ -33,8 +34,8 @@ public class FriendRequestService {
 
     public FriendRequest sendFriendRequest(Long requesterId, Long recipientId) {
         // Retrieve the requester and the recipient by their IDs
-        User requester = userRepository.getUserByUserId(requesterId);
-        User recipient = userRepository.getUserByUserId(recipientId);
+        User requester = userRepository.findByUserId(requesterId);
+        User recipient = userRepository.findByUserId(recipientId);
 
 //        // Check if the requester and recipient exist
 //        if (requester == null || recipient == null) {
