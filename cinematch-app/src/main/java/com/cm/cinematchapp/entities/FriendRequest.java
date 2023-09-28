@@ -8,6 +8,9 @@ import lombok.Setter;
 
 @Entity
 @Data
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"requester_id", "recipient_id"})
+})
 public class FriendRequest {
 
     @Id

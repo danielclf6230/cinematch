@@ -37,10 +37,6 @@ public class FriendRequestService {
         User requester = userRepository.findByUserId(requesterId);
         User recipient = userRepository.findByUserId(recipientId);
 
-//        // Check if the requester and recipient exist
-//        if (requester == null || recipient == null) {
-//            throw new IllegalArgumentException("Invalid requesterId or recipientId");
-//        }
 //
 //        // Check if a friend request already exists between the requester and recipient
 //        if (friendRequestRepository.existsByRequesterAndRecipient(requester, recipient)) {
