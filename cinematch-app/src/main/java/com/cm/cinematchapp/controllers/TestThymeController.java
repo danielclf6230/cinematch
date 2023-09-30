@@ -1,11 +1,9 @@
 package com.cm.cinematchapp.controllers;
 
-import com.cm.cinematchapp.entities.Friendship;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateEmailException;
 import com.cm.cinematchapp.exceptions.DuplicateUsernameException;
-import com.cm.cinematchapp.services.FriendRequestService;
-import com.cm.cinematchapp.services.FriendshipService;
+import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -26,10 +24,9 @@ public class TestThymeController {
     private UserService userService;
 
     @Autowired
-    private FriendRequestService friendRequestService;
+    private FriendService friendService;
 
-    @Autowired
-    private FriendshipService friendshipService;
+
 
 
     @GetMapping(value="/")
@@ -74,8 +71,8 @@ public class TestThymeController {
 
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("requests", friendRequestService.getFriendRequestsByRecipientId(userId));
-        model.addAttribute("friendships", friendshipService.getFriendshipsByUserId(userId));
+        model.addAttribute("requests", friendService.getFriendRequestsByRecipientId(userId));
+        model.addAttribute("friendships", friendService.getFriendshipsByUserId(userId));
 
 
         return "main";
@@ -89,8 +86,8 @@ public class TestThymeController {
 
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getUsers());
-        model.addAttribute("requests", friendRequestService.getFriendRequestsByRecipientId(userId));
-        model.addAttribute("friendships", friendshipService.getFriendshipsByUserId(userId));
+        model.addAttribute("requests", friendService.getFriendRequestsByRecipientId(userId));
+        model.addAttribute("friendships", friendService.getFriendshipsByUserId(userId));
 
 
         return "main";
@@ -100,13 +97,13 @@ public class TestThymeController {
     @PostMapping("/sendFriendRequest")
     public String sendFriendRequest(@RequestParam("requesterId") Long requesterId,
                                     @RequestParam("recipientId") Long recipientId) {
-        friendRequestService.sendFriendRequest(requesterId, recipientId);
+        friendService.sendFriendRequest(requesterId, recipientId);
         return "redirect:/main"; // Redirect back to the user table after sending the request
     }
 
     @PostMapping("/acceptFriendRequest")
     public String acceptFriendRequest(@RequestParam("requestId") Long requestId) {
-        friendRequestService.acceptFriendRequest(requestId);
+        friendService.acceptFriendRequest(requestId);
         return "redirect:/main"; // Redirect back to the user table after accepting the request
     }
 

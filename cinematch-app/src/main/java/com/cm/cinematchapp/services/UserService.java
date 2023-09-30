@@ -3,6 +3,7 @@ package com.cm.cinematchapp.services;
 
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateEmailException;
+import com.cm.cinematchapp.exceptions.DuplicateUsernameException;
 import com.cm.cinematchapp.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,20 @@ public class UserService {
     }
 
 
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        return email.matches(emailRegex);
+    }
+
+    public User authenticateUser(String username, String password) {
+        User user = userRepository.findByUsername(username);
+
+        if (user != null && user.getPassword().equals(password)) {
+            return user;
+        }
+
+        return null; // Authentication failed
+    }
 
     public User createUser(User user) {
 
@@ -45,7 +60,7 @@ public class UserService {
 
         if (userRepository.existsByUsername(user.getUsername())) {
             log.debug("This username is already taken: {}", user.getUsername());
-            throw new DuplicateEmailException("This username is already taken");
+            throw new DuplicateUsernameException("This username is already taken");
         }
         // Save the user to the database using the userRepository
         User createdUser = userRepository.save(user);
@@ -53,22 +68,7 @@ public class UserService {
         return createdUser;
     }
 
-    private boolean isValidEmail(String email) {
-        // Implement email validation logic using regular expressions or other methods.
-        // This example checks for a basic email format: <local-part>@<domain>
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        return email.matches(emailRegex);
-    }
 
-    public User authenticateUser(String username, String password) {
-        User user = userRepository.findByUsername(username);
-
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-
-        return null; // Authentication failed
-    }
 
 
 }

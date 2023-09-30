@@ -59,7 +59,11 @@ public class User {
     @Email
     private String email;
 
-    //profilePicture;
+    //private Long role;
+
+    //private boolean active;
+
+    //private profilePicture;
 
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
     private List<FriendRequest> sentFriendRequests = new ArrayList<>();

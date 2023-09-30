@@ -10,7 +10,7 @@ import com.cm.cinematchapp.exceptions.DuplicateEmailException;
 import com.cm.cinematchapp.repositories.FriendRequestRepository;
 import com.cm.cinematchapp.repositories.FriendshipRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
-import com.cm.cinematchapp.services.FriendRequestService;
+import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ class EntityTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private FriendRequestService friendRequestService;
+    private FriendService friendService;
 
     @Mock
     private FriendRequestRepository friendRequestRepository;
@@ -212,11 +212,11 @@ class EntityTest {
         // Mock the behavior of friendRequestRepository.save() to return the friendRequest object.
         when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(friendRequest);
         // Send the friend request
-        FriendRequest sentFriendRequest = friendRequestService.sendFriendRequest(requesterId, recipientId);
+        FriendRequest sentFriendRequest = friendService.sendFriendRequest(requesterId, recipientId);
 
         // Simulate getting friend requests by user ID
         when(friendRequestRepository.getFriendRequestsByRecipientUserId(recipientId)).thenReturn(List.of(sentFriendRequest));
-        List<FriendRequest> friendRequests = friendRequestService.getFriendRequestsByRecipientId(recipientId);
+        List<FriendRequest> friendRequests = friendService.getFriendRequestsByRecipientId(recipientId);
 
         // Assertions
         assertEquals(1, friendRequests.size());
@@ -245,12 +245,12 @@ class EntityTest {
         // Mock the behavior of friendRequestRepository.save() to return the friendRequest object.
         when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(friendRequest);
 
-        FriendRequest sentFriendRequest = friendRequestService.sendFriendRequest(requesterId, recipientId);
+        FriendRequest sentFriendRequest = friendService.sendFriendRequest(requesterId, recipientId);
 
         // Mock the behavior of friendRequestRepository.getByRequestId() to return the sentFriendRequest
         when(friendRequestRepository.getByRequestId(sentFriendRequest.getRequestId())).thenReturn(sentFriendRequest);
 
-        friendRequestService.acceptFriendRequest(sentFriendRequest.getRequestId());
+        friendService.acceptFriendRequest(sentFriendRequest.getRequestId());
 
         // Retrieve the updated friend request from the repository
         FriendRequest updatedFriendRequest = friendRequestRepository.getByRequestId(sentFriendRequest.getRequestId());

@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 @Transactional
 @Slf4j
-public class FriendRequestService {
+public class FriendService {
 
     @Autowired
     private FriendRequestRepository friendRequestRepository;
@@ -28,19 +28,36 @@ public class FriendRequestService {
     private UserRepository userRepository;
 
 
+    // --- Friend Requests ---
+
+    // This section contains methods related to friend requests.
+
+    /**
+     * Get a list of friend requests by recipient ID.
+     *
+     * @param recipientId The ID of the recipient user.
+     * @return A list of friend requests for the recipient.
+     */
     public List<FriendRequest> getFriendRequestsByRecipientId(Long recipientId) {
         return friendRequestRepository.getFriendRequestsByRecipientUserId(recipientId);
     }
 
+    /**
+     * Send a friend request.
+     *
+     * @param requesterId The ID of the requesting user.
+     * @param recipientId The ID of the recipient user.
+     * @return The created friend request.
+     */
     public FriendRequest sendFriendRequest(Long requesterId, Long recipientId) {
         // Retrieve the requester and the recipient by their IDs
         User requester = userRepository.findByUserId(requesterId);
         User recipient = userRepository.findByUserId(recipientId);
 
-//
+
 //        // Check if a friend request already exists between the requester and recipient
 //        if (friendRequestRepository.existsByRequesterAndRecipient(requester, recipient)) {
-//            throw new IllegalArgumentException("Friend request already exists");
+//            throw new ExistingFriendshipException("Friend request already exists");
 //        }
 
         // Create a new friend request
@@ -53,7 +70,11 @@ public class FriendRequestService {
         return friendRequestRepository.save(friendRequest);
     }
 
-
+    /**
+     * Accept a friend request.
+     *
+     * @param friendRequestId The ID of the friend request to accept.
+     */
     public void acceptFriendRequest(Long friendRequestId) {
 
         // Retrieve the friend request by its ID from the repository, or set it to null if not found
@@ -83,6 +104,42 @@ public class FriendRequestService {
             friendRequestRepository.delete(friendRequest);
         }
     }
+
+
+
+
+    // --- Friendships ---
+
+    // This section contains methods related to friendships.
+
+    /**
+     * Get a list of friendships by user ID.
+     *
+     * @param userId The ID of the user.
+     * @return A list of friendships for the user.
+     */
+    public List<Friendship> getFriendshipsByUserId(Long userId) {
+        return friendshipRepository.findByUserUserId(userId);
+    }
+
+
+    public void removeFriendship(Long userId, Long friendUserId) {
+        // Find the friendship record to delete for user A
+        Friendship friendship1 = friendshipRepository.findByUserIdAndFriendUserId(userId, friendUserId);
+
+        // Find the friendship record to delete for user B
+        Friendship friendship2 = friendshipRepository.findByUserIdAndFriendUserId(friendUserId, userId);
+
+        if (friendship1 != null && friendship2 != null) {
+            // Delete both friendship records (bi-directional)
+            friendshipRepository.delete(friendship1);
+            friendshipRepository.delete(friendship2);
+            log.info("Friendship removed between user with ID {} and user with ID {}", userId, friendUserId);
+        } else {
+            log.warn("No friendship found between user with ID {} and user with ID {}", userId, friendUserId);
+        }
+    }
+
 
 
 }
