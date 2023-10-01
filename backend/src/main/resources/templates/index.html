@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+</head>
+<body>
+<h1>Welcome to CinematchApp</h1>
+
+<!-- Login Form -->
+
+  <h2>Login</h2>
+  <form th:action="@{/main}" method="post">
+    <div>
+      <label for="loginUsername">Username:</label>
+      <input type="text" id="loginUsername" name="loginUsername" required>
+    </div>
+    <div>
+      <label for="loginPassword">Password:</label>
+      <input type="password" id="loginPassword" name="loginPassword" required>
+    </div>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+  </form>
+  <p>Don't have an account? <a href="/register">Register</a></p>
+
+
+</body>
+</html>
