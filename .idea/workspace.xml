@@ -1,39 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d8299638-0b93-4abe-b1e6-916c74ec26e3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/CinematchAppApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/advice/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/constants/EntityConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/controllers/TestThymeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/entities/FriendRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/entities/Friendship.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/entities/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/entities/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/exceptions/DuplicateEmailException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/exceptions/DuplicateUsernameException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/repositories/FriendRequestRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/repositories/FriendshipRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/repositories/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/security/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/services/FriendService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/services/SecurityService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/java/com/cm/cinematchapp/services/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/resources/templates/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/resources/templates/main.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/main/resources/templates/register.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cinematch-app/src/test/java/com/cm/cinematchapp/EntityTest.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/frontend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +19,13 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="2W8kBepfit82MpX7DiiL0fU7kvs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -56,10 +36,23 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/ericr/Documents/GitHub/Cinematch",
-    "nodejs_package_manager_path": "npm"
+    "jdk.selected.JAVA_MODULE": "19",
+    "last_opened_file_path": "C:/Users/ericr/Desktop/Eclipse Codes/Cinematch/backend",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="CinematchAppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.cm.cinematchapp.CinematchAppApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -69,6 +62,8 @@
       <option name="presentableId" value="Default" />
       <updated>1696121460157</updated>
       <workItem from="1696121461449" duration="68000" />
+      <workItem from="1696123010481" duration="43000" />
+      <workItem from="1696123482181" duration="249000" />
     </task>
     <servers />
   </component>

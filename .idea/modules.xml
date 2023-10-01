@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Cinematch.iml" filepath="$PROJECT_DIR$/.idea/Cinematch.iml" />
+      <module fileurl="file://$USER_HOME$/Desktop/Eclipse Codes/Cinematch/backend/backend.iml" filepath="$USER_HOME$/Desktop/Eclipse Codes/Cinematch/backend/backend.iml" />
+      <module fileurl="file://$USER_HOME$/Desktop/Eclipse Codes/Cinematch/frontend/frontend.iml" filepath="$USER_HOME$/Desktop/Eclipse Codes/Cinematch/frontend/frontend.iml" />
     </modules>
   </component>
 </project>
