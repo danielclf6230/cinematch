@@ -5,9 +5,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Friendship {
 
     @Id

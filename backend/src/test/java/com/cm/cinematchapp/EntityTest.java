@@ -1,12 +1,9 @@
 package com.cm.cinematchapp;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import com.cm.cinematchapp.entities.FriendRequest;
 import com.cm.cinematchapp.entities.Friendship;
 import com.cm.cinematchapp.entities.User;
-import com.cm.cinematchapp.exceptions.DuplicateEmailException;
+import com.cm.cinematchapp.exceptions.DuplicateObjectException;
 import com.cm.cinematchapp.repositories.FriendRequestRepository;
 import com.cm.cinematchapp.repositories.FriendshipRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
@@ -26,6 +23,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -153,7 +154,7 @@ class EntityTest {
         when(userRepository.existsByEmail("johndoe@example.com")).thenReturn(true);
 
         // Ensure that creating the user with a duplicate email throws an exception
-        assertThrows(DuplicateEmailException.class, () -> {
+        assertThrows(DuplicateObjectException.class, () -> {
             userService.createUser(newUser);
         });
 
@@ -211,6 +212,10 @@ class EntityTest {
 
         // Mock the behavior of friendRequestRepository.save() to return the friendRequest object.
         when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(friendRequest);
+        // Mock the behavior of findUserId
+        when(userRepository.findByUserId(requesterId)).thenReturn(Optional.of(user));
+        when(userRepository.findByUserId(recipientId)).thenReturn(Optional.of(user2));
+
         // Send the friend request
         FriendRequest sentFriendRequest = friendService.sendFriendRequest(requesterId, recipientId);
 
@@ -244,6 +249,10 @@ class EntityTest {
 
         // Mock the behavior of friendRequestRepository.save() to return the friendRequest object.
         when(friendRequestRepository.save(any(FriendRequest.class))).thenReturn(friendRequest);
+
+        // Mock the behavior of findUserId
+        when(userRepository.findByUserId(requesterId)).thenReturn(Optional.of(user));
+        when(userRepository.findByUserId(recipientId)).thenReturn(Optional.of(user2));
 
         FriendRequest sentFriendRequest = friendService.sendFriendRequest(requesterId, recipientId);
 

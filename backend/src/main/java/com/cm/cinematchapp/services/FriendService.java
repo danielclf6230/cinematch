@@ -51,8 +51,8 @@ public class FriendService {
      */
     public FriendRequest sendFriendRequest(Long requesterId, Long recipientId) {
         // Retrieve the requester and the recipient by their IDs
-        User requester = userRepository.findByUserId(requesterId);
-        User recipient = userRepository.findByUserId(recipientId);
+        User requester = userRepository.findByUserId(requesterId).get();
+        User recipient = userRepository.findByUserId(recipientId).get();
 
 
 //        // Check if a friend request already exists between the requester and recipient

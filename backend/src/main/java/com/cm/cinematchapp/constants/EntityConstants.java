@@ -9,6 +9,13 @@ public interface EntityConstants {
     static final int kMinUserPasswordLen = 8;
     static final int kMaxUserPasswordLen = 20;
 
+    //used for JWT token generation and verification.
+    static final String kSecuritySignKey = "E24Sxcw1SQasd3DSAds3";
+
+    //60 minutes time for session
+    static final int kSessionTimeout = 1000 * 60 * 60;
+
+
 
 
 

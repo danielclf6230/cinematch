@@ -2,8 +2,7 @@ package com.cm.cinematchapp.services;
 
 
 import com.cm.cinematchapp.entities.User;
-import com.cm.cinematchapp.exceptions.DuplicateEmailException;
-import com.cm.cinematchapp.exceptions.DuplicateUsernameException;
+import com.cm.cinematchapp.exceptions.DuplicateObjectException;
 import com.cm.cinematchapp.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,7 +25,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getByUsername(String username) {
+    public Optional<User> getByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
@@ -35,22 +35,22 @@ public class UserService {
         return email.matches(emailRegex);
     }
 
-    public User authenticateUser(String username, String password) {
-        User user = userRepository.findByUsername(username);
-
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-
-        return null; // Authentication failed
-    }
+//    public Optional<User> authenticateUser(String username, String password) {
+//        Optional<User> user = userRepository.findByUsername(username);
+//
+//        if (user != null && user.getPassword().equals(password)) {
+//            return user;
+//        }
+//
+//        return null; // Authentication failed
+//    }
 
     public User createUser(User user) {
 
         // Throws error if email is taken
         if (userRepository.existsByEmail(user.getEmail())) {
             log.debug("Email already exists: {}", user.getEmail());
-            throw new DuplicateEmailException("The email " + user.getEmail() + " is already linked to another account");
+            throw new DuplicateObjectException("The email " + user.getEmail() + " is already linked to another account");
         }
 
         if (!isValidEmail(user.getEmail())) {
@@ -60,7 +60,7 @@ public class UserService {
 
         if (userRepository.existsByUsername(user.getUsername())) {
             log.debug("This username is already taken: {}", user.getUsername());
-            throw new DuplicateUsernameException("This username is already taken");
+            throw new DuplicateObjectException("This username is already taken");
         }
         // Save the user to the database using the userRepository
         User createdUser = userRepository.save(user);
