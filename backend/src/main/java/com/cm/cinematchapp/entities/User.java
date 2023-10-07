@@ -1,6 +1,7 @@
 package com.cm.cinematchapp.entities;
 
 import com.cm.cinematchapp.constants.EntityConstants;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -69,13 +70,17 @@ public class User {
 
     //private profilePicture;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
     private List<FriendRequest> sentFriendRequests = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
     private List<FriendRequest> receivedFriendRequests = new ArrayList<>();
 
+
     // Define the friendships associated with this user
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friendship> friendships = new ArrayList<>();
 
