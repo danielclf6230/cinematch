@@ -16,7 +16,6 @@ class Header extends Component {
                             <Link to="/" className="navbar-brand">Home</Link>
                             <Link to="/register" className="navbar-brand">Register</Link>
                             <Link to="/login" className="navbar-brand">Login</Link>
-                            <Link to="/test-get-users" className="navbar-brand">Test Get Users</Link>
                         </div>
                     </nav>
                 </header>
