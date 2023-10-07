@@ -1,41 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 
-function TestGetUsers() {
-    const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-        // Define the URL of your API endpoint for fetching users
-        const apiUrl = 'http://localhost:8080/api/entities/user';
-
-        // Make an HTTP GET request to fetch users
-        fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+export default class TestGetUsers extends Component {
+    state = {
+        users: [
+            {
+                "userId": 1,
+                "firstName": "John",
+                "lastName": "Doe",
+                "username": "johndoe",
+                "email": "john@example.com"
             },
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Update the state with the fetched users
-                setUsers(data);
+        ]
+
+    };
+
+    componentDidMount() {
+        axios.get('http://localhost:8080/api/entities/user')
+            .then(res => {
+                const users = res.data;
+                this.setState({ users });
             })
-            .catch(error => {
-                // Handle any errors
-                console.error(error);
-            });
-    }, []); // The empty dependency array means this effect runs once when the component mounts
+    }
 
-    return (
-        <div>
-            <h1>User List</h1>
-            <ul>
-                {users.map(user => (
-                    <li key={user.id}>{user.username}</li>
-                ))}
-            </ul>
-        </div>
-    );
+    render() {
+
+        return (
+            <div>
+                <h2>User List</h2>
+                    <ul>
+                        {
+                            this.state.users
+                                .map(user =>
+                                    <li key={user.userId}>{user.username}</li>
+                                )
+                        }
+                    </ul>
+
+            </div>
+        );
+    }
 }
-
-export default TestGetUsers;

@@ -18,6 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -68,7 +70,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers("/api/entities/user").permitAll()
+                        .requestMatchers("/api/entities/*").permitAll()//this is just for seeing if a connection can be made delete later
                         .requestMatchers("/api/actions/register", "/api/actions/login").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/api/test/**").permitAll()
@@ -76,7 +78,6 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfig));
 
         //disable caching
-        httpSecurity.headers(header -> header.cacheControl(cc -> cc.disable()));
         httpSecurity.authenticationProvider(jwtAuthenticationProvider());
         httpSecurity.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.exceptionHandling(ex -> ex
