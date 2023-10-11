@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The `UserService` class provides services for managing user-related operations, such as user creation and retrieval.
+ * It interacts with the `UserRepository` to perform database operations.
+ *
+ * @author Eric Rebadona
+ */
 @Service
 @Transactional
 @Slf4j
@@ -21,30 +27,44 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Retrieves a list of all users in the system.
+     *
+     * @return A list of user entities.
+     */
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Retrieves a user by their username.
+     *
+     * @param username The username of the user to retrieve.
+     * @return An optional user entity or an empty optional if not found.
+     */
     public Optional<User> getByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
 
+    /**
+     * Checks if an email is in a valid format.
+     *
+     * @param email The email to validate.
+     * @return `true` if the email is valid; otherwise, `false`.
+     */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         return email.matches(emailRegex);
     }
 
-//    public Optional<User> authenticateUser(String username, String password) {
-//        Optional<User> user = userRepository.findByUsername(username);
-//
-//        if (user != null && user.getPassword().equals(password)) {
-//            return user;
-//        }
-//
-//        return null; // Authentication failed
-//    }
-
+    /**
+     * Creates a new user in the system.
+     *
+     * @param user The user entity to create.
+     * @return The created user entity.
+     * @throws DuplicateObjectException if the email or username is already associated with another account.
+     */
     public User createUser(User user) {
 
         // Throws error if email is taken
@@ -67,8 +87,5 @@ public class UserService {
 
         return createdUser;
     }
-
-
-
 
 }

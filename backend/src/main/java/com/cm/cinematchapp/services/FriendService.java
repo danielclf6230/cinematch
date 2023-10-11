@@ -13,6 +13,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+/**
+ * The `FriendService` class manages friend requests and friendships between users.
+ * It provides methods to send friend requests, accept friend requests, get friend requests
+ * and friendships for a user, and remove friendships.
+ *
+ * @author Eric Rebadona
+ */
 @Service
 @Transactional
 @Slf4j
@@ -123,6 +131,12 @@ public class FriendService {
     }
 
 
+    /**
+     * Remove a friendship between two users.
+     *
+     * @param userId       The ID of the first user.
+     * @param friendUserId The ID of the second user.
+     */
     public void removeFriendship(Long userId, Long friendUserId) {
         // Find the friendship record to delete for user A
         Friendship friendship1 = friendshipRepository.findByUserIdAndFriendUserId(userId, friendUserId);

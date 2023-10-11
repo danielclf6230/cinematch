@@ -12,6 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The `ActionController` class is responsible for handling HTTP requests related to actions.
+ * It provides endpoints for different actions to be used in the frontend.
+ *
+ * @author Eric Rebadona
+ */
 @RestController
 @RequestMapping(value="/api/actions",
         produces="application/json",
@@ -26,6 +32,14 @@ public class ActionController {
     private UserService userService;
 
 
+    /**
+     * Handles HTTP POST requests to create a new user (registration).
+     *
+     * @param user   The user data to be registered.
+     * @param result The validation result for the user data.
+     * @return A ResponseEntity containing the created user with an HTTP status of CREATED (201) if successful,
+     *         or a ResponseEntity with a status of BAD REQUEST (400) if validation fails.
+     */
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody @Valid User user, BindingResult result) {
 
@@ -34,6 +48,15 @@ public class ActionController {
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
+    /**
+     * Handles HTTP POST requests for user login.
+     *
+     * @param logout    A boolean flag indicating whether to log out.
+     * @param loginData The user login data.
+     * @param result    The validation result for the login data.
+     * @return A ResponseEntity containing a JWT token for successful login with an HTTP status of OK (200),
+     *         or a ResponseEntity with a status of BAD REQUEST (400) if validation fails.
+     */
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam(value="logout", required=false, defaultValue="false") boolean logout,
                                       @RequestBody @Valid LoginData loginData,

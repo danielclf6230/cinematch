@@ -10,10 +10,24 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * Custom Unauthorized Handler for handling unauthorized access exceptions.
+ *
+ * @author Eric Rebadona
+ */
 @Component
 @Slf4j
 public class UnauthorizedHandler implements AuthenticationEntryPoint {
 
+    /**
+     * Commence the response when an unauthorized access occurs.
+     *
+     * @param request                 The HTTP request.
+     * @param response                The HTTP response.
+     * @param authenticationException The authentication exception.
+     * @throws IOException      If there's an I/O exception.
+     * @throws ServletException If there's a servlet exception.
+     */
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,

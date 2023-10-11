@@ -7,6 +7,13 @@ import lombok.Data;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
+/**
+ * The `FriendRequest` entity class represents a friend request between two users in the application.
+ * It is used to store information about pending, accepted, or rejected friend requests in the database.
+ *
+ * @author Eric Rebadona
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)

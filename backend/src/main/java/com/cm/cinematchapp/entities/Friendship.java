@@ -7,6 +7,12 @@ import lombok.Data;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * The `Friendship` entity class represents a friendship relationship between two users.
+ * It is used to store information about accepted friendships in the database.
+ *
+ * @author Eric Rebadona
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)

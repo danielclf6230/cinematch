@@ -16,6 +16,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * The `SecurityService` class provides authentication and security-related functionality.
+ * It allows users to log in, log out, and retrieve the current logged-in user.
+ *
+ * @author Eric Rebadona
+ */
 @Service
 @Transactional
 @Slf4j
@@ -27,7 +33,13 @@ public class SecurityService {
     @Autowired
     private UserRepository userRepository;
 
-
+    /**
+     * Logs in a user with the given username and password.
+     *
+     * @param username The username of the user.
+     * @param password The user's password.
+     * @return The authentication token upon successful login.
+     */
     public String login(String username, String password){
 
         if (username.length() == 0 || username == null) {
@@ -56,11 +68,21 @@ public class SecurityService {
     }
 
 
+    /**
+     * Logs out the currently authenticated user.
+     *
+     * @return An empty string to indicate a successful logout.
+     */
     public String logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
         return "";
     }
 
+    /**
+     * Retrieves the currently logged-in user.
+     *
+     * @return An optional `User` object representing the current user.
+     */
     public Optional<User> getCurrentLoginUser() {
         String username = SecurityContextHolder
                 .getContext()

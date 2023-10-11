@@ -17,6 +17,10 @@ import java.util.List;
 
 
 /**
+ * The `User` entity class represents user information in the application.
+ * It stores user details such as first name, last name, username, password, and email.
+ * Users can send and receive friend requests and have friendships with other users.
+ *
  * @author Eric Rebadona
  */
 @Entity

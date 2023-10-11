@@ -7,6 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * Custom UserDetails implementation for user authentication and authorization.
+ *
+ * @author Eric Rebadona
+ */
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
@@ -14,38 +19,73 @@ public class UserDetailsImpl implements UserDetails {
 
     private final User user;
 
+    /**
+     * Get the collection of granted authorities for the user. (Not implemented)
+     *
+     * @return The collection of granted authorities.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null; //implement if we want to include roles, will need to add a roles entity class
+        return null; //TODO implement if we want to include roles, will need to add a roles entity class
     }
 
+    /**
+     * Get the user's password.
+     *
+     * @return The user's password.
+     */
     @Override
     public String getPassword() {
         return user.getPassword();
     }
 
+    /**
+     * Get the user's username.
+     *
+     * @return The user's username.
+     */
     @Override
     public String getUsername() {
         return user.getUsername();
     }
 
+    /**
+     * Check if the user's account is non-expired.
+     *
+     * @return True if the user's account is non-expired.
+     */
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // Set to true to pass as Cinematch accounts will not expire.
     }
 
+    /**
+     * Check if the user's account is non-locked.
+     *
+     * @return True if the user's account is non-locked.
+     */
     @Override
     public boolean isAccountNonLocked() {
-        return true; //change if we decide to be able to deactivate an account
+        return true; // Implement logic if we decide to be able to lock an account
     }
 
+    /**
+     * Check if the user's credentials are non-expired.
+     *
+     * @return True if the user's credentials are non-expired.
+     */
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return true; // Set to true to pass as credentials will not expire.
     }
 
+    /**
+     * Check if the user's account is enabled.
+     *
+     * @return True if the user's account is enabled.
+     */
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; // Implement logic if we decide accounts can be disabled.
     }
 }

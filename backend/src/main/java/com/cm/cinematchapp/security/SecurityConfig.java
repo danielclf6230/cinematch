@@ -20,54 +20,84 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
+/**
+ * Configuration class for security settings in the application.
+ * @author Eric Rebadona
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
-
+    //Autowired Components
     @Autowired
     private UnauthorizedHandler unauthorizedHandler;
 
     @Autowired
     private AccessDeniedHandler accessDeniedHandler;
 
-
     @Autowired
     private CorsConfig corsConfig;
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        return new CorsConfig();
-//    };
 
+
+    /**
+     * Configuration class for security settings in the application.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
+    /**
+     * Create and configure an AuthenticationManager.
+     *
+     * @param authConfig AuthenticationConfiguration instance.
+     * @return The configured AuthenticationManager.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    /**
+     * Create an instance of JwtAuthenticationFilter.
+     *
+     * @return An instance of JwtAuthenticationFilter.
+     */
     @Bean
     public JwtAuthenticationFilter jwtAuthorizationFilter() {
         return new JwtAuthenticationFilter();
     }
 
+    /**
+     * Create an instance of JwtAuthenticationProvider.
+     *
+     * @return An instance of JwtAuthenticationProvider.
+     */
     @Bean
     public JwtAuthenticationProvider jwtAuthenticationProvider() {
         return new JwtAuthenticationProvider();
     }
 
-
+    /**
+     * Configure the security filter chain for HTTP requests.
+     *
+     * @param httpSecurity The HttpSecurity instance to configure.
+     * @return The configured SecurityFilterChain.
+     * @throws Exception If an error occurs during configuration.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf(csrf -> csrf.disable())
+        httpSecurity
+                // Disable CSRF protection
+                .csrf(csrf -> csrf.disable())
+                // Set session management to STATELESS. Ensures session-related info is not stored in server-side
                 .sessionManagement(sess -> sess
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // If you create a class meant for any guest methods like swiping it'll need to be allowed below
+                // Used to allow access for certain entry points to unauthorized users.
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .requestMatchers("/api/entities/*").permitAll()//this is just for seeing if a connection can be made delete later
@@ -75,14 +105,23 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .anyRequest().authenticated())
+                // Set Cross-Origin Resource Sharing defined in corsConfig
                 .cors(cors -> cors.configurationSource(corsConfig));
 
-        //disable caching
+        // TODO maybe disable caching for headers?
+
+        // Set the JWT authentication provider
         httpSecurity.authenticationProvider(jwtAuthenticationProvider());
+
+        // Set JWT authentication filter before UsernamePasswordAuthenticationFilter
         httpSecurity.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // Configure Exception handlers
         httpSecurity.exceptionHandling(ex -> ex
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(unauthorizedHandler));
+
+        // Permit all logout requests. Removes session / JWT token.
         httpSecurity.logout(lo -> lo.permitAll());
 
         return httpSecurity.build();

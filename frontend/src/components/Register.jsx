@@ -13,7 +13,7 @@ function Register() {
         try {
             const user = { firstName, lastName, username, password, email };
             // Send a POST request to your server's registration endpoint
-            const response = await axios.post('api/actions/register', user);
+            const response = await axios.post('http://localhost:8080/api/actions/register', user);
             // Optionally, handle success or navigate to a success page
             console.log('Registration successful:', response.data);
         } catch (error) {

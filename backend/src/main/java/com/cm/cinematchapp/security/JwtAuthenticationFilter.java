@@ -18,6 +18,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This filter is responsible for authenticating users based on JWT tokens.
+ *
+ * @author Eric Rebadona
+ */
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -25,6 +30,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailService userDetailService;
 
+    /**
+     * Perform JWT authentication on incoming requests.
+     *
+     * @param request     The HTTP request.
+     * @param response    The HTTP response.
+     * @param filterChain The filter chain.
+     * @throws ServletException If there's a servlet exception.
+     * @throws IOException      If there's an I/O exception.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -32,14 +46,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String aHeader = request.getHeader("Authorization");
 
+        // Check if the request has a valid Authorization header.
         if (aHeader ==null || !aHeader.startsWith("Bearer")) {
+            // If the header is missing or not starting with "Bearer," proceed with the filter chain.
             filterChain.doFilter(request, response);
             return;
         }
 
         String aToken = aHeader.split("\\s+")[1];
 
+        // Verify the JWT token's authenticity.
         if(!JWTUtil.verify(aToken, EntityConstants.kSecuritySignKey.getBytes(StandardCharsets.UTF_8))) {
+            // If the token is invalid, log the message and continue with the filter chain.
             log.info("token invalid");
             filterChain.doFilter(request, response);
             return;
@@ -50,11 +68,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         Object principle = userDetails.getUsername();
         Object credential = userDetails.getPassword();
+
+        // Create an authentication token for the user.
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(principle, credential);
+
+        // Set authentication details for the user.
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // Continue with the filter chain after successful authentication.
         filterChain.doFilter(request, response);
 
 

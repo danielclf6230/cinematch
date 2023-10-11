@@ -1,5 +1,9 @@
 package com.cm.cinematchapp.constants;
 
+/**
+ * The `EntityConstants` interface provides a set of constant values that are used throughout the application
+ * for defining constraints, keys, and other entity-related configurations.
+ */
 public interface EntityConstants {
 
     static final int kMinNameLen = 3;
