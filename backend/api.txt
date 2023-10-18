@@ -1,0 +1,73 @@
+HTTP Headers (include in all request):
+{Accept}:         "Accept: application/json"
+{Content-Type}:   "Content-Type: application/json"
+{token}:          TODO
+{Authorization} : TODO
+
+Return Responses:
+200 - OK
+201 - Created
+204 - No Content
+401 - Unauthorized
+403 - Forbidden
+404 - Not Found
+
+
+== Register User ==
+Method: GET
+URL: /api/actions/register
+Params: User Object in request body
+Roles: N/A (public)
+Note:
+1. This endpoint is used to register a new user. It accepts a user object in the request body and does not require any additional parameters.
+2. Role is ROLE_USER by default upon creation.
+
+Return: User account from DB
+        201 - Created
+
+Request Body: Include a user object in the request body with the following fields:
+
+{
+    "firstName": "Charlie",
+    "lastName": "Chocolate",
+    "username": "Charlie",
+    "password": "password1",
+    "email": "Charlie@gmail.com"
+}
+
+
+
+== Login User ==
+Method: POST
+URL: /api/actions/login
+Params: logout boolean flag, a
+Roles: N/A (public)
+Note:
+1. This endpoint handles user login. It accepts a request to log in a user, and you can specify the logout parameter as true to log out a user.
+2. Validation is performed on the login data, and the response status depends on the result of the operation.
+
+Return: JwtToken
+        200 - OK
+
+Request Body: Include a Login Data object in the request body with the following fields:
+
+{
+    "username": "Charlie",
+    "password": "password1"
+}
+
+
+
+== Send Friend Request ==
+Method: POST
+URL: /api/actions/user/send-request/{requesterUserId}/{recipientUserId}
+Params: Requester User ID and Recipient User ID
+Roles: USER
+Note:
+1. This endpoint allows a user to send a friend request to another user.
+2. It requires the requester to be authenticated and have the USER role to use this endpoint.
+
+Return: FriendRequest
+    200 - OK: The friend request has been sent successfully.
+    400 - Bad Request: An error occurred during the friend request.
+
