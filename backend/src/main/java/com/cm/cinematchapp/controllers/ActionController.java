@@ -1,7 +1,9 @@
 package com.cm.cinematchapp.controllers;
 
+import com.cm.cinematchapp.entities.FriendRequest;
 import com.cm.cinematchapp.entities.LoginData;
 import com.cm.cinematchapp.entities.User;
+import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.SecurityService;
 import com.cm.cinematchapp.services.UserService;
 import jakarta.validation.Valid;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,9 @@ public class ActionController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FriendService friendService;
 
 
     /**
@@ -69,6 +75,25 @@ public class ActionController {
     }
 
 
+    @PostMapping("/user/{userId}/add-role/{roleName}")
+    public ResponseEntity<String> addRoleToUser(@PathVariable Long userId, @PathVariable String roleName) {
+        userService.addRoleToUser(userId, roleName);
+        return new ResponseEntity<>("Role added successfully", HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/user/send-request/{requesterUserId}/{recipientUserId}")
+    public ResponseEntity<FriendRequest> sendFriendRequest(
+            @PathVariable Long requesterUserId,
+            @PathVariable Long recipientUserId) {
+        try {
+            FriendRequest friendRequest = friendService.sendFriendRequest(requesterUserId, recipientUserId);
+
+            return new ResponseEntity<>(friendRequest, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 }

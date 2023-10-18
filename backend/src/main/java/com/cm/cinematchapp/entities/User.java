@@ -10,10 +10,13 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -29,8 +32,8 @@ import java.util.List;
 public class User {
 
     @Id
-    @Column(name="user_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long userId;
 
@@ -54,11 +57,6 @@ public class User {
 
     @Column(name="password", nullable=false)
     @NotNull(message="Password cannot be null.")
-    @Size(min=EntityConstants.kMinUserPasswordLen,
-        max=EntityConstants.kMaxUserPasswordLen,
-        message="Password must be between 8 and 20 characters.")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
-            message = "Password must contain at least one letter and one number")
     private String password;
     //invalid password and email should still be handled with the client-side to produce a graceful message
 
@@ -88,6 +86,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friendship> friendships = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles = new ArrayList<>();
 
 
 

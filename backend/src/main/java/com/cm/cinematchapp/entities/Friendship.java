@@ -20,7 +20,7 @@ public class Friendship {
 
     @Id
     @Column(name="friendship_id", nullable=false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long friendshipId;
 

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -17,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 /**
  * This filter is responsible for authenticating users based on JWT tokens.
@@ -55,6 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String aToken = aHeader.split("\\s+")[1];
 
+        log.info("authToken:{}" , aToken);
+
         // Verify the JWT token's authenticity.
         if(!JWTUtil.verify(aToken, EntityConstants.kSecuritySignKey.getBytes(StandardCharsets.UTF_8))) {
             // If the token is invalid, log the message and continue with the filter chain.
@@ -66,12 +70,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String username = (String) JWTUtil.parseToken(aToken).getPayload("username");
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         Object principle = userDetails.getUsername();
         Object credential = userDetails.getPassword();
 
         // Create an authentication token for the user.
         UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(principle, credential);
+                new UsernamePasswordAuthenticationToken(principle, credential, authorities);
 
         // Set authentication details for the user.
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

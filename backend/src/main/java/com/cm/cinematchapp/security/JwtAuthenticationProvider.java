@@ -43,7 +43,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         // Check if the provided password matches the stored password for the user.
         if(passwordEncoder.matches(password, userDetails.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(username, password);
+            return new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         }
 
         log.error("Failed Authentication");

@@ -1,17 +1,21 @@
 package com.cm.cinematchapp.services;
 
 
+import com.cm.cinematchapp.entities.Role;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateObjectException;
+import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
+import com.cm.cinematchapp.repositories.RoleRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The `UserService` class provides services for managing user-related operations, such as user creation and retrieval.
@@ -26,6 +30,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Retrieves a list of all users in the system.
@@ -82,10 +92,43 @@ public class UserService {
             log.debug("This username is already taken: {}", user.getUsername());
             throw new DuplicateObjectException("This username is already taken");
         }
+
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        if (userRole != null) {
+            user.setRoles(new ArrayList<>(Collections.singletonList(userRole)));
+        }
+
         // Save the user to the database using the userRepository
         User createdUser = userRepository.save(user);
 
         return createdUser;
+    }
+
+
+    public void addRoleToUser(Long userId, String roleName) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException());
+        Role role = roleRepository.findByName(roleName);
+        if (role != null) {
+            user.getRoles().add(role);
+            userRepository.save(user);
+        }
+    }
+
+    @PostConstruct
+    public void createRolesIfNotExists() {
+        if (roleRepository.findByName("ROLE_ADMIN") == null) {
+            Role adminRole = new Role("ROLE_ADMIN");
+            roleRepository.save(adminRole);
+        }
+
+        if (roleRepository.findByName("ROLE_USER") == null) {
+            Role userRole = new Role("ROLE_USER");
+            roleRepository.save(userRole);
+        }
     }
 
 }
