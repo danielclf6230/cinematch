@@ -55,6 +55,7 @@ public class User {
             max=EntityConstants.kMaxUsernameLen)
     private String username;
 
+    @JsonIgnore
     @Column(name="password", nullable=false)
     @NotNull(message="Password cannot be null.")
     private String password;
