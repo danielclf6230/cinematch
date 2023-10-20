@@ -121,8 +121,7 @@ public class SecurityConfig {
                 // Used to allow access for certain entry points to unauthorized users.
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers("/api/entities/*").permitAll()//this is just for seeing if a connection can be made delete later
-                        .requestMatchers("/api/actions/register", "/api/actions/login").permitAll()
+                        .requestMatchers("/api/actions/register", "/api/actions/login?logout=true", "/api/actions/login").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/api/actions/user/**", "/api/entities/user/**").hasRole("USER")

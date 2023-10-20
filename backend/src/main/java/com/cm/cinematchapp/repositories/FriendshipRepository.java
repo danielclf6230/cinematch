@@ -1,6 +1,7 @@
 package com.cm.cinematchapp.repositories;
 
 import com.cm.cinematchapp.entities.Friendship;
+import com.cm.cinematchapp.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,10 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
      */
     @Query("SELECT f FROM Friendship f WHERE f.user.userId = ?1 AND f.friendUser.userId = ?2")
     Friendship findByUserIdAndFriendUserId(Long userId, Long friendUserId);
+
+    @Query("SELECT f.friendUser FROM Friendship f WHERE f.user.userId = ?1")
+    List<User> findFriendUserByUserId(Long userId);
+
+
 
 }

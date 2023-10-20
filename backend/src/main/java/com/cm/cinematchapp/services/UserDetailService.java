@@ -38,7 +38,7 @@ public class UserDetailService implements UserDetailsService {
 
         try {
             log.debug("load user:{}", username);
-            User user = userRepository.findByUsername(username).orElseThrow(
+            User user = userRepository.findByUsernameIgnoreCase(username).orElseThrow(
                     () -> new ResourceNotFoundException("No user found with username= " + username));
             return new UserDetailsImpl(user);
         } catch (ResourceNotFoundException e) {

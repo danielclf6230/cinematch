@@ -2,6 +2,7 @@ package com.cm.cinematchapp.repositories;
 
 import com.cm.cinematchapp.entities.FriendRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -19,7 +20,13 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, Lo
      * @param requestId The ID of the friend request.
      * @return The FriendRequest entity if found, or null if not found.
      */
-    FriendRequest getByRequestId(Long requestId);
+    FriendRequest findByRequestId(Long requestId);
+
+    @Query("SELECT fr FROM FriendRequest fr " +
+            "WHERE fr.requester.userId = ?1 " +
+            "AND fr.recipient.userId = ?2")
+    FriendRequest findByRequesterIdAndRecipientId(Long userId, Long friendUserId);
+
 
     /**
      * Retrieve a list of friend requests sent by a user based on their user ID.

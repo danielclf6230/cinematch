@@ -75,7 +75,7 @@ public class SecurityService {
      */
     public String logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
-        return "";
+        return "Successful Log Out";
     }
 
     /**
@@ -89,7 +89,16 @@ public class SecurityService {
                 .getAuthentication()
                 .getName();
 
-        return userRepository.findByEmail(username);
+        return userRepository.findByUsernameIgnoreCase(username);
+    }
+
+    public Long getCurrentLoginUserId() {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return userRepository.findByUsernameIgnoreCase(username).get().getUserId();
     }
 
 }

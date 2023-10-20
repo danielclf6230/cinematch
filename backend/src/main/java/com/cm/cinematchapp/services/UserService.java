@@ -1,6 +1,7 @@
 package com.cm.cinematchapp.services;
 
 
+import com.cm.cinematchapp.dto.RegistrationDTO;
 import com.cm.cinematchapp.entities.Role;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateObjectException;
@@ -37,6 +38,9 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private SecurityService securityService;
+
     /**
      * Retrieves a list of all users in the system.
      *
@@ -53,7 +57,7 @@ public class UserService {
      * @return An optional user entity or an empty optional if not found.
      */
     public Optional<User> getByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsernameIgnoreCase(username);
     }
 
 
@@ -71,31 +75,33 @@ public class UserService {
     /**
      * Creates a new user in the system.
      *
-     * @param user The user entity to create.
      * @return The created user entity.
      * @throws DuplicateObjectException if the email or username is already associated with another account.
      */
-    public User createUser(User user) {
+    public User createUser(RegistrationDTO registrationDTO) {
 
         // Throws error if email is taken
-        if (userRepository.existsByEmail(user.getEmail())) {
-            log.debug("Email already exists: {}", user.getEmail());
-            throw new DuplicateObjectException("The email " + user.getEmail() + " is already linked to another account");
+        if (userRepository.existsByEmail(registrationDTO.getEmail())) {
+            log.debug("Email already exists: {}", registrationDTO.getEmail());
+            throw new DuplicateObjectException("The email " + registrationDTO.getEmail() + " is already linked to another account");
         }
 
-        if (!isValidEmail(user.getEmail())) {
-            log.debug("Invalid email format: {}", user.getEmail());
-            throw new DataIntegrityViolationException("Invalid email format: " + user.getEmail());
+        if (!isValidEmail(registrationDTO.getEmail())) {
+            log.debug("Invalid email format: {}", registrationDTO.getEmail());
+            throw new DataIntegrityViolationException("Invalid email format: " + registrationDTO.getEmail());
         }
 
-        if (userRepository.existsByUsername(user.getUsername())) {
-            log.debug("This username is already taken: {}", user.getUsername());
+        if (userRepository.existsByUsername(registrationDTO.getUsername())) {
+            log.debug("This username is already taken: {}", registrationDTO.getUsername());
             throw new DuplicateObjectException("This username is already taken");
         }
 
-        if (user.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+        User user = new User();
+        user.setFirstName(registrationDTO.getFirstName());
+        user.setLastName(registrationDTO.getLastName());
+        user.setUsername(registrationDTO.getUsername());
+        user.setEmail(registrationDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationDTO.getPassword())); // Hash and save the password
 
         Role userRole = roleRepository.findByName("ROLE_USER");
         if (userRole != null) {
@@ -107,6 +113,17 @@ public class UserService {
 
         return createdUser;
     }
+
+
+    public List<User> getAllUsersExceptAuthenticated() {
+        return userRepository.findByUserIdNot(securityService.getCurrentLoginUserId());
+    }
+
+
+    public List<User> findUsersByUsername(String username) {
+        return userRepository.findByUsernameContainingIgnoreCaseAndUserIdNot(username, securityService.getCurrentLoginUserId());
+    }
+
 
 
     public void addRoleToUser(Long userId, String roleName) {

@@ -1,7 +1,7 @@
 package com.cm.cinematchapp.controllers;
 
-import com.cm.cinematchapp.entities.FriendRequest;
-import com.cm.cinematchapp.entities.LoginData;
+import com.cm.cinematchapp.dto.LoginDTO;
+import com.cm.cinematchapp.dto.RegistrationDTO;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.SecurityService;
@@ -47,53 +47,49 @@ public class ActionController {
      *         or a ResponseEntity with a status of BAD REQUEST (400) if validation fails.
      */
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody @Valid User user, BindingResult result) {
+    public ResponseEntity<User> createUser(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result) {
 
-        if (result.hasErrors()) return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        if (result.hasErrors()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createUser(registrationDTO), HttpStatus.CREATED);
     }
 
     /**
      * Handles HTTP POST requests for user login.
      *
-     * @param logout    A boolean flag indicating whether to log out.
      * @param loginData The user login data.
      * @param result    The validation result for the login data.
      * @return A ResponseEntity containing a JWT token for successful login with an HTTP status of OK (200),
      *         or a ResponseEntity with a status of BAD REQUEST (400) if validation fails.
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam(value="logout", required=false, defaultValue="false") boolean logout,
-                                      @RequestBody @Valid LoginData loginData,
-                                      BindingResult result) {
-        if (logout) return new ResponseEntity<>(securityService.logout(), HttpStatus.OK);
-
+    public ResponseEntity<String> login(@RequestBody @Valid LoginDTO loginData, BindingResult result) {
         if(result.hasErrors()) return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(securityService.login(loginData.getUsername(), loginData.getPassword()), HttpStatus.OK);
     }
 
-
-    @PostMapping("/user/{userId}/add-role/{roleName}")
-    public ResponseEntity<String> addRoleToUser(@PathVariable Long userId, @PathVariable String roleName) {
-        userService.addRoleToUser(userId, roleName);
-        return new ResponseEntity<>("Role added successfully", HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        return new ResponseEntity<>(securityService.logout(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/user/send-request/{requesterUserId}/{recipientUserId}")
-    public ResponseEntity<FriendRequest> sendFriendRequest(
-            @PathVariable Long requesterUserId,
-            @PathVariable Long recipientUserId) {
-        try {
-            FriendRequest friendRequest = friendService.sendFriendRequest(requesterUserId, recipientUserId);
 
-            return new ResponseEntity<>(friendRequest, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+
+
+
+
+//    @PostMapping("/user/{userId}/add-role/{roleName}")
+//    public ResponseEntity<String> addRoleToUser(@PathVariable Long userId, @PathVariable String roleName) {
+//        userService.addRoleToUser(userId, roleName);
+//        return new ResponseEntity<>("Role added successfully", HttpStatus.OK);
+//    }
+
+
+
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.cm.cinematchapp.services;
 import com.cm.cinematchapp.entities.FriendRequest;
 import com.cm.cinematchapp.entities.Friendship;
 import com.cm.cinematchapp.entities.User;
+import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
 import com.cm.cinematchapp.repositories.FriendRequestRepository;
 import com.cm.cinematchapp.repositories.FriendshipRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
@@ -35,6 +36,9 @@ public class FriendService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SecurityService securityService;
+
 
     // --- Friend Requests ---
 
@@ -43,29 +47,25 @@ public class FriendService {
     /**
      * Get a list of friend requests by recipient ID.
      *
-     * @param recipientId The ID of the recipient user.
      * @return A list of friend requests for the recipient.
      */
-    public List<FriendRequest> getFriendRequestsByRecipientId(Long recipientId) {
-        return friendRequestRepository.getFriendRequestsByRecipientUserId(recipientId);
+    public List<FriendRequest> getFriendRequests() {
+        return friendRequestRepository.getFriendRequestsByRecipientUserId(securityService.getCurrentLoginUserId());
     }
 
     /**
      * Send a friend request.
      *
-     * @param requesterId The ID of the requesting user.
      * @param recipientId The ID of the recipient user.
      * @return The created friend request.
      */
-    public FriendRequest sendFriendRequest(Long requesterId, Long recipientId) {
+    public FriendRequest sendFriendRequest(Long recipientId) {
         // Retrieve the requester and the recipient by their IDs
-        User requester = userRepository.findByUserId(requesterId).get();
+        User requester = securityService.getCurrentLoginUser().get();
         User recipient = userRepository.findByUserId(recipientId).get();
 
-
-//        // Check if a friend request already exists between the requester and recipient
-//        if (friendRequestRepository.existsByRequesterAndRecipient(requester, recipient)) {
-//            throw new ExistingFriendshipException("Friend request already exists");
+//        if (friendshipRepository.findByUserIdAndFriendUserId(requester.getUserId(), recipientId) != null) {
+//            throw new DuplicateObjectException("Users are already friends");
 //        }
 
         // Create a new friend request
@@ -78,15 +78,33 @@ public class FriendService {
         return friendRequestRepository.save(friendRequest);
     }
 
+
+    public void removeFriendRequest(Long recipientId) {
+        // Retrieve the requester (logged-in user) and the recipient by their IDs
+        Long requesterId = securityService.getCurrentLoginUserId();
+
+        // Check if there's a friend request from the requester to the recipient
+        FriendRequest friendRequest = friendRequestRepository.findByRequesterIdAndRecipientId(requesterId, recipientId);
+
+        if (friendRequest != null) {
+            // If a friend request exists, delete it
+            friendRequestRepository.delete(friendRequest);
+        } else {
+            // Handle the case when there is no friend request
+            throw new ResourceNotFoundException("Friend request not found");
+        }
+    }
+
+
     /**
      * Accept a friend request.
      *
-     * @param friendRequestId The ID of the friend request to accept.
+     * @param requestId The ID of the friend request to accept.
      */
-    public void acceptFriendRequest(Long friendRequestId) {
+    public void acceptFriendRequest(Long requestId) {
 
         // Retrieve the friend request by its ID from the repository, or set it to null if not found
-        FriendRequest friendRequest = friendRequestRepository.getByRequestId(friendRequestId);
+        FriendRequest friendRequest = friendRequestRepository.findByRequestId(requestId);
 
         // Check if the friend request exists and is in a PENDING status
         if (friendRequest != null && friendRequest.getRequestStatus() == FriendRequest.FriendRequestStatus.PENDING) {
@@ -113,6 +131,19 @@ public class FriendService {
         }
     }
 
+    public void denyFriendRequest(Long requestId) {
+
+        FriendRequest friendRequest = friendRequestRepository.findByRequestId(requestId);
+
+        if (friendRequest != null) {
+            // If a friend request exists, delete it
+            friendRequestRepository.delete(friendRequest);
+        } else {
+            // Handle the case when there is no friend request
+            throw new ResourceNotFoundException("Friend request not found");
+        }
+    }
+
 
 
 
@@ -123,11 +154,10 @@ public class FriendService {
     /**
      * Get a list of friendships by user ID.
      *
-     * @param userId The ID of the user.
      * @return A list of friendships for the user.
      */
-    public List<Friendship> getFriendshipsByUserId(Long userId) {
-        return friendshipRepository.findByUserUserId(userId);
+    public List<User> getFriends() {
+        return friendshipRepository.findFriendUserByUserId(securityService.getCurrentLoginUserId());
     }
 
 

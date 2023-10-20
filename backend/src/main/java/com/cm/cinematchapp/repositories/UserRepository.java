@@ -2,7 +2,9 @@ package com.cm.cinematchapp.repositories;
 
 import com.cm.cinematchapp.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,6 +53,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param username The username of the user.
      * @return An Optional containing the user if found, or empty if not.
      */
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUsernameIgnoreCase(String username);
+
+    List<User> findByUsernameContainingIgnoreCaseAndUserIdNot(String username, Long userId);
+
+    List<User> findByUserIdNot(Long userId);
 
 }
