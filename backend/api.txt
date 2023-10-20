@@ -21,7 +21,7 @@ URL: /api/actions/register
 Params: User Object in request body
 Roles: N/A (public)
 Note:
-1. This endpoint is used to register a new user. It accepts a user object in the request body and does not require any additional parameters.
+1. This endpoint is used to register a new user.
 2. Role is ROLE_USER by default upon creation.
 
 Return: User account from DB
@@ -29,7 +29,7 @@ Return: User account from DB
 
 Example: User creates account
     URL: http://localhost:8080/api/actions/login
-    Request Body: Include a user object in the request body with the following fields:
+    Request Body: Include a RegistrationDTO object in the request body with the following fields:
         {
             "firstName": "Charlie",
             "lastName": "Chocolate",
