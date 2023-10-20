@@ -1,4 +1,4 @@
-package com.cm.cinematchapp.entities;
+package com.cm.cinematchapp.dto;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import lombok.Data;
  * @author Eric Rebadona
  */
 @Data
-public class LoginData {
+public class LoginDTO {
     private String username;
     private String password;
 }
