@@ -154,7 +154,7 @@ public class FriendService {
     /**
      * Get a list of friendships by user ID.
      *
-     * @return A list of friendships for the user.
+     * @return A list of friends(Users) for the user.
      */
     public List<User> getFriends() {
         return friendshipRepository.findFriendUserByUserId(securityService.getCurrentLoginUserId());
@@ -164,23 +164,25 @@ public class FriendService {
     /**
      * Remove a friendship between two users.
      *
-     * @param userId       The ID of the first user.
-     * @param friendUserId The ID of the second user.
+     * @param friendUser Friend of the authenticated user in current session.
      */
-    public void removeFriendship(Long userId, Long friendUserId) {
+    public void removeFriend(User friendUser) {
+
+        User user = securityService.getCurrentLoginUser().get();
+
         // Find the friendship record to delete for user A
-        Friendship friendship1 = friendshipRepository.findByUserIdAndFriendUserId(userId, friendUserId);
+        Friendship friendship1 = friendshipRepository.findByUserAndFriendUser(user, friendUser);
 
         // Find the friendship record to delete for user B
-        Friendship friendship2 = friendshipRepository.findByUserIdAndFriendUserId(friendUserId, userId);
+        Friendship friendship2 = friendshipRepository.findByUserAndFriendUser(friendUser, user);
 
         if (friendship1 != null && friendship2 != null) {
             // Delete both friendship records (bi-directional)
             friendshipRepository.delete(friendship1);
             friendshipRepository.delete(friendship2);
-            log.info("Friendship removed between user with ID {} and user with ID {}", userId, friendUserId);
+            log.info("Friendship removed between user with ID {} and user with ID {}", user.getUserId(), friendUser.getUserId());
         } else {
-            log.warn("No friendship found between user with ID {} and user with ID {}", userId, friendUserId);
+            log.warn("No friendship found between user with ID {} and user with ID {}", user.getUserId(), friendUser.getUserId());
         }
     }
 

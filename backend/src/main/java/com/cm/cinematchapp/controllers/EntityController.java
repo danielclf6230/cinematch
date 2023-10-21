@@ -106,5 +106,18 @@ public class EntityController {
         return new ResponseEntity<>(friendService.getFriends(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/friends/{friend_user}")
+    public ResponseEntity<User> getFriendUser(@PathVariable("friend_user") User friendUser) {
+        return new ResponseEntity<>(userService.getUser(friendUser), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @DeleteMapping("/friends/{friend_user}")
+    public ResponseEntity<Void> removeFriend(@PathVariable("friend_user") User friendUser) {
+        friendService.removeFriend(friendUser);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 }

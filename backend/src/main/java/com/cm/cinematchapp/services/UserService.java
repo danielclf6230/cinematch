@@ -50,6 +50,19 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getAuthenticatedUser() {
+        return userRepository.findByUserId(securityService.getCurrentLoginUserId()).orElse(null);
+    }
+
+    public User getUser(Long userId) {
+        return userRepository.findByUserId(userId).orElse(null);
+    }
+
+    public User getUser(User user) {
+        return userRepository.findByUserId(user.getUserId()).orElse(null);
+    }
+
+
     /**
      * Retrieves a user by their username.
      *

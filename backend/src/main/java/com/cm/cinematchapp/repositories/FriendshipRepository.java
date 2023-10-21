@@ -42,6 +42,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     @Query("SELECT f FROM Friendship f WHERE f.user.userId = ?1 AND f.friendUser.userId = ?2")
     Friendship findByUserIdAndFriendUserId(Long userId, Long friendUserId);
 
+    Friendship findByUserAndFriendUser(User user, User friendUser);
+
     @Query("SELECT f.friendUser FROM Friendship f WHERE f.user.userId = ?1")
     List<User> findFriendUserByUserId(Long userId);
 
