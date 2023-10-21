@@ -81,6 +81,8 @@ Example: User with username 'Charlie' logins in
 
 
 
+***** GETTING USERS AND A VIEWING USER *****
+
 == Get All Users Except Authenticated ==
 Method: GET
 URL: /api/entities/users
@@ -112,6 +114,8 @@ Example: Logged-in user searches for users by username. Users with usernames sta
     URL: http://localhost:8080/api/actions/users/er
 
 
+
+***** FRIEND REQUEST API CALLS *****
 
 == Send Friend Request ==
 Method: POST
@@ -183,3 +187,49 @@ Return: 204 - NO_CONTENT
 
 Example: Logged views friend requests
     URL: http://localhost:8080/api/entities/friend-requests/2
+
+
+
+***** FRIENDS/FRIENDSHIP *****
+
+
+== Get Friends ==
+Method: GET
+URL: /api/entities/users/friends
+Roles: ROLE_USER, ROLE_ADMIN
+Note:
+1. This endpoint allows a user to retrieve a list of their friends.
+
+Return: List<User>
+        200 - OK
+
+Example: Authenticated user retrieves their list of friends
+    URL: http://localhost:8080/api/entities/users/friends
+
+
+== Get Friend ==
+Method: GET
+URL: /api/entities/users/friends/{friend_user}
+Params: friend_user (User object)
+Roles: ROLE_USER, ROLE_ADMIN
+Note:
+1. This endpoint allows a user to retrieve details of a specific friend.
+
+Return: User
+
+200 - OK
+Example: Authenticated user retrieves details of a specific friend with userId 2
+    URL: http://localhost:8080/api/entities/users/friends/2
+
+== Remove Friend ==
+Method: DELETE
+URL: /api/entities/users/friends/{friend_user}
+Params: friend_user (User object) **basically just send back one of the user objects from the getFriends
+Roles: ROLE_USER, ROLE_ADMIN
+Note:
+1. This endpoint allows a user to remove a friend from their friends list.
+
+Return: 204 - NO_CONTENT
+
+Example: Authenticated user removes a friend with userId 2 from their friends list
+    URL: http://localhost:8080/api/entities/users/friends/2
