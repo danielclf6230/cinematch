@@ -4,6 +4,13 @@ HTTP Headers (include in all request):
 {token}:          Token-upon-authentication
 {Authorization} : Bearer: {token}
 
+HTTP Headers (include in file-related [images] request):
+{Accept}:         "Accept: multipart/form-data"
+{Content-Type}:   "Content-Type: multipart/form-data"
+{token}:          Token-upon-authentication
+{Authorization} : Bearer: {token}
+
+
 Return Responses:
 200 - OK
 201 - Created
@@ -233,3 +240,52 @@ Return: 204 - NO_CONTENT
 
 Example: Authenticated user removes a friend with userId 2 from their friends list
     URL: http://localhost:8080/api/entities/users/friends/2
+
+
+
+
+***** AVATAR *****
+
+
+== Upload Avatar ==
+Method: POST
+URL: /api/images/upload/avatar
+Params: MultipartFile - uploaded image
+Roles: ROLE_ADMIN, ROLE_USER
+Note:
+1. This endpoint allows users with ROLE_ADMIN or ROLE_USER to upload their avatars.
+2. The request should include a multipart file named 'file' representing the avatar image.
+
+Return: Avatar (object)
+        200 - OK
+
+Example: User with ROLE_USER uploads an avatar
+    URL:  http://localhost:8080/api/images/upload/avatar
+    Request: A POST request with a multipart file named 'file' containing the avatar image.
+
+== Get Avatar ==
+Method: GET
+URL: /api/images/avatar
+Roles: ROLE_ADMIN, ROLE_USER
+Note:
+1. This endpoint allows users with ROLE_ADMIN or ROLE_USER to retrieve their avatars.
+
+Return: Avatar Image (byte[])
+        200 - OK
+
+Example: User with ROLE_USER retrieves their avatar
+    URL:  http://localhost:8080/api/images/avatar
+    Request: A GET request to retrieve the user's avatar image.
+
+== Delete Avatar ==
+Method: DELETE
+URL: /api/images/avatar
+Roles: ROLE_ADMIN, ROLE_USER
+Note:
+1. This endpoint allows users with ROLE_ADMIN or ROLE_USER to delete their avatars.
+
+Return: 204 - No Content
+
+Example: User with ROLE_USER deletes their avatar
+    URL:  http://localhost:8080/api/images/avatar
+    Request: A DELETE request to delete the user's avatar.

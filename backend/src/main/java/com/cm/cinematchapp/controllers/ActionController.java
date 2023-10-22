@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * The `ActionController` class is responsible for handling HTTP requests related to actions.
@@ -38,10 +41,10 @@ public class ActionController {
     private FriendService friendService;
 
 
+
     /**
      * Handles HTTP POST requests to create a new user (registration).
      *
-     * @param user   The user data to be registered.
      * @param result The validation result for the user data.
      * @return A ResponseEntity containing the created user with an HTTP status of CREATED (201) if successful,
      *         or a ResponseEntity with a status of BAD REQUEST (400) if validation fails.
@@ -76,6 +79,14 @@ public class ActionController {
     }
 
 
+
+
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+//    @PostMapping("/upload/avatar")
+//    public ResponseEntity<User> uploadAvatar(
+//            @RequestParam("file") MultipartFile avatarFile) throws IOException {
+//            return new ResponseEntity<>(userService.uploadAvatar(avatarFile), HttpStatus.OK);
+//    }
 
 
 

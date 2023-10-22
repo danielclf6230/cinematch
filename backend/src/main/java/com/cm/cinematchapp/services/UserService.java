@@ -1,11 +1,14 @@
 package com.cm.cinematchapp.services;
 
 
+import com.cm.cinematchapp.constants.EntityConstants;
 import com.cm.cinematchapp.dto.RegistrationDTO;
+import com.cm.cinematchapp.entities.Avatar;
 import com.cm.cinematchapp.entities.Role;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.exceptions.DuplicateObjectException;
 import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
+import com.cm.cinematchapp.repositories.AvatarRepository;
 import com.cm.cinematchapp.repositories.RoleRepository;
 import com.cm.cinematchapp.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -15,7 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 /**
@@ -40,6 +51,9 @@ public class UserService {
 
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    private AvatarRepository avatarRepository;
 
     /**
      * Retrieves a list of all users in the system.
@@ -147,6 +161,86 @@ public class UserService {
             userRepository.save(user);
         }
     }
+
+
+
+
+
+    @PostConstruct
+    public void createDefaultAvatarIfNotExists() throws IOException {
+
+        if (avatarRepository.findByPath(EntityConstants.kDefaultAvatar) == null) {
+            Path avatarPath = Paths.get(EntityConstants.kDefaultAvatar);
+            Avatar avatar = new Avatar();
+            avatar.setFilename("default_avatar.png");
+            avatar.setSize(Files.size(avatarPath));
+            avatar.setPath(EntityConstants.kDefaultAvatar);
+            avatarRepository.save(avatar);
+        }
+    }
+
+    public Avatar uploadAvatar(MultipartFile avatarFile) throws IOException {
+
+        User user = securityService.getCurrentLoginUser().get();
+
+        //TODO change to cloud? something else rather than local file?
+
+        String uniqueFilename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
+        String localFilePath = EntityConstants.kAvatarPath + uniqueFilename;
+        Path localPath = Paths.get(localFilePath);
+
+        Files.copy(avatarFile.getInputStream(), localPath, StandardCopyOption.REPLACE_EXISTING);
+
+        Avatar avatar = new Avatar();
+        avatar.setFilename(uniqueFilename);
+        avatar.setPath(localFilePath);
+        avatar.setSize(avatarFile.getSize());
+        avatar = avatarRepository.save(avatar);
+
+        if (user.getAvatar() != null) {
+            deleteAvatar();
+        }
+
+        user.setAvatar(avatar);
+        userRepository.save(user);
+        return avatar;
+    }
+
+    public byte[] getAvatar() throws IOException{
+        User user = securityService.getCurrentLoginUser().get();
+        Avatar avatar = user.getAvatar();
+
+        if(avatar == null) {
+            avatar = avatarRepository.findByFilename("default_avatar.png");
+            Path defaultPath = Paths.get(avatar.getPath());
+            return Files.readAllBytes(defaultPath);
+        }
+
+            Path avatarPath = Paths.get(avatar.getPath());
+            return Files.readAllBytes(avatarPath);
+
+    }
+
+    public void deleteAvatar() throws IOException{
+        User user = securityService.getCurrentLoginUser().get();
+
+        Avatar avatar = user.getAvatar();
+
+        if (avatar != null) {
+            String avatarPath = avatar.getPath();
+            Path path = Paths.get(avatarPath);
+
+            user.setAvatar(null);
+            avatarRepository.delete(avatar);
+
+            Files.delete(path);
+        }
+    }
+
+
+
+
+
 
     @PostConstruct
     public void createRolesIfNotExists() {

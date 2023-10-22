@@ -67,11 +67,23 @@ public class User {
     @Email
     private String email;
 
-    //private Long role;
+//    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+//    private Avatar avatar;
+
+    @OneToOne
+    @JoinColumn(name = "avatar_id") // Assuming you have a foreign key named avatar_id
+    private Avatar avatar;
+
+
 
     //private boolean active;
 
-    //private profilePicture;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles = new ArrayList<>();
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
@@ -87,11 +99,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Friendship> friendships = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles = new ArrayList<>();
 
 
 

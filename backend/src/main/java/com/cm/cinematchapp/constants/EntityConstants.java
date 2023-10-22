@@ -19,6 +19,9 @@ public interface EntityConstants {
     //60 minutes time for session
     static final int kSessionTimeout = 1000 * 60 * 60;
 
+    static final String kAvatarPath = System.getProperty("user.dir") + "/backend/avatars/";
+    static final String kDefaultAvatar = System.getProperty("user.dir") + "/backend/avatars/default_avatar.png";
+
 
 
 
