@@ -2,12 +2,16 @@ package com.cm.cinematchapp.controllers;
 
 import com.cm.cinematchapp.dto.LoginDTO;
 import com.cm.cinematchapp.dto.RegistrationDTO;
+import com.cm.cinematchapp.entities.Movie;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.services.FriendService;
+import com.cm.cinematchapp.services.MovieService;
 import com.cm.cinematchapp.services.SecurityService;
 import com.cm.cinematchapp.services.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * The `ActionController` class is responsible for handling HTTP requests related to actions.
@@ -39,6 +45,9 @@ public class ActionController {
 
     @Autowired
     private FriendService friendService;
+
+    @Autowired
+    private MovieService movieService;
 
 
 
@@ -98,6 +107,29 @@ public class ActionController {
 //    }
 
 
+
+
+
+
+    @GetMapping("/movie/search/{title}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") //remove ROLE_USER
+    public ResponseEntity<List<Movie>> searchForMovie(@PathVariable("title") String title) {
+        try {
+            return new ResponseEntity<>(movieService.searchForMovie(title), HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/movie/add")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") //remove ROLE_USER
+    public ResponseEntity<Movie> createMovie(@RequestBody @Valid Movie movie) {
+        try {
+            return new ResponseEntity<>(movieService.createMovie(movie), HttpStatus.CREATED);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

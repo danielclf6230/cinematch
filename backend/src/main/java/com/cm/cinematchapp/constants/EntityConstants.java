@@ -22,6 +22,15 @@ public interface EntityConstants {
     static final String kAvatarPath = System.getProperty("user.dir") + "/backend/avatars/";
     static final String kDefaultAvatar = System.getProperty("user.dir") + "/backend/avatars/default_avatar.png";
 
+    static final String kRapidApiUrl = "https://streaming-availability.p.rapidapi.com/search/title";
+    static final String kRapidApiKey = "a05a1b2455msh8071b1add6463dap15f40fjsncf719cc3c3fc";
+    static final String kRapidApiHost = "streaming-availability.p.rapidapi.com";
+
+    static final String kOMDBApiHost = "http://www.omdbapi.com/?t=";
+
+    static final String kOMDBApiKey = "&apikey=1452cc8c";
+
+
 
 
 

@@ -48,7 +48,7 @@ public class EntityController {
 
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-    @GetMapping("users/{username}")
+    @GetMapping("/users/{username}")
     public ResponseEntity<?> getUsersByUsername(@PathVariable(required = false) String username) {
         if (username.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
