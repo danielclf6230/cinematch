@@ -23,63 +23,76 @@ function Register() {
     };
 
     return (
-        <div>
+        <div className="cm-form">
             <h1>User Registration</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="firstName">First Name:</label>
-                    <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                    />
+                    <label className="custom-field" htmlFor="firstName">
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                        />
+                        <span className="pholder">First Name</span>
+                    </label>
+
                 </div>
                 <div>
-                    <label htmlFor="lastName">Last Name:</label>
-                    <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        required
-                    />
+                    <label className="custom-field" htmlFor="lastName">
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            required
+                        />
+                        <span className="pholder">Last Name</span>
+                    </label>
+
                 </div>
                 <div>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
+                    <label className="custom-field" htmlFor="username">
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                        <span className="pholder">Username</span>
+                    </label>
                 </div>
                 <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <label className="custom-field" htmlFor="password">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <span className="pholder">Password</span>
+                    </label>
+
                 </div>
                 <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+                    <label className="custom-field" htmlFor="email">
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <span className="pholder">Email</span>
+                    </label>
                 </div>
                 <div>
                     <button type="submit">Register</button>

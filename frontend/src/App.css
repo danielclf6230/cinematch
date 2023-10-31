@@ -14,19 +14,193 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #1E2227;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px; /* Optional padding for the navbar */
+}
+
+.menu-ops {
+  margin-left: 2%;
+}
+
+.menu-ops a {
+  color: #FFBC10 !important;
+  font-family: Helvetica, sans-serif;
+}
+
+.cm-logo {
+  width: 50%;
+  text-align: center;
+  margin: auto;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.custom-field {
+  position: relative;
+  font-size: 14px;
+  padding-top: 2%;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.custom-field input {
+  border: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #f2f2f2;
+  padding: 12px;
+  border-radius: 3px;
+  width: 250px;
+  outline: none;
+}
+
+.custom-field .pholder {
+  position: absolute;
+  left: 12px;
+  top: calc(50% - 10px);
+  transform: translateY(-10%);
+  color: #aaa;
+  transition:
+    top 0.3s ease,
+    font-size 0.3s ease,
+    color 0.3s ease;
+}
+
+.custom-field input:valid,
+.custom-field input:focus {
+  border-color: #222;
+  transition-delay: 0.1s;
+}
+
+.custom-field input + .pholder {
+  padding: 0 5px;
+  left: 8px;
+}
+
+.custom-field input:valid + .pholder,
+.custom-field input:focus + .pholder {
+  top: 0px;
+  font-size: 10px;
+  background: #f0f0f0;
 }
 
 .App-link {
   color: #61dafb;
 }
+
+.cm-logo {
+  color: #FFBC10 !important;
+  font-family: Helvetica, sans-serif;
+}
+
+.cm-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Center text inside the box */
+
+  /* Optional: Add some padding and a border for styling */
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  width: 400px; /* Set a fixed width for the box, adjust as needed */
+  margin: 10% auto 0;
+}
+
+.cm-form form {
+  width: 100%;
+  text-align: left; /* Add text-align property to make the inputs left-justified */
+}
+
+.cm-form input {
+  width: 100%; /* Ensure the input fields take up the full width of the form */
+  margin-bottom: 10px; /* Optional spacing between input fields */
+  padding: 10px; /* Optional padding for input fields */
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* SWIPING CSS */
+
+/* Card container styling */
+.card-container {
+  width: 300px;
+  height: 70%;
+  position: relative;
+}
+
+/* Individual card style */
+.card {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: absolute;
+  cursor: pointer;
+}
+
+/* Liked, Maybe, Disliked cards styling */
+.liked-cards,
+.maybe-cards,
+.disliked-cards {
+  color: aliceblue;
+  margin-top: 20px;
+}
+
+/*.buttons {*/
+/*  margin-top: 20px;*/
+/*  display: flex;*/
+/*  gap: 20px;*/
+/*}*/
+
+/* Custom button styles */
+button {
+  padding: 10px 20px; /* Example padding for text space within the button */
+  width: 80px; /* Adjust width to your desired fixed size */
+  height: auto; /* Adjust height to your desired fixed size */
+  font-size: 15px; /* Example font size */
+  background-color: #f1b307;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  margin: auto;
+}
+
+/* On hover, darken button color */
+button:hover {
+  background-color: #d39e00;
+}
+
+
 
 @keyframes App-logo-spin {
   from {
