@@ -98,6 +98,7 @@ public class SecurityService {
                 .getAuthentication()
                 .getName();
 
+
         return userRepository.findByUsernameIgnoreCase(username).get().getUserId();
     }
 

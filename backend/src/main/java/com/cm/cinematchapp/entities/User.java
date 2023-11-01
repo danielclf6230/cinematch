@@ -70,6 +70,7 @@ public class User {
 //    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 //    private Avatar avatar;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "avatar_id") // Assuming you have a foreign key named avatar_id
     private Avatar avatar;
@@ -77,6 +78,7 @@ public class User {
 
 
     //private boolean active;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

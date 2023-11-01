@@ -77,7 +77,7 @@ public class ActionController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginDTO loginData, BindingResult result) {
         if(result.hasErrors()) return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
-
+        log.info("logged in");
         return new ResponseEntity<>(securityService.login(loginData.getUsername(), loginData.getPassword()), HttpStatus.OK);
     }
 

@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String aHeader = request.getHeader("Authorization");
+        log.info("aHeader " + aHeader);
 
         // Check if the request has a valid Authorization header.
         if (aHeader ==null || !aHeader.startsWith("Bearer")) {
@@ -67,9 +68,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        log.info("username: " + JWTUtil.parseToken(aToken).getPayload("username"));
         final String username = (String) JWTUtil.parseToken(aToken).getPayload("username");
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
 
+        log.info("Authorities: " + userDetails.getAuthorities());
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         Object principal = userDetails.getUsername();
         Object credential = userDetails.getPassword();
@@ -78,9 +81,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(principal, credential, authorities);
 
+
+
         // Set authentication details for the user.
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        log.info(SecurityContextHolder.getContext().toString());
 
         // Continue with the filter chain after successful authentication.
         filterChain.doFilter(request, response);
