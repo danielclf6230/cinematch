@@ -35,6 +35,21 @@ public class EntityController {
 
 
 
+
+    @GetMapping("/user")
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String authorizationHeader) {
+        log.info("Authorization header: " + authorizationHeader);
+        try {
+
+
+            return new ResponseEntity<>(userService.getAuthenticatedUser(), HttpStatus.OK);
+        }
+        catch(Exception e) {
+            log.info(e.getMessage());
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     /**
      * Get a list of all users except the currently authenticated user.
      *

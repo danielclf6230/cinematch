@@ -1,65 +1,77 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
-import axios from 'axios'; // Import Axios
+import React, { useState } from 'react';
+import {Link, useNavigate, Navigate} from 'react-router-dom';
+import {handleLogError, useAuth} from '../security/AuthContext'
+import {actionsApi} from "../api/actionsApi";
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const user = {username, password};
-      // Send a POST request to your server's registration endpoint
-      const response = await axios.post('http://localhost:8080/api/actions/login', user);
-      // Optionally, handle success or navigate to a success page
-      console.log('Login successful:', response.data);
-    } catch (error) {
-      // Handle errors (e.g., display validation errors or show an error message)
-      console.error('Login failed:', error);
+    const navigate = useNavigate()
+    const Auth = useAuth()
+
+
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [isError, setIsError] = useState(false)
+
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'username') {
+            setUsername(value);
+        } else if (name === 'password') {
+            setPassword(value);
+        }
     }
-  };
 
-  return (
-      <div className="cm-form">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label className="custom-field" htmlFor="username">
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-                <span className="pholder">Username</span>
-            </label>
-          </div>
-          <div>
-            <label className="custom-field" htmlFor="password">
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <span className="pholder">Password</span>
-            </label>
-          </div>
-          <div>
-            <button type="submit">Login</button>
-          </div>
-        </form>
-        <div>
-            <span>
-              New here? <Link to="/Register">Create an Account</Link>
-            </span>
-        </div>
-      </div>
-  );
-}
 
-export default Login;
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!(username && password)) {
+            setIsError(true);
+            return;
+        }
+
+        try {
+            const response = await actionsApi.authenticate(username, password)
+            const accessToken = response.data;
+            const authenticatedUser = {response, accessToken}
+            Auth.userLogin = authenticatedUser
+            console.log(accessToken)
+
+
+
+            setUsername('')
+            setPassword('')
+            setIsError(false)
+
+            navigate('/home')
+        } catch (error) {
+            handleLogError(error)
+            setIsError(true)
+        }
+
+
+    }
+        return (
+            <div>
+                <h2>Login User</h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Username:</label>
+                        <input type="text" name="username" onChange={handleInputChange}/>
+                    </div>
+                    <div>
+                        <label>Password:</label>
+                        <input type="password" name="password" onChange={handleInputChange}/>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <p>
+                    Don't have an account? <Link to="/register">Register</Link>
+                </p>
+            </div>
+        );
+    }
+
+
+export default Login

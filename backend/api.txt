@@ -2,13 +2,14 @@ HTTP Headers (include in all request):
 {Accept}:         "Accept: application/json"
 {Content-Type}:   "Content-Type: application/json"
 {token}:          Token-upon-authentication
-{Authorization} : Bearer: {token}
+{Authorization} : "Authorization: Bearer {token}"
 
 HTTP Headers (include in file-related [images] request):
 {Accept}:         "Accept: multipart/form-data"
 {Content-Type}:   "Content-Type: multipart/form-data"
 {token}:          Token-upon-authentication
-{Authorization} : Bearer: {token}
+{Authorization} : "Authorization: Bearer {token}"
+
 
 
 Return Responses:
