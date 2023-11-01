@@ -32,8 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value="/api/actions",
-        produces="application/json",
-        consumes="application/json")
+        produces="application/json")
 @Slf4j
 public class ActionController {
 

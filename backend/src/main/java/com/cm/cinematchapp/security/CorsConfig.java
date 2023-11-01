@@ -2,8 +2,10 @@ package com.cm.cinematchapp.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * Configuration class for defining Cross-Origin Resource Sharing (CORS) configuration.
@@ -19,10 +21,20 @@ public class CorsConfig implements CorsConfigurationSource {
     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOriginPattern("*"); // TODO make secure later. Origin paths (https://localhost:4000, https://Cinematch.ca)
-        config.addAllowedMethod("*"); // TODO make secure later. GET, POST, etc.
-        config.addAllowedHeader("*"); // TODO make secure later. Content-type, Authorization, etc.
+        // Allow specific HTTP methods (e.g., GET, POST, PUT)
+        config.addAllowedMethod(HttpMethod.GET);
+        config.addAllowedMethod(HttpMethod.POST);
+        config.addAllowedMethod(HttpMethod.PUT);
+        config.addAllowedMethod(HttpMethod.DELETE);
+        config.addAllowedHeader("Content-Type");
+        config.addAllowedHeader("Authorization");
+        config.addAllowedHeader("Accept");
         config.setAllowCredentials(true); // TODO make false?
         //TODO look into adding config.setMaxAge();
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
         return config;
     }
 }

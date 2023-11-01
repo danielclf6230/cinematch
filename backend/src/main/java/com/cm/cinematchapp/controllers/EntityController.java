@@ -22,8 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value="/api/entities",
-        produces="application/json",
-        consumes="application/json")
+        produces="application/json")
 @Slf4j
 public class EntityController {
 
@@ -58,6 +57,7 @@ public class EntityController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsersExceptAuthenticated() {
+        log.info("hello");
         return new ResponseEntity<>(userService.getAllUsersExceptAuthenticated(), HttpStatus.OK);
     }
 

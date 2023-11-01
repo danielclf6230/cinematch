@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { handleLogError, useAuth } from '../security/AuthContext';
-import { actionsApi } from '../api/actionsApi';
+import { actionsApi } from '../api/actionsApi'; // Import the API function
 
 function Register() {
     const navigate = useNavigate();
@@ -28,18 +27,15 @@ function Register() {
         e.preventDefault();
 
         try {
+            // Call the register API function
             const response = await actionsApi.register(formData);
-            console.log(response)
-            console.log(response.data)
-            console.log(response.status)
+
             if (response.status === 201) {
                 navigate('/');
             } else {
-                // Handle other response statuses (e.g., 401, 403, 404)
                 console.error('Registration failed with status:', response.status);
             }
         } catch (error) {
-            handleLogError(error);
             setIsError(true);
         }
     };

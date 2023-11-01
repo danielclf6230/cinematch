@@ -1,33 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { entitiesApi } from '../api/entitiesApi';
+import React, { useContext } from 'react';
+import { useAuth } from '../security/AuthContext';
 
 function Home() {
-    const [userInfo, setUserInfo] = useState({});
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { getUserData } = useAuth(); // Access the user data from the context
+    const userData = getUserData();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await entitiesApi.getUserInfo(user);
-                setUserInfo(response);
-                console.log(response)
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-            }
-        };
+    const { getToken } = useAuth();
 
-        fetchData().then(r => console.log(r));
-    }, [user]);
-
+    //this was just to test
     return (
         <div>
             <h2>User Information</h2>
             <ul>
-                <li><strong>ID:</strong> {userInfo.id}</li>
-                <li><strong>First Name:</strong> {userInfo.firstName}</li>
-                <li><strong>Last Name:</strong> {userInfo.lastName}</li>
-                <li><strong>Username:</strong> {userInfo.username}</li>
-                <li><strong>Email:</strong> {userInfo.email}</li>
+                <li><strong>ID:</strong> {userData.userId}</li>
+                <li><strong>First Name:</strong> {userData.firstName}</li>
+                <li><strong>Last Name:</strong> {userData.lastName}</li>
+                <li><strong>Username:</strong> {userData.username}</li>
+                <li><strong>Email:</strong> {userData.email}</li>
+                {getToken}
             </ul>
         </div>
     );

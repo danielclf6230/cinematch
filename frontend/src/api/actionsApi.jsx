@@ -1,4 +1,6 @@
 import { apiConfig, bearerAuth } from './apiConfig';
+import { useAuth } from '../security/AuthContext';
+
 
 export const actionsApi = {
     authenticate,
@@ -6,21 +8,11 @@ export const actionsApi = {
 }
 
 export function authenticate(username, password) {
-    return apiConfig.post('/actions/login', {username, password}, {headers: {'Content-Type': 'application/json'}})
-        .then(response => {
-            return {
-                status: response.status,
-                data: response.data,
-            };
-        });
+    return apiConfig.post('/actions/login', {username, password})
 }
 
 export function register(registerData) {
     return apiConfig.post('/actions/register', registerData)
-        .then(response => {
-            return {
-                status: response.status,
-                data: response.data,
-            };
-        });
 }
+
+
