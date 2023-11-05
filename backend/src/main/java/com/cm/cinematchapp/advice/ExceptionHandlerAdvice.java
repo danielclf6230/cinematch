@@ -1,7 +1,9 @@
 package com.cm.cinematchapp.advice;
 
 import com.cm.cinematchapp.exceptions.DuplicateObjectException;
+import com.cm.cinematchapp.exceptions.InvalidCredentialsException;
 import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -50,8 +52,18 @@ public class ExceptionHandlerAdvice {
      * @return A `ResponseEntity` with a conflict status and the exception message.
      */
     @ExceptionHandler({DuplicateObjectException.class})
-    ResponseEntity<String> duplicateObjectExceptionHandler(DuplicateObjectException e) {
+    ResponseEntity<String> DuplicateObjectExceptionHandler(DuplicateObjectException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    ResponseEntity<String> DataIntegrityViolationExceptionHandler(DataIntegrityViolationException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler({InvalidCredentialsException.class})
+    ResponseEntity<String> InvalidCredentialsExceptionHandler(InvalidCredentialsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
 

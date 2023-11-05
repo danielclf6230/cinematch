@@ -1,30 +1,28 @@
 import { apiConfig, bearerAuth } from './apiConfig';
-import { useAuth } from '../security/AuthContext';
 
 export const entitiesApi = {
     getUserInfo,
     getUsers,
+    getUsersByUsername,
+    getUsersById,
 }
-export function getUserInfo(token) {
-    console.log('Bearer token:', bearerAuth(token));
+export function getUserInfo() {
     return apiConfig
-        .get('/entities/user', { headers: { Authorization: bearerAuth(token) } })
-        .catch(error => {
-            console.error('Error:', error);
-            throw error; // Rethrow the error so you can handle it at the caller level.
-        });
+        .get('/entities/user')
 }
 
 
-//maybe we can call tokens from inside api classes?
-export function getUsers(token) {
-    return apiConfig
-        .get('/users', { headers: { Authorization: bearerAuth(token) } })
-        .then((response) => {
-            return response.data; // Return the list of users
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            throw error; // Rethrow the error so you can handle it at the caller level.
-        });
+export async function getUsers() {
+        const response = await apiConfig.get('/entities/users');
+        return response.data; // Return the list of users
+}
+
+export async function getUsersByUsername(username) {
+        const response = await apiConfig.get(`/entities/users/${username}`);
+        return response.data;
+}
+
+export async function getUsersById(userId) {
+    const response = await apiConfig.get(`/entities/user/${userId}`);
+    return response.data;
 }

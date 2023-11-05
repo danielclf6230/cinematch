@@ -95,7 +95,7 @@ public class UserService {
      * @return `true` if the email is valid; otherwise, `false`.
      */
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$";
         return email.matches(emailRegex);
     }
 
@@ -115,12 +115,12 @@ public class UserService {
 
         if (!isValidEmail(registrationDTO.getEmail())) {
             log.debug("Invalid email format: {}", registrationDTO.getEmail());
-            throw new DataIntegrityViolationException("Invalid email format: " + registrationDTO.getEmail());
+            throw new DataIntegrityViolationException("Please enter a valid email address in the format email@example.com");
         }
 
         if (userRepository.existsByUsername(registrationDTO.getUsername())) {
             log.debug("This username is already taken: {}", registrationDTO.getUsername());
-            throw new DuplicateObjectException("This username is already taken");
+            throw new DuplicateObjectException("The username " + registrationDTO.getUsername() + " is already taken");
         }
 
         User user = new User();
@@ -150,8 +150,6 @@ public class UserService {
     public List<User> findUsersByUsername(String username) {
         return userRepository.findByUsernameContainingIgnoreCaseAndUserIdNot(username, securityService.getCurrentLoginUserId());
     }
-
-
 
     public void addRoleToUser(Long userId, String roleName) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException());
@@ -218,6 +216,21 @@ public class UserService {
 
             Path avatarPath = Paths.get(avatar.getPath());
             return Files.readAllBytes(avatarPath);
+
+    }
+
+    public byte[] getAvatarById(Long userId) throws IOException{
+        User user = userRepository.findByUserId(userId).get();
+        Avatar avatar = user.getAvatar();
+
+        if(avatar == null) {
+            avatar = avatarRepository.findByFilename("default_avatar.png");
+            Path defaultPath = Paths.get(avatar.getPath());
+            return Files.readAllBytes(defaultPath);
+        }
+
+        Path avatarPath = Paths.get(avatar.getPath());
+        return Files.readAllBytes(avatarPath);
 
     }
 

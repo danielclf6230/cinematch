@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { actionsApi } from '../api/actionsApi'; // Import the API function
+import { actionsApi } from '../api/actionsApi';
+import helpers from '../util/helpers';
+import {handleLogError} from "../security/AuthContext";
 
 function Register() {
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         username: '',
         password: '',
         email: '',
-    });
-
-    const [isError, setIsError] = useState(false);
+    })
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -21,24 +23,39 @@ function Register() {
             ...formData,
             [name]: value,
         });
-    };
+
+        if (name === 'confirmPassword') {
+            setConfirmPassword(value);
+        }
+
+        e.target.setCustomValidity('');
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if(formData.password !== confirmPassword) {
+            helpers.displayValidity('confirmPassword','Passwords do not match');
+            return;
+        }
+
         try {
             // Call the register API function
             const response = await actionsApi.register(formData);
-
-            if (response.status === 201) {
-                navigate('/');
-            } else {
-                console.error('Registration failed with status:', response.status);
-            }
+            if (response.status === 201) navigate('/');
         } catch (error) {
-            setIsError(true);
+            handleLogError(error);
+            // Server returned a 409 status code, indicating a bad request error.
+            if (error.response.data.startsWith('The username')) {
+                helpers.displayValidity('username', error.response.data);
+            } else if (error.response.data.includes('email')) {
+                helpers.displayValidity('email', error.response.data);
+            } else {
+                setErrorMessage(error.response.data);
+            }
         }
-    };
+    }
+
 
     return (
         <div>
@@ -46,27 +63,74 @@ function Register() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>First Name:</label>
-                    <input type="text" name="firstName" onChange={handleInputChange} />
+                    <input
+                        type="text"
+                        name="firstName"
+                        onChange={handleInputChange}
+                        maxLength="16"
+                        required
+                    />
                 </div>
                 <div>
                     <label>Last Name:</label>
-                    <input type="text" name="lastName" onChange={handleInputChange} />
+                    <input
+                        type="text"
+                        name="lastName"
+                        onChange={handleInputChange}
+                        maxLength="16"
+                        required
+                    />
                 </div>
                 <div>
                     <label>Username:</label>
-                    <input type="text" name="username" onChange={handleInputChange} />
+                    <input
+                        type="text"
+                        name="username"
+                        onChange={handleInputChange}
+                        pattern="[A-Za-z0-9@#$%^&*]+"
+                        title="Please enter a username containing letters (A-Z, a-z), numbers (0-9), and the following symbols: @ # $ % ^ & *."
+                        minLength="6"
+                        maxLength="14"
+                        required
+                    />
                 </div>
                 <div>
                     <label>Password:</label>
-                    <input type="password" name="password" onChange={handleInputChange} />
+                    <input
+                        type="password"
+                        name="password"
+                        onChange={handleInputChange}
+                        minLength="8"
+                        maxLength="20"
+                        pattern="^(?=.*\d)(?=.*\W).*$"
+                        title="Password must contain at least one number and one symbol"
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Confirm Password:</label>
+                    <input
+                        type="password"
+                        name="confirmPassword"
+                        onChange={handleInputChange}
+                        required
+                    />
                 </div>
                 <div>
                     <label>Email:</label>
-                    <input type="email" name="email" onChange={handleInputChange} />
+                    <input
+                        type="email"
+                        name="email"
+                        onChange={handleInputChange}
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                        title="Please enter a valid email address in the format email@example.com"
+                        required
+                    />
                 </div>
                 <button type="submit">Register</button>
             </form>
             <p>Already have an account? <Link to="/">Login</Link></p>
+            {errorMessage && <p className="error">{errorMessage}</p>}
         </div>
     );
 }

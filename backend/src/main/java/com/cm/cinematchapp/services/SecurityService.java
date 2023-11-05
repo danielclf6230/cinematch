@@ -3,10 +3,13 @@ package com.cm.cinematchapp.services;
 import cn.hutool.jwt.JWT;
 import com.cm.cinematchapp.constants.EntityConstants;
 import com.cm.cinematchapp.entities.User;
+import com.cm.cinematchapp.exceptions.InvalidCredentialsException;
+import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
 import com.cm.cinematchapp.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -50,21 +53,30 @@ public class SecurityService {
             log.error("Password is null");
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
+        if (!userRepository.existsByUsername(username)) {
+            throw new ResourceNotFoundException("Sorry, could not find an account with the provided username.");
+        }
 
-        authenticationManager.authenticate(authenticationToken);
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(username, password);
 
-        Date expireTime = new Date(System.currentTimeMillis() + EntityConstants.kSessionTimeout);
-        byte[] signKey = EntityConstants.kSecuritySignKey.getBytes(StandardCharsets.UTF_8);
 
-        String token = JWT.create()
-                .setExpiresAt(expireTime)
-                .setPayload("username", username)
-                .setKey(signKey)
-                .sign();
+            authenticationManager.authenticate(authenticationToken);
 
-        return token;
+            Date expireTime = new Date(System.currentTimeMillis() + EntityConstants.kSessionTimeout);
+            byte[] signKey = EntityConstants.kSecuritySignKey.getBytes(StandardCharsets.UTF_8);
+
+            String token = JWT.create()
+                    .setExpiresAt(expireTime)
+                    .setPayload("username", username)
+                    .setKey(signKey)
+                    .sign();
+
+            return token;
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Oops! It seems like the password is incorrect. Please try again.");
+        }
     }
 
 

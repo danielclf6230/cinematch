@@ -5,13 +5,15 @@ package com.cm.cinematchapp.constants;
  * for defining constraints, keys, and other entity-related configurations.
  */
 public interface EntityConstants {
+    static final int kMaxNameLen = 16;
 
-    static final int kMinNameLen = 3;
-    static final int kMaxNameLen = 32;
+    static final String kFirstNameLenViolation = "First name cannot exceed " + EntityConstants.kMaxNameLen + " characters.";
+
+    static final String kLastNameLenViolation = "Last name cannot exceed " + EntityConstants.kMaxNameLen + " characters.";
     static final int kMinUsernameLen = 6;
     static final int kMaxUsernameLen = 16;
-    static final int kMinUserPasswordLen = 8;
-    static final int kMaxUserPasswordLen = 20;
+
+    static final String kUsernameLenViolation = "Username must be between " + kMinUsernameLen + " and " + kMaxUsernameLen;
 
     //used for JWT token generation and verification.
     static final String kSecuritySignKey = "E24Sxcw1SQasd3DSAds3";

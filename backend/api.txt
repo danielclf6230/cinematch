@@ -24,7 +24,7 @@ NOTE: Ensure you pay attention to the HTTP method, some url paths have a differe
 
 
 == Register User ==
-Method: GET
+Method: POST
 URL: /api/actions/register
 Params: User Object in request body
 Roles: N/A (public)

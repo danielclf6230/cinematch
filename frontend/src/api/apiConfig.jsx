@@ -12,17 +12,20 @@ const apiConfig = axios.create({
     },
 });
 
-// Request interceptor
+
+// Request interceptor to add the Authorization header
 apiConfig.interceptors.request.use(
     (config) => {
         // Log the request details (headers, data, etc.) to the console
         console.log('Request:', config);
 
-        // If token is expired, redirect the user to login
-        if (config.headers.Authorization) {
-            const token = config.headers.Authorization.split(' ')[1];
-            if (Date.now() > token.exp * 1000) {
-                window.location.href = '/';
+        // Check if there's an authenticated user with a token
+        const user = localStorage.getItem('user');
+        if (user) {
+            const token = JSON.parse(user).token;
+            if (token) {
+                // Add the Authorization header with the token
+                config.headers['Authorization'] = `Bearer ${token}`;
             }
         }
 
@@ -53,21 +56,5 @@ function bearerAuth(token) {
     return `Bearer ${token}`;
 }
 
-async function getValidToken() {
-    // Get the token from your source (localStorage, cookies, etc.)
-    const user = localStorage.getItem('user');
-    const token = user.token
 
-    if (token) {
-        const tokenData = parseJwt(token);
-        if (Date.now() < tokenData.exp * 1000) {
-            // Token is valid, return it
-            return token;
-        }
-    }
-
-    // Token is expired or not found, return null
-    return null;
-}
-
-export { apiConfig, bearerAuth, getValidToken };
+export { apiConfig, bearerAuth };

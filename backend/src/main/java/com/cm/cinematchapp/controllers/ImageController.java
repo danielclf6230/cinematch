@@ -46,6 +46,12 @@ public class ImageController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/avatar/{userId}")
+    public ResponseEntity<byte[]> getAvatarById(@PathVariable Long userId) throws IOException {
+        return new ResponseEntity<>(userService.getAvatarById(userId), HttpStatus.OK);
+    }
+
 
 
 }
