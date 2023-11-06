@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import ".src/App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import ".src/App.css";
 import cardData from "./cardData";
 import Button from "./Button";
 import {swipefunction} from "./swipeUtils";
@@ -52,40 +52,52 @@ function Swipe() {
 
     return (
         <div className="App">
-            {cards.length > 0 ? (
-                <div
-                    className="card-container"
-                    draggable
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                >
-                    <div className="card">
-                        <img
-                            src={cards[currentCard].image}
-                            alt={`Card ${cards[currentCard].id}`}
-                        />
-                    </div>
-                </div>
-            ) : (
-                <p>No more movies to swipe!</p>
-            )}
-
-            <div className="buttons">
-                <div className="buttons">
-                    <Button
-                        text="Dislike"
-                        disabled={cards.length === 0}
-                    />
-                    <Button onClick={maybe} text="Maybe" disabled={cards.length === 0} />
-                    <Button
-                        onClick={() => swipe("right")}
-                        text="Like"
-                        disabled={cards.length === 0}
-                    />
+            <div className="sideMenu">
+                <div>
+                    <h2>Side 1</h2> <br/>
+                    <h2>Side 2</h2> <br/>
+                    <h2>Side 1</h2>
                 </div>
             </div>
+            <div className="cardArea">
+                {cards.length > 0 ? (
+                    <div
+                        className="card-container"
+                        draggable
+                        onDragStart={handleDragStart}
+                        onDragEnd={handleDragEnd}
+                    >
+                        <div className="card col align-self-center">
+                            <img
+                                src={cards[currentCard].image}
+                                alt={`Card ${cards[currentCard].id}`}
+                            />
+                        </div>
 
-            {/* <div className="liked-cards">
+                        <div className="buttons col align-self-center">
+                            <Button
+                                text="Dislike"
+                                disabled={cards.length === 0}
+                            />
+                            <Button onClick={maybe} text="Maybe" disabled={cards.length === 0}/>
+                            <Button
+                                onClick={() => swipe("right")}
+                                text="Like"
+                                disabled={cards.length === 0}
+                            />
+                        </div>
+
+                    </div>
+
+                ) : (
+                    <p>No more movies to swipe!</p>
+                )}
+
+
+
+
+
+                {/* <div className="liked-cards">
         <h2>Liked Movies</h2>
         <ul>
           {likedCards.map((likedCard, index) => (
@@ -115,8 +127,10 @@ function Swipe() {
           ))}
         </ul>
       </div> */}
+            </div>
         </div>
     );
+
 }
 
 export default Swipe;

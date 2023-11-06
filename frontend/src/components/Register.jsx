@@ -58,11 +58,11 @@ function Register() {
 
 
     return (
-        <div>
+        <div className="cm-form">
             <h2>Register User</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>First Name:</label>
+                    <label className="custom-field">
                     <input
                         type="text"
                         name="firstName"
@@ -70,9 +70,11 @@ function Register() {
                         maxLength="16"
                         required
                     />
+                    <span className="pholder">First Name</span>
+                </label>
                 </div>
                 <div>
-                    <label>Last Name:</label>
+                    <label className="custom-field">
                     <input
                         type="text"
                         name="lastName"
@@ -80,9 +82,11 @@ function Register() {
                         maxLength="16"
                         required
                     />
+                    <span className="pholder">Last Name</span>
+                </label>
                 </div>
                 <div>
-                    <label>Username:</label>
+                    <label className="custom-field">
                     <input
                         type="text"
                         name="username"
@@ -93,9 +97,11 @@ function Register() {
                         maxLength="14"
                         required
                     />
+                    <span className="pholder">Username</span>
+                </label>
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label className="custom-field">
                     <input
                         type="password"
                         name="password"
@@ -106,18 +112,22 @@ function Register() {
                         title="Password must contain at least one number and one symbol"
                         required
                     />
+                        <span className="pholder">Password</span>
+                    </label>
                 </div>
                 <div>
-                    <label>Confirm Password:</label>
+                    <label className="custom-field">
                     <input
                         type="password"
                         name="confirmPassword"
                         onChange={handleInputChange}
                         required
                     />
+                    <span className="pholder">Confirm Password</span>
+                </label>
                 </div>
                 <div>
-                    <label>Email:</label>
+                    <label className="custom-field">
                     <input
                         type="email"
                         name="email"
@@ -126,6 +136,8 @@ function Register() {
                         title="Please enter a valid email address in the format email@example.com"
                         required
                     />
+                        <span className="pholder">Email</span>
+                    </label>
                 </div>
                 <button type="submit">Register</button>
             </form>

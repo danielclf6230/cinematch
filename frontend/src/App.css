@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flex;
+  height: 100vh;
 }
 
 .App-logo {
@@ -60,8 +62,9 @@
   position: relative;
   font-size: 14px;
   padding-top: 2%;
-  margin-bottom: 5px;
-  width: 100%;
+  margin: auto;
+  width: 80%;
+  text-align: center !important;
 }
 
 .custom-field input {
@@ -128,13 +131,13 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f0f0f0;
-  width: 400px; /* Set a fixed width for the box, adjust as needed */
-  margin: 10% auto 0;
+  width: 400px !important; /* Set a fixed width for the box, adjust as needed */
+  margin: 10% auto 0 !important;
 }
 
 .cm-form form {
   width: 100%;
-  text-align: left; /* Add text-align property to make the inputs left-justified */
+  /*text-align: left; !* Add text-align property to make the inputs left-justified *!*/
 }
 
 .cm-form input {
@@ -149,22 +152,29 @@
 
 /* Card container styling */
 .card-container {
-  width: 300px;
-  height: 70%;
+  width: 400px; /* Set a fixed width for the card container */
+  height: 100%;
   position: relative;
+  margin: 0 auto; /* Center the card container horizontally */
+  text-align: center;
+  justify-content: center; /* Center the content horizontally within the card container */
+  align-items: center; /* Center the content vertically within the card container */
 }
 
 /* Individual card style */
 .card {
-  width: 100%;
+  width: 100%; /* Make sure the individual cards take the full width of the container */
+  max-width: 100%; /* Ensure the card does not exceed the container's width */
   height: 100%;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  position: absolute;
+  position: absolute; /* Position the cards absolutely for stacking */
   cursor: pointer;
+  text-align: center;
 }
+
 
 /* Liked, Maybe, Disliked cards styling */
 .liked-cards,
@@ -174,33 +184,38 @@
   margin-top: 20px;
 }
 
-/*.buttons {*/
-/*  margin-top: 20px;*/
-/*  display: flex;*/
-/*  gap: 20px;*/
-/*}*/
+.buttons {
+  margin: 20px;
+  display: flex; /* Create a flex container for the buttons */
+  justify-content: center; /* Center the buttons horizontally within the container */
+}
 
-/* Custom button styles */
-button {
-  padding: 10px 20px; /* Example padding for text space within the button */
-  width: 80px; /* Adjust width to your desired fixed size */
-  height: auto; /* Adjust height to your desired fixed size */
-  font-size: 15px; /* Example font size */
-  background-color: #f1b307;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: center;
-  margin: auto;
+Button {
+  background-color: #FF7A00;
+  width: 100px;
+  display: inline-block; /* Display the buttons inline to make them side by side */
+  margin: 100px; /* Add margin to separate the buttons (adjust as needed) */
 }
 
 /* On hover, darken button color */
 button:hover {
-  background-color: #d39e00;
+  background-color: #FFBC10;
 }
 
+.sideMenu {
+  width: 200px;
+  flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
+  background-color: #f0f0f0; /* Optional: Set a background color for the side menu */
+  border-right: 1px solid #ccc; /* Optional: Add a border on the right side */
+}
 
+.cardArea {
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  width: 100vw;
+  flex: 1; /* Card area takes up 2 parts of the available space */
+  padding: 20px; /* Optional: Add some padding for spacing */
+}
 
 @keyframes App-logo-spin {
   from {

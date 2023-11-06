@@ -45,16 +45,20 @@ function Login() {
     }
 
     return (
-        <div>
+        <div className="cm-form">
             <h2>Login User</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Username:</label>
+                    <label className="custom-field">
                     <input type="text" name="username" onChange={handleInputChange} required/>
+                    <span className="pholder">Username</span>
+                    </label>
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label className="custom-field">
                     <input type="password" name="password" onChange={handleInputChange} required/>
+                        <span className="pholder">Password</span>
+                    </label>
                 </div>
                 <button type="submit">Login</button>
             </form>
