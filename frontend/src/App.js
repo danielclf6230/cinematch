@@ -14,7 +14,7 @@ function App() {
         <Router>
           <div>
             <Header/>
-            <div className="container">
+            <div className="row gx-0">
               <Routes>
                   <Route path='/' element={<Login />}/>
                   <Route path='/register' element={<Register />}/>
