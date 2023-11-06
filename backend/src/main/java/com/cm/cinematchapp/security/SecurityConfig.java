@@ -125,6 +125,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/api/actions/user/**", "/api/entities/user/**").hasAuthority("ROLE_USER")
+                        .requestMatchers("/api/entities/users", "/api/entities/users").hasAuthority("ROLE_USER")
                         .anyRequest().authenticated())
                 // Set Cross-Origin Resource Sharing defined in corsConfig
                 .cors(cors -> cors.configurationSource(corsConfig));

@@ -4,11 +4,14 @@ import com.cm.cinematchapp.dto.LoginDTO;
 import com.cm.cinematchapp.dto.RegistrationDTO;
 import com.cm.cinematchapp.entities.Movie;
 import com.cm.cinematchapp.entities.User;
+import com.cm.cinematchapp.exceptions.InvalidCredentialsException;
+import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
 import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.MovieService;
 import com.cm.cinematchapp.services.SecurityService;
 import com.cm.cinematchapp.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
@@ -32,8 +35,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value="/api/actions",
-        produces="application/json",
-        consumes="application/json")
+        produces="application/json")
 @Slf4j
 public class ActionController {
 
@@ -77,8 +79,13 @@ public class ActionController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LoginDTO loginData, BindingResult result) {
         if(result.hasErrors()) return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
-        log.info("logged in");
-        return new ResponseEntity<>(securityService.login(loginData.getUsername(), loginData.getPassword()), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(securityService.login(loginData.getUsername(), loginData.getPassword()), HttpStatus.OK);
+        } catch (InvalidCredentialsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

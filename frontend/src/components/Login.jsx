@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import {Link, useNavigate, Navigate} from 'react-router-dom';
-import {handleLogError, useAuth} from '../security/AuthContext'
-import {actionsApi} from "../api/actionsApi";
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth, handleLogError } from '../security/AuthContext';
+import { actionsApi } from '../api/actionsApi';
+import {entitiesApi} from "../api/entitiesApi";
 
 function Login() {
-    const navigate = useNavigate()
-    const Auth = useAuth()
+    const navigate = useNavigate();
+    const Auth = useAuth();
 
-
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [isError, setIsError] = useState(false)
-
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -22,56 +21,47 @@ function Login() {
         }
     }
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!(username && password)) {
-            setIsError(true);
-            return;
-        }
-
         try {
-            const response = await actionsApi.authenticate(username, password)
+            const response = await actionsApi.authenticate(username, password);
             const accessToken = response.data;
-            const authenticatedUser = {response, accessToken}
-            Auth.userLogin = authenticatedUser
-            console.log(accessToken)
+            const info = await entitiesApi.getUserInfo();
+
+            const authenticatedUser = { token: accessToken, userData: info.data };
+            console.log("Authenticated user:" + authenticatedUser.userData.username)
+            Auth.userLogin(authenticatedUser);
+
+            setUsername('');
+            setPassword('');
 
 
-
-            setUsername('')
-            setPassword('')
-            setIsError(false)
-
-            navigate('/home')
+            navigate('/home');
         } catch (error) {
-            handleLogError(error)
-            setIsError(true)
+            handleLogError(error);
+            setErrorMessage(error.response.data)
         }
-
-
-    }
-        return (
-            <div>
-                <h2>Login User</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Username:</label>
-                        <input type="text" name="username" onChange={handleInputChange}/>
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input type="password" name="password" onChange={handleInputChange}/>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-                <p>
-                    Don't have an account? <Link to="/register">Register</Link>
-                </p>
-            </div>
-        );
     }
 
+    return (
+        <div>
+            <h2>Login User</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>Username:</label>
+                    <input type="text" name="username" onChange={handleInputChange} required/>
+                </div>
+                <div>
+                    <label>Password:</label>
+                    <input type="password" name="password" onChange={handleInputChange} required/>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <Link to="/register">Register</Link></p>
+            {errorMessage && <p className="error">{errorMessage}</p>}
+        </div>
+    );
+}
 
-export default Login
+export default Login;

@@ -29,15 +29,19 @@ function AuthProvider({ children }) {
         return true
     }
 
-    const userLogin = user => {
-        localStorage.setItem('user', JSON.stringify(user))
-        setUser(user)
-    }
+    const userLogin = (authenticatedUser) => {
+        localStorage.setItem('user', JSON.stringify(authenticatedUser));
+        setUser(authenticatedUser);
+    };
 
     const userLogout = () => {
         localStorage.removeItem('user')
         setUser(null)
     }
+
+    const getToken = () => user ? user.token : null;
+
+    const getUserData = () => user ? user.userData : null;
 
     const contextValue = {
         user,
@@ -45,6 +49,8 @@ function AuthProvider({ children }) {
         userIsAuthenticated,
         userLogin,
         userLogout,
+        getToken,
+        getUserData,
     }
 
     return (

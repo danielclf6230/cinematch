@@ -22,8 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value="/api/entities",
-        produces="application/json",
-        consumes="application/json")
+        produces="application/json")
 @Slf4j
 public class EntityController {
 
@@ -36,18 +35,17 @@ public class EntityController {
 
 
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/user")
-    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String authorizationHeader) {
-        log.info("Authorization header: " + authorizationHeader);
+    public ResponseEntity<User> getCurrentUser() {
         try {
-
-
             return new ResponseEntity<>(userService.getAuthenticatedUser(), HttpStatus.OK);
         }
         catch(Exception e) {
             log.info(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
     }
 
     /**
@@ -63,19 +61,19 @@ public class EntityController {
 
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<User> getUserByUserId(@PathVariable Long userId) {
+            return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/users/{username}")
     public ResponseEntity<?> getUsersByUsername(@PathVariable(required = false) String username) {
-        if (username.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (username == null || username.trim().isEmpty()) {
+            return new ResponseEntity<>(userService.getAllUsersExceptAuthenticated(), HttpStatus.OK);
         }
-
-        List<User> users = userService.findUsersByUsername(username);
-
-        if (users.isEmpty()) {
-            return new ResponseEntity<>("No users found", HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUsersByUsername(username), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

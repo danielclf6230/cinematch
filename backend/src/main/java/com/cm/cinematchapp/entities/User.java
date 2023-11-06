@@ -39,20 +39,21 @@ public class User {
 
     @Column(name="first_name", nullable=false)
     @NotNull(message="First name cannot be empty.")
-    @Size(min=EntityConstants.kMinNameLen,
-        max=EntityConstants.kMaxNameLen)
+    @Size(max=EntityConstants.kMaxNameLen,
+        message=EntityConstants.kFirstNameLenViolation)
     private String firstName;
 
     @Column(name="last_name", nullable=false)
     @NotNull(message="Last name cannot be empty.")
-    @Size(min=EntityConstants.kMinNameLen,
-        max=EntityConstants.kMaxNameLen)
+    @Size(max=EntityConstants.kMaxNameLen,
+            message=EntityConstants.kLastNameLenViolation)
     private String lastName;
 
     @Column(name="username", nullable=false, unique=true)
     @NotNull(message="Username cannot be empty.")
     @Size(min=EntityConstants.kMinUsernameLen,
-            max=EntityConstants.kMaxUsernameLen)
+            max=EntityConstants.kMaxUsernameLen,
+            message=EntityConstants.kUsernameLenViolation)
     private String username;
 
     @JsonIgnore
