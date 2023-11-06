@@ -12,10 +12,11 @@ class Header extends Component {
             <div>
                 <header>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                        <div>
-                            <Link to="/home" className="navbar-brand">Home</Link>
-                            <Link to="/register" className="navbar-brand">Register</Link>
-                            <Link to="/" className="navbar-brand">Login</Link>
+                        <div className="menu-ops">
+                            <Link to="/home" className="navbar-brand">home</Link>
+                            <Link to="/register" className="navbar-brand">register</Link>
+                            <Link to="/" className="navbar-brand">login</Link>
+                            <Link to="/swipe" className="navbar-brand">swipe</Link>
                         </div>
                     </nav>
                 </header>

@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  display: flex;
+  height: 100vh;
 }
 
 .App-logo {
@@ -14,18 +16,205 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #1E2227;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px; /* Optional padding for the navbar */
+}
+
+.menu-ops {
+  margin-left: 2%;
+}
+
+.menu-ops a {
+  color: #FFBC10 !important;
+  font-family: Helvetica, sans-serif;
+}
+
+.cm-logo {
+  width: 50%;
+  text-align: center;
+  margin: auto;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.custom-field {
+  position: relative;
+  font-size: 14px;
+  padding-top: 2%;
+  margin: auto;
+  width: 80%;
+  text-align: center !important;
+}
+
+.custom-field input {
+  border: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #f2f2f2;
+  padding: 12px;
+  border-radius: 3px;
+  width: 250px;
+  outline: none;
+}
+
+.custom-field .pholder {
+  position: absolute;
+  left: 12px;
+  top: calc(50% - 10px);
+  transform: translateY(-10%);
+  color: #aaa;
+  transition:
+    top 0.3s ease,
+    font-size 0.3s ease,
+    color 0.3s ease;
+}
+
+.custom-field input:valid,
+.custom-field input:focus {
+  border-color: #222;
+  transition-delay: 0.1s;
+}
+
+.custom-field input + .pholder {
+  padding: 0 5px;
+  left: 8px;
+}
+
+.custom-field input:valid + .pholder,
+.custom-field input:focus + .pholder {
+  top: 0px;
+  font-size: 10px;
+  background: #f0f0f0;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.cm-logo {
+  color: #FFBC10 !important;
+  font-family: Helvetica, sans-serif;
+}
+
+.cm-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Center text inside the box */
+
+  /* Optional: Add some padding and a border for styling */
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  width: 400px !important; /* Set a fixed width for the box, adjust as needed */
+  margin: 10% auto 0 !important;
+}
+
+.cm-form form {
+  width: 100%;
+  /*text-align: left; !* Add text-align property to make the inputs left-justified *!*/
+}
+
+.cm-form input {
+  width: 100%; /* Ensure the input fields take up the full width of the form */
+  margin-bottom: 10px; /* Optional spacing between input fields */
+  padding: 10px; /* Optional padding for input fields */
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* SWIPING CSS */
+
+/* Card container styling */
+.card-container {
+  width: 400px; /* Set a fixed width for the card container */
+  height: 100%;
+  position: relative;
+  margin: 0 auto; /* Center the card container horizontally */
+  text-align: center;
+  justify-content: center; /* Center the content horizontally within the card container */
+  align-items: center; /* Center the content vertically within the card container */
+}
+
+/* Individual card style */
+.card {
+  width: 100%; /* Make sure the individual cards take the full width of the container */
+  max-width: 100%; /* Ensure the card does not exceed the container's width */
+  height: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: absolute; /* Position the cards absolutely for stacking */
+  cursor: pointer;
+  text-align: center;
+}
+
+
+/* Liked, Maybe, Disliked cards styling */
+.liked-cards,
+.maybe-cards,
+.disliked-cards {
+  color: aliceblue;
+  margin-top: 20px;
+}
+
+.buttons {
+  margin: 20px;
+  display: flex; /* Create a flex container for the buttons */
+  justify-content: center; /* Center the buttons horizontally within the container */
+}
+
+Button {
+  background-color: #FF7A00;
+  width: 100px;
+  display: inline-block; /* Display the buttons inline to make them side by side */
+  margin: 100px; /* Add margin to separate the buttons (adjust as needed) */
+}
+
+/* On hover, darken button color */
+button:hover {
+  background-color: #FFBC10;
+}
+
+.sideMenu {
+  width: 200px;
+  flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
+  background-color: #f0f0f0; /* Optional: Set a background color for the side menu */
+  border-right: 1px solid #ccc; /* Optional: Add a border on the right side */
+}
+
+.cardArea {
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  width: 100vw;
+  flex: 1; /* Card area takes up 2 parts of the available space */
+  padding: 20px; /* Optional: Add some padding for spacing */
 }
 
 @keyframes App-logo-spin {
