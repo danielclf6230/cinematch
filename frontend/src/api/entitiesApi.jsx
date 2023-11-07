@@ -6,9 +6,10 @@ export const entitiesApi = {
     getUsersByUsername,
     getUsersById,
 }
-export function getUserInfo() {
+export function getUserInfo(token) {
+    console.log('Bearer token:', bearerAuth(token));
     return apiConfig
-        .get('/entities/user')
+        .get('/entities/user', { headers: { Authorization: bearerAuth(token) } })
 }
 
 
@@ -26,3 +27,5 @@ export async function getUsersById(userId) {
     const response = await apiConfig.get(`/entities/user/${userId}`);
     return response.data;
 }
+
+

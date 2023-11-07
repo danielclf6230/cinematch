@@ -18,10 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -195,7 +193,7 @@ public class UserService {
         avatar.setSize(avatarFile.getSize());
         avatar = avatarRepository.save(avatar);
 
-        if (user.getAvatar() != null) {
+        if (userRepository.avatarExistByUserId(user.getUserId())) {
             deleteAvatar();
         }
 
@@ -206,40 +204,42 @@ public class UserService {
 
     public byte[] getAvatar() throws IOException{
         User user = securityService.getCurrentLoginUser().get();
-        Avatar avatar = user.getAvatar();
+        Avatar avatar;
 
-        if(avatar == null) {
+        if(userRepository.avatarExistByUserId(user.getUserId())) {
+            avatar = user.getAvatar();
+            Path avatarPath = Paths.get(avatar.getPath());
+            return Files.readAllBytes(avatarPath);
+        } else {
             avatar = avatarRepository.findByFilename("default_avatar.png");
             Path defaultPath = Paths.get(avatar.getPath());
             return Files.readAllBytes(defaultPath);
         }
 
-            Path avatarPath = Paths.get(avatar.getPath());
-            return Files.readAllBytes(avatarPath);
 
     }
 
     public byte[] getAvatarById(Long userId) throws IOException{
         User user = userRepository.findByUserId(userId).get();
-        Avatar avatar = user.getAvatar();
+        Avatar avatar;
 
-        if(avatar == null) {
+        if(userRepository.avatarExistByUserId(userId)) {
+            avatar = user.getAvatar();
+            Path avatarPath = Paths.get(avatar.getPath());
+            return Files.readAllBytes(avatarPath);
+        } else {
             avatar = avatarRepository.findByFilename("default_avatar.png");
             Path defaultPath = Paths.get(avatar.getPath());
             return Files.readAllBytes(defaultPath);
         }
-
-        Path avatarPath = Paths.get(avatar.getPath());
-        return Files.readAllBytes(avatarPath);
 
     }
 
     public void deleteAvatar() throws IOException{
         User user = securityService.getCurrentLoginUser().get();
 
-        Avatar avatar = user.getAvatar();
-
-        if (avatar != null) {
+        if(userRepository.avatarExistByUserId(user.getUserId())) {
+            Avatar avatar = user.getAvatar();
             String avatarPath = avatar.getPath();
             Path path = Paths.get(avatarPath);
 

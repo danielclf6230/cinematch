@@ -1,12 +1,19 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect} from 'react';
 import { useAuth } from '../security/AuthContext';
 import UserList from './UserList';
-import Avatar from './Avatar';
+import Profile from './AvatarPreview';
+import AvatarPreview from "./AvatarPreview";
+import AvatarUpload from "./AvatarUpload";
+
 
 function Home() {
     const { getUserData } = useAuth(); // Access the user data from the context
     const userData = getUserData();
 
+
+    useEffect(() => {
+        console.log('hi !' +userData)
+    }, [userData]);
     //this was just to test
     return (
 
@@ -21,7 +28,8 @@ function Home() {
             <div>
                 <h2>User Information</h2>
                 <ul>
-                    <li><Avatar /></li>
+                    <AvatarUpload />
+                    <li><AvatarPreview /></li>
                     <li><strong>ID:</strong> {userData.userId}</li>
                     <li><strong>First Name:</strong> {userData.firstName}</li>
                     <li><strong>Last Name:</strong> {userData.lastName}</li>
