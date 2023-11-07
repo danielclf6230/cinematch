@@ -18,6 +18,9 @@ class Header extends Component {
                             <Link to="/" className="navbar-brand">login</Link>
                             <Link to="/swipe" className="navbar-brand">swipe</Link>
                         </div>
+                        <div className="cm-logo">
+
+                        </div>
                     </nav>
                 </header>
             </div>

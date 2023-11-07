@@ -1,3 +1,7 @@
+html body {
+  background-color: #3B414B;
+}
+
 .App {
   text-align: center;
   display: flex;
