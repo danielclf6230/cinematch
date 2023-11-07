@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { actionsApi } from '../api/actionsApi';
 import helpers from '../util/helpers';
-import {handleLogError} from "../security/AuthContext";
+import { useAuth, handleLogError } from "../security/AuthContext";
 
 function Register() {
 
+    const Auth = useAuth();
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
     const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password
@@ -16,6 +17,13 @@ function Register() {
         password: '',
         email: '',
     })
+
+    useEffect(() => {
+        // Check if the user is already authenticated when the component mounts
+        if (Auth.userIsAuthenticated()) {
+            Auth.userLogout();
+        }
+    }, [Auth]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

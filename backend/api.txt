@@ -248,7 +248,7 @@ Example: Authenticated user removes a friend with userId 2 from their friends li
 ***** AVATAR *****
 
 
-== Upload Avatar ==
+== Upload AvatarPreview ==
 Method: POST
 URL: /api/images/upload/avatar
 Params: MultipartFile - uploaded image
@@ -257,28 +257,28 @@ Note:
 1. This endpoint allows users with ROLE_ADMIN or ROLE_USER to upload their avatars.
 2. The request should include a multipart file named 'file' representing the avatar image.
 
-Return: Avatar (object)
+Return: AvatarPreview (object)
         200 - OK
 
 Example: User with ROLE_USER uploads an avatar
     URL:  http://localhost:8080/api/images/upload/avatar
     Request: A POST request with a multipart file named 'file' containing the avatar image.
 
-== Get Avatar ==
+== Get AvatarPreview ==
 Method: GET
 URL: /api/images/avatar
 Roles: ROLE_ADMIN, ROLE_USER
 Note:
 1. This endpoint allows users with ROLE_ADMIN or ROLE_USER to retrieve their avatars.
 
-Return: Avatar Image (byte[])
+Return: AvatarPreview Image (byte[])
         200 - OK
 
 Example: User with ROLE_USER retrieves their avatar
     URL:  http://localhost:8080/api/images/avatar
     Request: A GET request to retrieve the user's avatar image.
 
-== Delete Avatar ==
+== Delete AvatarPreview ==
 Method: DELETE
 URL: /api/images/avatar
 Roles: ROLE_ADMIN, ROLE_USER

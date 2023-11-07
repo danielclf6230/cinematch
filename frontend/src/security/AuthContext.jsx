@@ -19,24 +19,23 @@ function AuthProvider({ children }) {
         if (!storedUser) {
             return false
         }
+
         storedUser = JSON.parse(storedUser)
 
         // if user has token expired, logout user
-        if (Date.now() > storedUser.data.exp * 1000) {
-            userLogout()
-            return false
-        }
         return true
     }
 
     const userLogin = (authenticatedUser) => {
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         setUser(authenticatedUser);
+        console.log('Logged in as ' + authenticatedUser.userData.username)
     };
 
     const userLogout = () => {
         localStorage.removeItem('user')
         setUser(null)
+        console.log('Session invalidated')
     }
 
     const getToken = () => user ? user.token : null;

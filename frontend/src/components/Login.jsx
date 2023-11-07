@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth, handleLogError } from '../security/AuthContext';
+import { useAuth,  handleLogError } from '../security/AuthContext';
 import { actionsApi } from '../api/actionsApi';
 import {entitiesApi} from "../api/entitiesApi";
 
@@ -11,6 +11,13 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        // Check if the user is already authenticated when the component mounts
+        if (Auth.userIsAuthenticated()) {
+            Auth.userLogout();
+        }
+    }, [Auth]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -27,10 +34,9 @@ function Login() {
         try {
             const response = await actionsApi.authenticate(username, password);
             const accessToken = response.data;
-            const info = await entitiesApi.getUserInfo();
+            const info = await entitiesApi.getUserInfo(accessToken);
 
             const authenticatedUser = { token: accessToken, userData: info.data };
-            console.log("Authenticated user:" + authenticatedUser.userData.username)
             Auth.userLogin(authenticatedUser);
 
             setUsername('');

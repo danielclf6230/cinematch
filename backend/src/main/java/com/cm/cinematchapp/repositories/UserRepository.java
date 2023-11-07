@@ -3,6 +3,7 @@ package com.cm.cinematchapp.repositories;
 import com.cm.cinematchapp.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,5 +59,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findByUsernameContainingIgnoreCaseAndUserIdNot(String username, Long userId);
 
     List<User> findByUserIdNot(Long userId);
+
+    @Query("SELECT CASE WHEN COUNT(u.avatar) > 0 THEN true ELSE false END FROM User u WHERE u.userId = :userId")
+    boolean avatarExistByUserId(@Param("userId") Long userId);
 
 }

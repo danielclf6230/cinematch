@@ -31,3 +31,18 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## Logback ##
+logback.log
+
+# Ignore all image files in the avatars directory
+/avatars/*.jpg
+/avatars/*.jpeg
+/avatars/*.png
+/avatars/*.gif
+/avatars/*.bmp
+/avatars/*.svg
+/avatars/*.webp
+
+# Allow the specific image you want to include
+!/avatars/default_avatar.png

@@ -106,7 +106,7 @@ function UserList() {
                     )}
                 </div>
             )}
-            {selectedUserId && <Profile userId={selectedUserId} onClose={handleCloseProfile} />}
+            {selectedUserId !== null && <Profile userId={selectedUserId} onClose={handleCloseProfile} />}
         </div>
     );
 }
