@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ".src/App.css";
+// import ".src/App.css";
 import cardData from "./cardData";
 import Button from "./Button";
 import {swipefunction} from "./swipeUtils";
@@ -97,7 +97,7 @@ function Swipe() {
 
 
 
-                {/* <div className="liked-cards">
+                <div className="liked-cards">
         <h2>Liked Movies</h2>
         <ul>
           {likedCards.map((likedCard, index) => (
@@ -126,7 +126,7 @@ function Swipe() {
             >{`Movie ${dislikeCard.id} (Score:${dislikeCard.score})`}</li>
           ))}
         </ul>
-      </div> */}
+      </div>
             </div>
         </div>
     );
