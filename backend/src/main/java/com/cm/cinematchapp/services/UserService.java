@@ -130,7 +130,8 @@ public class UserService {
 
         Role userRole = roleRepository.findByName("ROLE_USER");
         if (userRole != null) {
-            user.setRoles(new ArrayList<>(Collections.singletonList(userRole)));
+            Set<Role> userRoles = new HashSet<>(Collections.singleton(userRole));
+            user.setRoles(userRoles);
         }
 
         // Save the user to the database using the userRepository
@@ -256,7 +257,7 @@ public class UserService {
 
 
     @PostConstruct
-    public void createRolesIfNotExists() {
+    public void initializeDatabase() {
         if (roleRepository.findByName("ROLE_ADMIN") == null) {
             Role adminRole = new Role("ROLE_ADMIN");
             roleRepository.save(adminRole);
@@ -265,6 +266,40 @@ public class UserService {
         if (roleRepository.findByName("ROLE_USER") == null) {
             Role userRole = new Role("ROLE_USER");
             roleRepository.save(userRole);
+        }
+
+        // Create two regular users
+        createUserIfNotExists("User1", "User1", "RegUser1", "password123?",
+                "user1@email.com", "ROLE_USER");
+        createUserIfNotExists("User2", "User2", "RegUser2", "password123?",
+                "user2@email.com", "ROLE_USER");
+
+        // Create an admin user and assign both roles
+        createUserIfNotExists("Admin1", "Admin1", "Admin1", "password123?",
+                "admin@email.com", "ROLE_ADMIN", "ROLE_USER");
+    }
+
+
+    private void createUserIfNotExists(String firstName, String lastName, String username, String password, String email, String... roleNames) {
+        if (!userRepository.existsByUsername(username)) {
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setPassword(passwordEncoder.encode(password)); // Hash and save the password
+
+            Set<Role> userRoles = new HashSet<>();
+            for (String roleName : roleNames) {
+                Role role = roleRepository.findByName(roleName);
+                if (role != null) {
+                    userRoles.add(role);
+                }
+            }
+            user.setRoles(userRoles);
+
+            // Save the user to the database using the userRepository
+            userRepository.save(user);
         }
     }
 

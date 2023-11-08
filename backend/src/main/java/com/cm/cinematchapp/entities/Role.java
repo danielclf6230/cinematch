@@ -28,7 +28,8 @@ public class Role {
     @JsonIgnore
     @Setter(AccessLevel.NONE)
     @ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
+    private Set<User> users;
+
 
     public Role() {
     }
