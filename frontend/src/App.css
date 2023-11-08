@@ -46,9 +46,15 @@ html body {
 }
 
 .cm-logo {
-  width: 50%;
+  height: auto;
+  width: 80px;
   text-align: center;
   margin: auto;
+}
+
+.cm-logo img {
+  height: auto;
+  width: 60px;
 }
 
 @media (max-width: 768px) {
