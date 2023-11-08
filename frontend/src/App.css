@@ -52,6 +52,10 @@ html body {
   margin: auto;
 }
 
+header > .row {
+  --bs-gutter-x: 0 !important;
+}
+
 .cm-logo img {
   height: auto;
   width: 60px;
