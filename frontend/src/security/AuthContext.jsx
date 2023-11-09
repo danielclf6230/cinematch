@@ -1,6 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import {Navigate} from "react-router-dom";
 
 const AuthContext = createContext()
+
+const adminRoute = (Component) => {
+    return (props) => {
+        const { isAdmin, getUserData } = useAuth();
+        if (getUserData() === null) {
+            return <Navigate to="/" />;
+        }
+        else if (!isAdmin()) {
+            return <Navigate to="/home" />;
+        }
+        return <Component {...props} />;
+    };
+};
 
 function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
@@ -26,6 +40,13 @@ function AuthProvider({ children }) {
         return true
     }
 
+    const isAdmin = () => {
+        // Add logic to check if the user has the admin role
+        const userData = getUserData();
+        console.log(userData)
+        return userData && userData.roles.some(role => role.name === 'ROLE_ADMIN');
+    }
+
     const userLogin = (authenticatedUser) => {
         localStorage.setItem('user', JSON.stringify(authenticatedUser));
         setUser(authenticatedUser);
@@ -40,12 +61,19 @@ function AuthProvider({ children }) {
 
     const getToken = () => user ? user.token : null;
 
-    const getUserData = () => user ? user.userData : null;
+    const getUserData = () => {
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        console.log("Stored User Data: ", storedUser);
+
+        return storedUser ? storedUser.userData : null;
+    }
+
 
     const contextValue = {
         user,
         getUser,
         userIsAuthenticated,
+        isAdmin,
         userLogin,
         userLogout,
         getToken,
@@ -65,7 +93,7 @@ export function useAuth() {
     return useContext(AuthContext)
 }
 
-export { AuthProvider }
+export { AuthProvider, adminRoute }
 
 export function parseJwt(token) {
     if (!token) { return }
