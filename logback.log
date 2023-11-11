@@ -28568,3 +28568,83 @@ org.springframework.security.authentication.InsufficientAuthenticationException:
             on r1_1.role_id=r1_0.role_id 
     where
         r1_0.user_id=?
+2023-11-10T17:56:20.510-07:00  INFO 24104 --- [restartedMain] c.c.c.CinematchAppApplication            : Starting CinematchAppApplication using Java 20.0.2 with PID 24104 (C:\Users\DANIEL\IdeaProjects\Cinematch\backend\target\classes started by DANIEL in C:\Users\DANIEL\IdeaProjects\Cinematch)
+2023-11-10T17:56:20.511-07:00  INFO 24104 --- [restartedMain] c.c.c.CinematchAppApplication            : No active profile set, falling back to 1 default profile: "default"
+2023-11-10T17:56:20.549-07:00  INFO 24104 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-11-10T17:56:20.549-07:00  INFO 24104 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-11-10T17:56:21.470-07:00  INFO 24104 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-11-10T17:56:21.543-07:00  INFO 24104 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 65 ms. Found 7 JPA repository interfaces.
+2023-11-10T17:56:22.097-07:00  INFO 24104 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-11-10T17:56:22.104-07:00  INFO 24104 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-11-10T17:56:22.104-07:00  INFO 24104 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2023-11-10T17:56:22.172-07:00  INFO 24104 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-11-10T17:56:22.173-07:00  INFO 24104 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1624 ms
+2023-11-10T17:56:22.687-07:00  INFO 24104 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-11-10T17:56:22.701-07:00  INFO 24104 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-11-10T17:56:22.945-07:00  INFO 24104 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@d6ee72d
+2023-11-10T17:56:22.946-07:00  INFO 24104 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-11-10T17:56:24.024-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friend_request 
+       modify column request_status  enum ('ACCEPTED','PENDING','REJECTED') not null
+2023-11-10T17:56:24.036-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friendship 
+       modify column friendship_status  enum ('ACCEPTED') not null
+2023-11-10T17:56:24.075-07:00  INFO 24104 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-11-10T17:56:24.284-07:00  INFO 24104 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-11-10T17:56:24.868-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        a1_0.avatar_id,
+        a1_0.file_name,
+        a1_0.path,
+        a1_0.file_size 
+    from
+        avatar a1_0 
+    where
+        a1_0.path=?
+2023-11-10T17:56:24.891-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-10T17:56:24.899-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-10T17:56:24.902-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-10T17:56:24.905-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-10T17:56:24.907-07:00 DEBUG 24104 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-10T17:56:25.411-07:00  INFO 24104 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-11-10T17:56:25.463-07:00  INFO 24104 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@f550760, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6cb7709e, org.springframework.security.web.context.SecurityContextHolderFilter@484686c4, org.springframework.security.web.header.HeaderWriterFilter@780195e9, org.springframework.web.filter.CorsFilter@70add872, org.springframework.security.web.authentication.logout.LogoutFilter@77151a21, com.cm.cinematchapp.security.JwtAuthenticationFilter@44f8dcb1, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3f440156, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5cae124e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@33e8fc73, org.springframework.security.web.session.SessionManagementFilter@7cc4d345, org.springframework.security.web.access.ExceptionTranslationFilter@4bfccfa4, org.springframework.security.web.access.intercept.AuthorizationFilter@2b8f0d41]
+2023-11-10T17:56:25.598-07:00  WARN 24104 --- [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-11-10T17:56:25.779-07:00  INFO 24104 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-11-10T17:56:25.833-07:00  INFO 24104 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-11-10T17:56:25.846-07:00  INFO 24104 --- [restartedMain] c.c.c.CinematchAppApplication            : Started CinematchAppApplication in 5.659 seconds (process running for 6.37)
+2023-11-10T17:56:26.438-07:00  INFO 24104 --- [RMI TCP Connection(2)-192.168.56.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-11-10T18:28:07.763-07:00  INFO 24104 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-11-10T18:28:07.765-07:00  INFO 24104 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-11-10T18:28:07.768-07:00  INFO 24104 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
