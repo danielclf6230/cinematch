@@ -204,9 +204,9 @@ header > .row {
   justify-content: center; /* Center the buttons horizontally within the container */
 }
 
-Button {
+button {
   background-color: #FF7A00;
-  width: 100px;
+  width: auto;
   display: inline-block; /* Display the buttons inline to make them side by side */
   margin: 100px; /* Add margin to separate the buttons (adjust as needed) */
 }
@@ -238,4 +238,9 @@ button:hover {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ROOM STYLING */
+.Room h1 {
+  color: #FFBC10;
 }
