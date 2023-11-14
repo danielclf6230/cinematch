@@ -35,6 +35,7 @@ function Login() {
             const response = await actionsApi.authenticate(username, password);
             const accessToken = response.data;
             const info = await entitiesApi.getUserInfo(accessToken);
+            console.log(info.data)
 
             const authenticatedUser = { token: accessToken, userData: info.data };
             Auth.userLogin(authenticatedUser);
@@ -42,8 +43,11 @@ function Login() {
             setUsername('');
             setPassword('');
 
-
-            navigate('/home');
+            if (info.data.roles.some(role => role.name === 'ROLE_ADMIN')) {
+                navigate('/admin'); // Navigate to the admin page
+            } else {
+                navigate('/home'); // Navigate to the home page (or any other page for non-admin users)
+            }
         } catch (error) {
             handleLogError(error);
             setErrorMessage(error.response.data)

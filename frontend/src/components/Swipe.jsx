@@ -76,6 +76,7 @@ function Swipe() {
 
                         <div className="buttons col align-self-center">
                             <Button
+                                onClick={() => swipe("left")}
                                 text="Dislike"
                                 disabled={cards.length === 0}
                             />

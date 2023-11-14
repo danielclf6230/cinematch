@@ -7,6 +7,9 @@ import Register from './components/Register'
 import Login from './components/Login'
 import Home from './components/Home'
 import Swipe from './components/Swipe'
+import Admin from './components/Admin'
+import Room from "./components/Room";
+
 
 
 
@@ -22,6 +25,8 @@ function App() {
                   <Route path='/register' element={<Register />}/>
                   <Route path="/home" element={<Home />} />
                   <Route path="/swipe" element={<Swipe />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/room" element={<Room />} />
               </Routes>
             </div>
           </div>
