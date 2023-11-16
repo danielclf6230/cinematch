@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
         //Create a chocies array contain all choices
         const choices = rooms[room].map(user => user.choice);
         if (choices[0] === choices[1]) {
-            //If match, pull out the choice[0] to client
+            //If matched, pull out the choice[0] to client
           io.to(room).emit('match_result', choices[0]);
         } else {
             //If not match, pull out the all choices to client
@@ -74,6 +74,8 @@ io.on('connection', (socket) => {
       }
     }
   });
+
+
 });
 
 server.listen(3001, () => {

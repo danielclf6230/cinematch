@@ -9,11 +9,8 @@ function Room() {
     const [room, setRoom] = useState('');
     const [waiting, setWaiting] = useState(false);
     const [otherNumber, setOtherNumber] = useState(null);
+    const [showChat, setShowChat] = useState(false);
 
-
-    const handleInputChange = (e) => {
-      setNumberInput(e.target.value);
-    };
 
     const handleChooseNumber = () => {
       if (numberInput.trim() !== '' && room !== '') {
@@ -23,9 +20,6 @@ function Room() {
       }
     };
 
-    const handleRoomChange = (e) => {
-      setRoom(e.target.value);
-    };
 
 
     //This will trigger when the numberInput changed
@@ -51,39 +45,51 @@ function Room() {
 
 
     const handleJoinRoom = () => {
-      if (room !== '') {
+      if (room !== "") {
         socket.emit('join_room', room);
       }
+      setShowChat(true);
     };
 
     return (
-      <div className="Room container text-center">
-          <div>
-              <h1>User: Enter a Number</h1>
-          </div>
+        <div>
+            {!showChat ? (
+            <div className="Room container text-center">
+              <div>
+                  <h1>Enter a Room</h1>
+              </div>
+                  <input
+                      type="text"
+                      value={room}
+                      onChange={(event) =>{
+                          setRoom(event.target.value);
+                      }}
+                      placeholder="Enter Room Number"
+                  />
 
-          <input
-          type="text"
-          value={room}
-          onChange={handleRoomChange}
-          placeholder="Enter Room Number"
-          />
-          <button onClick={handleJoinRoom}>Join Room</button>
+              <button onClick={handleJoinRoom}>Join Room</button>
+            </div>
 
-          <input
-              type="number"
-              value={numberInput}
-              onChange={handleInputChange}
-              placeholder="PLACEHOLDER FOR SWIPING"
-          />
+            ) : (
 
-          <button onClick={handleChooseNumber}>Choose Number</button>
-        {waiting && <p>Waiting for the other user to choose a number.</p>}
-        {result && <p>{result}</p>}
+            <div className="Room container text-center">
+                <h1>Room {room}</h1>
+                <h2>Please enter a number</h2>
+                <input
+                    type="number"
+                    value={numberInput}
+                    onChange={(event => {
+                        setNumberInput(event.target.value);
+                    })}
+                    placeholder="number..."
+                />
+              <button onClick={handleChooseNumber}>Choose Number</button>
+            {waiting && <p>Waiting for the other user to choose a number.</p>}
+            {result && <p>{result}</p>}
+            </div>
 
-
-      </div>
-
+                )};
+        </div>
 
     );
 }
