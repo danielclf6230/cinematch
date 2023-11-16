@@ -4,28 +4,6 @@ import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3001');
 
 function Room() {
-    const [message, setMessage] = useState("");
-    const [messageRecevied, setMessageRecevied] = useState("");
-    const sendMessage = () =>{
-    socket.emit("send_message", {message});
-    };
-
-    useEffect(()=>{
-    socket.on("receive_message",(data)=>{
-        setMessageRecevied(data.message);
-    })
-    },[socket])
-    //
-    // return (
-    //     <div className={"Room"}>
-    //         <input placeholder="Message..." onChange={(event) =>{
-    //             setMessage(event.target.value)
-    //         }}/>
-    //         <button onClick={sendMessage}>Send Message</button>
-    //         <h1>Message:
-    //             {messageRecevied}</h1>
-    //     </div>
-    // );
     const [numberInput, setNumberInput] = useState('');
     const [result, setResult] = useState('');
     const [room, setRoom] = useState('');
@@ -83,33 +61,29 @@ function Room() {
           <div>
               <h1>User: Enter a Number</h1>
           </div>
-        {/*<input*/}
-        {/*  type="number"*/}
-        {/*  value={numberInput}*/}
-        {/*  onChange={handleInputChange}*/}
-        {/*  placeholder="PLACEHOLDER FOR SWIPING"*/}
-        {/*/>*/}
+
           <input
           type="text"
           value={room}
           onChange={handleRoomChange}
           placeholder="Enter Room Number"
-        />
+          />
           <button onClick={handleJoinRoom}>Join Room</button>
-          {/*<button onClick={handleChooseNumber}>Choose Number</button>*/}
+
+          <input
+              type="number"
+              value={numberInput}
+              onChange={handleInputChange}
+              placeholder="PLACEHOLDER FOR SWIPING"
+          />
+
+          <button onClick={handleChooseNumber}>Choose Number</button>
         {waiting && <p>Waiting for the other user to choose a number.</p>}
         {result && <p>{result}</p>}
 
-          <div className="Room">
-              <input placeholder="Message..." onChange={(event) =>{
-                  setMessage(event.target.value)
-              }}/>
-              <button onClick={sendMessage}>Send Message</button>
-              <h1>Message:
-                  {messageRecevied}</h1>
-          </div>
 
       </div>
+
 
     );
 }
