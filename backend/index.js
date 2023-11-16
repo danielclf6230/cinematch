@@ -15,6 +15,7 @@ const io = new Server(server, {
 });
 
 const rooms = {};
+
 //connected user
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
@@ -38,42 +39,82 @@ io.on('connection', (socket) => {
     }
   });
 
-  //Listen for choose number event emit from frontend
-  //Object contain number and room number
-  socket.on('choose_number', ({ number, room }) => {
-    //Checking room exist
+  function resetChoices(room) {
+    rooms[room] = [];
+  }
+
+  socket.on('choose_movie', ({ likedCards, dislikedCards, maybeCards, room }) => {
     if (rooms[room]) {
-    //Find the specific user who is making the choice in that room.
       const user = rooms[room].find(user => user.id === socket.id);
-      //Store the result to user.choice
-      user.choice = parseInt(number, 10);
-      //Checks if all user choices in the room not equals to undefined
-      if (rooms[room].every(user => user.choice !== undefined)) {
-        //Create a chocies array contain all choices
-        const choices = rooms[room].map(user => user.choice);
-        if (choices[0] === choices[1]) {
-            //If matched, pull out the choice[0] to client
-          io.to(room).emit('match_result', choices[0]);
-        } else {
-            //If not match, pull out the all choices to client
-          io.to(room).emit('no_match_result', choices);
+
+      if (user) {
+        user.choice = {
+          likedCards: likedCards || [],
+          dislikedCards: dislikedCards || [],
+          maybeCards: maybeCards || [],
+        };
+
+        if (rooms[room].every(user => user.choice !== undefined)) {
+          const choices = rooms[room].map(user => user.choice);
+          const sortedCards = combineAndSortScores(choices);
+          io.to(room).emit('match_result', sortedCards);
+          resetChoices(room);
         }
-
-        // Clear choices for the next round
-        rooms[room].forEach(user => (user.choice = undefined));
       }
     }
   });
 
-  socket.on('disconnect', () => {
-    for (const room in rooms) {
-        //Remove the current user(socket.id) form the list when trigger disconnect
-      rooms[room] = rooms[room].filter(u => u.id !== socket.id);
-      if (rooms[room].length === 0) {
-        delete rooms[room];
-      }
+
+  function combineAndSortScores(choices) {
+    // Initialize combinedScores object
+    const combinedScores = {};
+
+    // Iterate through each user's choices
+    choices.forEach(userChoices => {
+      // Iterate through liked, disliked, and maybe cards
+      Object.keys(userChoices).forEach(cardType => {
+        // Iterate through each card in the current card type
+        userChoices[cardType].forEach(card => {
+          const cardId = card.id;
+          const score = getScoreByCardType(cardType); // Get the score based on the card type
+          combinedScores[cardId] = (combinedScores[cardId] || 0) + score;
+        });
+      });
+    });
+
+    // Convert combinedScores object to an array of objects
+    const sortedCardsWithScores = Object.keys(combinedScores)
+        .map(cardId => ({ id: cardId, score: combinedScores[cardId] }))
+        .sort((a, b) => b.score - a.score);
+
+    return sortedCardsWithScores;
+  }
+
+// Helper function to get score based on card type
+  function getScoreByCardType(cardType) {
+    // Assign scores based on card type (modify as needed)
+    switch (cardType) {
+      case 'likedCards':
+        return 5; // Liked card score
+      case 'dislikedCards':
+        return 0; // Disliked card score
+      case 'maybeCards':
+        return 3; // Maybe card score
+      default:
+        return 0; // Default score
     }
-  });
+  }
+
+
+  // socket.on('disconnect', () => {
+  //   for (const room in rooms) {
+  //       //Remove the current user(socket.id) form the list when trigger disconnect
+  //     rooms[room] = rooms[room].filter(u => u.id !== socket.id);
+  //     if (rooms[room].length === 0) {
+  //       delete rooms[room];
+  //     }
+  //   }
+  // });
 
 
 });

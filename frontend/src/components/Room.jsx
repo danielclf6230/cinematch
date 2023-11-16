@@ -1,47 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import GroupSwipe from "./GroupSwipe";
 
 const socket = io.connect('http://localhost:3001');
 
+
 function Room() {
-    const [numberInput, setNumberInput] = useState('');
-    const [result, setResult] = useState('');
+    const [username, setUsername] = useState("");
     const [room, setRoom] = useState('');
-    const [waiting, setWaiting] = useState(false);
-    const [otherNumber, setOtherNumber] = useState(null);
     const [showChat, setShowChat] = useState(false);
-
-
-    const handleChooseNumber = () => {
-      if (numberInput.trim() !== '' && room !== '') {
-        //Pass the number and the room to server
-        socket.emit('choose_number', { number: numberInput, room });
-        setWaiting(true);
-      }
-    };
-
-
-
-    //This will trigger when the numberInput changed
-    useEffect(() => {
-      //Event listener "match_result", wait for the emit
-      socket.on('match_result', (matchedNumber) => {
-        setResult(`You got Matched. The result is ${matchedNumber}`);
-        setWaiting(false);
-      });
-
-      socket.on('no_match_result', (choices) => {
-        //Set the other number as the number in the array and find the num not same as the input put
-        setOtherNumber(choices.find(num => num !== parseInt(numberInput)));
-        setResult(`Sorry, no match found. Your choice: ${numberInput}, Other's choice: ${choices.find(num => num !== parseInt(numberInput))}`);
-        setWaiting(false);
-      });
-
-      return () => {
-        socket.off('match_result');
-        socket.off('no_match_result');
-      };
-    }, [numberInput]);
 
 
     const handleJoinRoom = () => {
@@ -55,9 +22,24 @@ function Room() {
         <div>
             {!showChat ? (
             <div className="Room container text-center">
+                <div className="sideMenu">
+                    <div>
+                        <h2>Side 1</h2> <br />
+                        <h2>Side 2</h2> <br />
+                        <h2>Side 1</h2>
+                    </div>
+                </div>
               <div>
-                  <h1>Enter a Room</h1>
+                  <h1>Enter your Name and Room number</h1>
               </div>
+
+                <input
+                    type="text"
+                    placeholder="John..."
+                    onChange={(event) => {
+                        setUsername(event.target.value);
+                    }}
+                />
                   <input
                       type="text"
                       value={room}
@@ -72,22 +54,10 @@ function Room() {
 
             ) : (
 
-            <div className="Room container text-center">
-                <h1>Room {room}</h1>
-                <h2>Please enter a number</h2>
-                <input
-                    type="number"
-                    value={numberInput}
-                    onChange={(event => {
-                        setNumberInput(event.target.value);
-                    })}
-                    placeholder="number..."
-                />
-              <button onClick={handleChooseNumber}>Choose Number</button>
-            {waiting && <p>Waiting for the other user to choose a number.</p>}
-            {result && <p>{result}</p>}
-            </div>
-
+                <div>
+                    <h3>Room: {room}</h3>
+                <GroupSwipe socket={socket} username={username} room={room} />
+                </div>
                 )};
         </div>
 

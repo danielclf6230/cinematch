@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from 'react';
 import cardData from "./cardData";
-import Button from "./Button";
 import { swipefunction } from "./swipeUtils";
+import Button from "./Button";
 
-function Swipe() {
+function GroupSwipe({ socket, username, room }) {
     const [cards, setCards] = useState(cardData);
     const [currentCard, setCurrentCard] = useState(0);
     const [likedCards, setLikedCards] = useState([]);
     const [dislikedCards, setDislikedCards] = useState([]);
     const [maybeCards, setMaybeCards] = useState([]);
+    const [waiting, setWaiting] = useState(false);
+    const [result, setResult] = useState('');
 
     let startX = 0;
 
@@ -37,16 +38,56 @@ function Swipe() {
         }
     };
 
-    //add currentCard into maybeCards temp list, and add into
     const maybe = () => {
         const updatedMaybe = [...maybeCards, { ...cards[currentCard], score: 3 }];
-        //update the MaybeCards list
         setMaybeCards(updatedMaybe);
-        //use the index only, if the index not equals the currentCard index, put inprevCards list
         setCards((prevCards) =>
             prevCards.filter((_, index) => index !== currentCard)
         );
     };
+
+    // const renderMoviesList = (movies, title) => (
+    //     <div>
+    //         <h3>{title}</h3>
+    //         <ul>
+    //             {movies.map((movie, index) => (
+    //                 <li key={index}>
+    //                     {`Movie ${movie.id} (Score:${movie.score})`}
+    //                 </li>
+    //             ))}
+    //         </ul>
+    //     </div>
+    // );
+
+    const handleChooseMovie = () => {
+        if (likedCards !== null && room !== '') {
+            // Signal the server to reset scores
+            socket.emit('reset_scores', { room });
+
+            // Pass the likedMovie and the room to server
+            socket.emit('choose_movie', { likedCards, dislikedCards, maybeCards, room });
+            setWaiting(true);
+        }
+    };
+
+
+    useEffect(() => {
+        socket.on('match_result', (matchedCardsWithScores) => {
+            const resultText = `You got Matched. The movies are: ${matchedCardsWithScores.map(card => `Movie ${card.id} (Score: ${card.score})`).join(', ')}`;
+            setResult(resultText);
+            setWaiting(false);
+        });
+
+        // socket.on('no_match_result', (choices) => {
+        //     setResult(`Sorry, no match found. Your choice: ${numberInput}, Other's choice: ${choices.find(num => num !== parseInt(numberInput))}`);
+        //     setWaiting(false);
+        // });
+
+        return () => {
+            socket.off('match_result');
+            // socket.off('no_match_result');
+        };
+    }, []);
 
     return (
         <div className="App">
@@ -91,42 +132,19 @@ function Swipe() {
                         </div>
                     </div>
                 ) : (
-                    <p>No more movies to swipe!</p>
+                    <div>
+                        <p>No more movies to swipe!</p>
+                        <button onClick={handleChooseMovie}>Start match</button>
+                        {waiting && <p>Waiting for the other user to choose a number.</p>}
+                        {result && <p>{result}</p>}
+                        {/*{renderMoviesList(likedCards, 'Liked Movies')}*/}
+                        {/*{renderMoviesList(maybeCards, 'Maybe Movies')}*/}
+                        {/*{renderMoviesList(dislikedCards, 'Disliked Movies')}*/}
+                    </div>
                 )}
-
-                {/*<div className="liked-cards">*/}
-                {/*    <h2>Liked Movies</h2>*/}
-                {/*    <ul>*/}
-                {/*        {likedCards.map((likedCard, index) => (*/}
-                {/*            <li*/}
-                {/*                key={index}*/}
-                {/*            >{`Movie ${likedCard.id} (Score:${likedCard.score})`}</li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
-                {/*<div className="maybe-cards">*/}
-                {/*    <h2>Maybe Movies</h2>*/}
-                {/*    <ul>*/}
-                {/*        {maybeCards.map((maybeCard, index) => (*/}
-                {/*            <li*/}
-                {/*                key={index}*/}
-                {/*            >{`Movie ${maybeCard.id} (Score:${maybeCard.score})`}</li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
-                {/*<div className="disliked-cards">*/}
-                {/*    <h2>Dislike Movies</h2>*/}
-                {/*    <ul>*/}
-                {/*        {dislikedCards.map((dislikeCard, index) => (*/}
-                {/*            <li*/}
-                {/*                key={index}*/}
-                {/*            >{`Movie ${dislikeCard.id} (Score:${dislikeCard.score})`}</li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
             </div>
         </div>
     );
 }
 
-export default Swipe;
+export default GroupSwipe;
