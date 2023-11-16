@@ -4,6 +4,7 @@ export const imagesApi = {
     getAvatar,
     getAvatarById,
     uploadAvatar,
+    getMoviePosterById,
 }
 
 export async function getAvatar() {
@@ -33,4 +34,13 @@ export async function uploadAvatar(formData) {
                 console.log(error)
                 throw new Error('Error uploading avatar: ' + error);
             })
+}
+
+export async function getMoviePosterById(movieId) {
+    return apiConfig
+        .get(`/movie/${movieId}`, { responseType: 'arraybuffer' })
+        .then((response) => response.data)
+        .catch((error) => {
+            throw new Error('Error fetching movie poster by ID: ' + error);
+        });
 }

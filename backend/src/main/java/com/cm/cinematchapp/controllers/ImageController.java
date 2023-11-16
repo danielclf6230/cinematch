@@ -2,6 +2,7 @@ package com.cm.cinematchapp.controllers;
 
 import com.cm.cinematchapp.entities.Avatar;
 import com.cm.cinematchapp.entities.User;
+import com.cm.cinematchapp.services.MovieService;
 import com.cm.cinematchapp.services.SecurityService;
 import com.cm.cinematchapp.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,9 @@ public class ImageController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MovieService movieService;
 
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -52,6 +56,12 @@ public class ImageController {
         return new ResponseEntity<>(userService.getAvatarById(userId), HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<byte[]> getMoviePoster(@PathVariable Long movieId) throws IOException {
+        return new ResponseEntity<>(movieService.getMoviePosterByMovieId(movieId), HttpStatus.OK);
+    }
 
 
 }

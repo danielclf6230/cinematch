@@ -1,6 +1,7 @@
 package com.cm.cinematchapp.controllers;
 
 import com.cm.cinematchapp.dto.LoginDTO;
+import com.cm.cinematchapp.dto.MovieDTO;
 import com.cm.cinematchapp.dto.RegistrationDTO;
 import com.cm.cinematchapp.entities.Movie;
 import com.cm.cinematchapp.entities.User;
@@ -118,9 +119,19 @@ public class ActionController {
 
 
 
-    @GetMapping("/movie/search/{title}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") //remove ROLE_USER
-    public ResponseEntity<List<Movie>> searchForMovie(@PathVariable("title") String title) {
+//    @GetMapping("/movie/search/{title}")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") //remove ROLE_USER
+//    public ResponseEntity<List<Movie>> searchForMovie(@PathVariable("title") String title) {
+//        try {
+//            return new ResponseEntity<>(movieService.searchForMovie(title), HttpStatus.OK);
+//        } catch (JsonProcessingException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    @PostMapping("/movie/search")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") // Remove ROLE_USER if necessary
+    public ResponseEntity<List<Movie>> searchForMovie(@RequestBody String title) {
         try {
             return new ResponseEntity<>(movieService.searchForMovie(title), HttpStatus.OK);
         } catch (JsonProcessingException e) {
@@ -134,6 +145,8 @@ public class ActionController {
         try {
             return new ResponseEntity<>(movieService.createMovie(movie), HttpStatus.CREATED);
         } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

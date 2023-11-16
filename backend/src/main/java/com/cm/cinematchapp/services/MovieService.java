@@ -2,9 +2,7 @@ package com.cm.cinematchapp.services;
 
 
 import com.cm.cinematchapp.constants.EntityConstants;
-import com.cm.cinematchapp.entities.Movie;
-import com.cm.cinematchapp.entities.MoviePoster;
-import com.cm.cinematchapp.entities.MovieResult;
+import com.cm.cinematchapp.entities.*;
 import com.cm.cinematchapp.repositories.MoviePosterRepository;
 import com.cm.cinematchapp.repositories.MovieRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,14 +16,26 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.io.*;
+import java.net.*;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import static com.cm.cinematchapp.constants.EntityConstants.kPostersPath;
 
 @Service
 @Transactional
@@ -78,7 +88,7 @@ public class MovieService {
         return movies;
     }
 
-    public Movie createMovie(Movie movie) throws UnsupportedEncodingException {
+    public Movie createMovie(Movie movie) throws IOException {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(new HttpHeaders());
         String encodedTitle = URLEncoder.encode(movie.getTitle(), StandardCharsets.UTF_8.toString());
@@ -94,7 +104,6 @@ public class MovieService {
 
         Map<String, Object> responseBody = responseEntity.getBody();
 
-        MoviePoster moviePoster = new MoviePoster();
         Movie createdMovie = new Movie();
 
         createdMovie.setTitle(movie.getTitle());
@@ -104,7 +113,8 @@ public class MovieService {
         if (responseBody != null) {
             createdMovie.setDescription((String) responseBody.get("Plot"));
             createdMovie.setRated((String) responseBody.get("Rated"));
-            moviePoster.setPath((String) responseBody.get("Poster"));
+            String posterUrl = (String) responseBody.get("Poster");
+            MoviePoster moviePoster = downloadPoster(posterUrl); // Save poster image and get the MoviePoster object
             moviePoster = moviePosterRepository.save(moviePoster);
             createdMovie.setPoster(moviePoster);
         }
@@ -114,4 +124,54 @@ public class MovieService {
         return createdMovie;
     }
 
+    public byte[] getMoviePosterByMovieId(Long movieId) throws IOException{
+        Movie movie = movieRepository.getMovieById(movieId);
+        MoviePoster moviePoster = movie.getPoster();
+        Path posterPath = Paths.get(moviePoster.getPath());
+            return Files.readAllBytes(posterPath);
+//        else {
+//            moviePoster = moviePosterRepository.findByFilename("default_poster.png");
+//            Path defaultPath = Paths.get(moviePoster.getPath());
+//            return Files.readAllBytes(defaultPath);
+//        }
+
+    }
+
+    private MoviePoster downloadPoster(String posterUrl) throws IOException {
+        URL url = new URL(posterUrl);
+        URLConnection connection = url.openConnection();
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+        try (InputStream inputStream = connection.getInputStream()) {
+            String fileName = generateUniqueFileName(); // Function to generate a unique file name
+            String filePath = kPostersPath + fileName;
+
+            // Save the image data to a local file
+            try (OutputStream outputStream = new FileOutputStream(filePath)) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+            }
+
+            File posterFile = new File(filePath);
+            long fileSize = posterFile.length();
+
+            MoviePoster moviePoster = new MoviePoster();
+            moviePoster.setFilename(fileName);
+            moviePoster.setPath(filePath);
+            moviePoster.setSize(fileSize);
+
+            return moviePoster;
+        }
+    }
+
+
+    // Function to generate a unique file name (you can implement as per your requirement)
+    private String generateUniqueFileName() {
+        // Implement your logic to generate a unique file name here
+        // For example, using timestamp or UUID
+        return "poster_image_" + System.currentTimeMillis() + ".jpg";
+    }
 }

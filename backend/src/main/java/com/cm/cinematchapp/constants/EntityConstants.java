@@ -24,6 +24,9 @@ public interface EntityConstants {
     static final String kAvatarPath = System.getProperty("user.dir") + "/backend/avatars/";
     static final String kDefaultAvatar = System.getProperty("user.dir") + "/backend/avatars/default_avatar.png";
 
+    static final String kPostersPath = System.getProperty("user.dir") + "/backend/posters/";
+
+
     static final String kRapidApiUrl = "https://streaming-availability.p.rapidapi.com/search/title";
     static final String kRapidApiKey = "a05a1b2455msh8071b1add6463dap15f40fjsncf719cc3c3fc";
     static final String kRapidApiHost = "streaming-availability.p.rapidapi.com";
