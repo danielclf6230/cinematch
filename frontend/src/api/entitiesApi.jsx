@@ -5,6 +5,7 @@ export const entitiesApi = {
     getUsers,
     getUsersByUsername,
     getUsersById,
+    getMovies,
 }
 export function getUserInfo(token) {
     console.log('Bearer token:', bearerAuth(token));
@@ -28,4 +29,8 @@ export async function getUsersById(userId) {
     return response.data;
 }
 
+export async function getMovies() {
+    const response = await apiConfig.get(`/entities/movies`);
+    return response.data;//supposedly returns list of movies
+}
 

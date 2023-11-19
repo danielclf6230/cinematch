@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { actionsApi } from '../api/actionsApi';
+import SideMenu from "./SideMenu";
 
 
 function MovieSearch() {
@@ -28,55 +29,61 @@ function MovieSearch() {
     };
 
     return (
-        <div>
-            <input
-                type="text"
-                placeholder="Search for movies..."
-                value={searchTerm.title}
-                onChange={(e) => setSearchTerm(e.target.value )}
-            />
-            <button onClick={handleSearch}>Search</button>
-            {searchResult.length > 0 && (
-                <div>
-                    <h2>Search Results</h2>
-                    <ul>
-                        {searchResult.map((movie, index) => (
-                            <li key={index}>
-                                <p>{`${movie.title} (${movie.year})`}</p>
-                                <button onClick={() => handleSelectMovie(movie)}>Select Movie</button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-            {addedMovie && (
-                <div>
-                    <h2>Added Movie</h2>
-                    <p>{`Title: ${addedMovie.title} (${addedMovie.year})`}</p>
-                    <p>{`Description: ${addedMovie.description}`}</p>
-                    <p>{`Rated: ${addedMovie.rated}`}</p>
-                    {addedMovie.streamingInfo && (
-                        <div>
-                            <h3>Streaming Links</h3>
-                            <ul>
-                                {addedMovie.streamingInfo.ca.map((streamingService, index) => (
-                                    <li key={index}>
-                                        {`${streamingService.service} - ${streamingService.streamingType}: ${streamingService.link}`}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                    {addedMovie.poster && (
-                        <div>
-                            <h3>Poster Image</h3>
-                            <img src={addedMovie.poster.path} alt="Poster" />
-                        </div>
-                    )}
-                </div>
-            )}
+        <div className="App">
+            <SideMenu />
+            <div>
+                <input
+                    type="text"
+                    placeholder="Search for movies..."
+                    value={searchTerm.title}
+                    onChange={(e) => setSearchTerm(e.target.value )}
+                />
+                <button onClick={handleSearch}>Search</button>
+                {searchResult.length > 0 && (
+                    <div>
+                        <h2>Search Results</h2>
+                        <ul>
+                            {searchResult.map((movie, index) => (
+                                <li key={index}>
+                                    <p>{`${movie.title} (${movie.year})`}</p>
+                                    <button onClick={() => handleSelectMovie(movie)}>Select Movie</button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                {addedMovie && (
+                    <div>
+                        <h2>Added Movie</h2>
+                        <p>{`Title: ${addedMovie.title} (${addedMovie.year})`}</p>
+                        <p>{`Description: ${addedMovie.description}`}</p>
+                        <p>{`Rated: ${addedMovie.rated}`}</p>
+                        {addedMovie.streamingInfo && (
+                            <div>
+                                <h3>Streaming Links</h3>
+                                <ul>
+                                    {addedMovie.streamingInfo.ca.map((streamingService, index) => (
+                                        <li key={index}>
+                                            {`${streamingService.service} - ${streamingService.streamingType}: ${streamingService.link}`}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        {addedMovie.poster && (
+                            <div>
+                                <h3>Poster Image</h3>
+                                <img src={addedMovie.poster.path} alt="Poster" />
+                            </div>
+                        )}
+                    </div>
+                )}
+                {/*<MovieList /> suppose to have a list of movies*/}
+
+            </div>
         </div>
+
     );
-};
+}
 
 export default MovieSearch;

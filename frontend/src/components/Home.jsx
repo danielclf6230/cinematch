@@ -4,6 +4,8 @@ import UserList from './UserList';
 import Profile from './AvatarPreview';
 import AvatarPreview from "./AvatarPreview";
 import AvatarUpload from "./AvatarUpload";
+import {Link} from "react-router-dom";
+import SideMenu from "./SideMenu";
 
 
 function Home() {
@@ -17,15 +19,9 @@ function Home() {
     //this was just to test
     return (
 
-        <div>
-            <div className="sideMenu">
-                <div>
-                    <h2>Side 1</h2> <br/>
-                    <h2>Side 2</h2> <br/>
-                    <h2>Side 1</h2>
-                </div>
-            </div>
-            <div>
+        <div className="App">
+            <SideMenu />
+            <div className="col">
                 <h2>User Information</h2>
                 <ul>
                     <AvatarUpload />
