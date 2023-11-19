@@ -8,7 +8,9 @@ import Login from './components/Login'
 import Home from './components/Home'
 import Swipe from './components/Swipe'
 import Admin from './components/Admin'
-import Room from "./components/Room";
+import Room from "./components/Room"
+import Search from "./components/Search"
+import MovieSearch from "./components/MovieSearch";
 
 
 
@@ -26,6 +28,7 @@ function App() {
                   <Route path="/swipe" element={<Swipe />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/room" element={<Room />} />
+                  <Route path="/moviesearch" element={<MovieSearch />} />
               </Routes>
             </div>
           </div>

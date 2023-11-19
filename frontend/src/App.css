@@ -5,7 +5,7 @@ html body {
 .App {
   text-align: center;
   display: flex;
-  height: 100vh;
+  height: 100%;
 }
 
 .App-logo {
@@ -167,8 +167,9 @@ header > .row {
 /* Card container styling */
 .card-container {
   width: 400px; /* Set a fixed width for the card container */
-  height: 100%;
+  /*height: 100%;*/
   position: relative;
+  padding-top: 2%;
   margin: 0 auto; /* Center the card container horizontally */
   text-align: center;
   justify-content: center; /* Center the content horizontally within the card container */
@@ -218,10 +219,13 @@ button:hover {
 
 .sideMenu {
   width: 200px;
+  padding: 20px;
+  height: 100vh;
   flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
-  background-color: #f0f0f0; /* Optional: Set a background color for the side menu */
-  border-right: 1px solid #ccc; /* Optional: Add a border on the right side */
+  background-color: #FBE4A9; /* Optional: Set a background color for the side menu */
+  border-right: 10px solid #ccc; /* Optional: Add a border on the right side */
 }
+
 
 .cardArea {
   justify-content: center; /* Center the content horizontally */

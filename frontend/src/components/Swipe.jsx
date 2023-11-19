@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import cardData from "./cardData";
 import Button from "./Button";
 import { swipefunction } from "./swipeUtils";
+import SideMenu from "./SideMenu";
 
 function Swipe() {
     const [cards, setCards] = useState(cardData);
@@ -50,13 +51,7 @@ function Swipe() {
 
     return (
         <div className="App">
-            <div className="sideMenu">
-                <div>
-                    <h2>Side 1</h2> <br />
-                    <h2>Side 2</h2> <br />
-                    <h2>Side 1</h2>
-                </div>
-            </div>
+            <SideMenu />
             <div className="cardArea">
                 {cards.length > 0 ? (
                     <div

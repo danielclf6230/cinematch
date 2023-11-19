@@ -91,13 +91,6 @@ function GroupSwipe({ socket, username, room }) {
 
     return (
         <div className="App">
-            <div className="sideMenu">
-                <div>
-                    <h2>Side 1</h2> <br />
-                    <h2>Side 2</h2> <br />
-                    <h2>Side 1</h2>
-                </div>
-            </div>
             <div className="cardArea">
                 {cards.length > 0 ? (
                     <div
