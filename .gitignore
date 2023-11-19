@@ -1,2 +1,6 @@
 # Intellij IDEA
 .idea
+
+## Logback ##
+logback.log
+.log
