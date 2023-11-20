@@ -18,7 +18,7 @@ function Room() {
     const createRoom = () => {
         setRoom(prevRoom => {
             // Use the previous state to calculate the new state
-            const newRoom = String(Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+            const newRoom = String(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
             socket.emit('create_room', newRoom);
             setShowSwipe(true);
             setWaiting(true);

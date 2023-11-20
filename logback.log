@@ -340,3 +340,186 @@
 2023-11-19T18:54:01.112-07:00  INFO 1636 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 2023-11-19T18:54:01.125-07:00  INFO 1636 --- [restartedMain] c.c.c.CinematchAppApplication            : Started CinematchAppApplication in 8.577 seconds (process running for 9.677)
 2023-11-19T18:54:01.480-07:00  INFO 1636 --- [RMI TCP Connection(3)-192.168.56.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-11-19T23:51:36.019-07:00  INFO 1636 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 4 class path changes (0 additions, 4 deletions, 0 modifications)
+2023-11-19T23:51:36.035-07:00  INFO 1636 --- [Thread-5] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-11-19T23:51:36.039-07:00  INFO 1636 --- [Thread-5] o.a.c.c.C.[Tomcat].[localhost].[/]       : Destroying Spring FrameworkServlet 'dispatcherServlet'
+2023-11-19T23:51:36.043-07:00  WARN 1636 --- [Thread-5] o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [HikariPool-1 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:269)
+ java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1758)
+ java.base/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1070)
+ java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+ java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+ java.base/java.lang.Thread.run(Thread.java:1623)
+2023-11-19T23:51:36.053-07:00  INFO 1636 --- [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-11-19T23:51:36.057-07:00  INFO 1636 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-11-19T23:51:36.060-07:00  INFO 1636 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2023-11-19T23:51:36.198-07:00  INFO 1636 --- [restartedMain] c.c.c.CinematchAppApplication            : Starting CinematchAppApplication using Java 20.0.2 with PID 1636 (C:\Users\DANIEL\IdeaProjects\Cinematch\backend\target\classes started by DANIEL in C:\Users\DANIEL\IdeaProjects\Cinematch)
+2023-11-19T23:51:36.199-07:00  INFO 1636 --- [restartedMain] c.c.c.CinematchAppApplication            : No active profile set, falling back to 1 default profile: "default"
+2023-11-19T23:51:36.754-07:00  INFO 1636 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-11-19T23:51:36.792-07:00  INFO 1636 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37 ms. Found 7 JPA repository interfaces.
+2023-11-19T23:51:36.972-07:00  INFO 1636 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-11-19T23:51:36.972-07:00  INFO 1636 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-11-19T23:51:36.972-07:00  INFO 1636 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2023-11-19T23:51:37.025-07:00  INFO 1636 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-11-19T23:51:37.026-07:00  INFO 1636 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 822 ms
+2023-11-19T23:51:37.168-07:00  INFO 1636 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-11-19T23:51:37.170-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2023-11-19T23:51:37.191-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5cfe5620
+2023-11-19T23:51:37.191-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2023-11-19T23:51:37.456-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friend_request 
+       modify column request_status  enum ('ACCEPTED','PENDING','REJECTED') not null
+2023-11-19T23:51:37.473-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friendship 
+       modify column friendship_status  enum ('ACCEPTED') not null
+2023-11-19T23:51:37.511-07:00  INFO 1636 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-11-19T23:51:37.743-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-19T23:51:37.747-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-19T23:51:37.750-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-19T23:51:37.751-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-19T23:51:37.753-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-19T23:51:37.756-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        a1_0.avatar_id,
+        a1_0.file_name,
+        a1_0.path,
+        a1_0.file_size 
+    from
+        avatar a1_0 
+    where
+        a1_0.path=?
+2023-11-19T23:51:37.769-07:00  WARN 1636 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'imageController': Unsatisfied dependency expressed through field 'movieService': No qualifying bean of type 'com.cm.cinematchapp.services.MovieService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2023-11-19T23:51:37.770-07:00  INFO 1636 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-11-19T23:51:37.770-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2023-11-19T23:51:37.772-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2023-11-19T23:51:37.773-07:00  INFO 1636 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2023-11-19T23:51:37.787-07:00  INFO 1636 --- [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2023-11-19T23:51:37.839-07:00 ERROR 1636 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field movieService in com.cm.cinematchapp.controllers.ImageController required a bean of type 'com.cm.cinematchapp.services.MovieService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.cm.cinematchapp.services.MovieService' in your configuration.
+
+2023-11-19T23:51:39.359-07:00  INFO 1636 --- [restartedMain] c.c.c.CinematchAppApplication            : Starting CinematchAppApplication using Java 20.0.2 with PID 1636 (C:\Users\DANIEL\IdeaProjects\Cinematch\backend\target\classes started by DANIEL in C:\Users\DANIEL\IdeaProjects\Cinematch)
+2023-11-19T23:51:39.359-07:00  INFO 1636 --- [restartedMain] c.c.c.CinematchAppApplication            : No active profile set, falling back to 1 default profile: "default"
+2023-11-19T23:51:39.703-07:00  INFO 1636 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-11-19T23:51:39.732-07:00  INFO 1636 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 29 ms. Found 7 JPA repository interfaces.
+2023-11-19T23:51:39.853-07:00  INFO 1636 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-11-19T23:51:39.854-07:00  INFO 1636 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-11-19T23:51:39.855-07:00  INFO 1636 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2023-11-19T23:51:39.893-07:00  INFO 1636 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/]     : Initializing Spring embedded WebApplicationContext
+2023-11-19T23:51:39.894-07:00  INFO 1636 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 533 ms
+2023-11-19T23:51:39.988-07:00  INFO 1636 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-11-19T23:51:39.989-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2023-11-19T23:51:40.005-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@52758d20
+2023-11-19T23:51:40.005-07:00  INFO 1636 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2023-11-19T23:51:40.141-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friend_request 
+       modify column request_status  enum ('ACCEPTED','PENDING','REJECTED') not null
+2023-11-19T23:51:40.152-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friendship 
+       modify column friendship_status  enum ('ACCEPTED') not null
+2023-11-19T23:51:40.174-07:00  INFO 1636 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-11-19T23:51:40.351-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-19T23:51:40.353-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-19T23:51:40.355-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-19T23:51:40.356-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-19T23:51:40.358-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-19T23:51:40.360-07:00 DEBUG 1636 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        a1_0.avatar_id,
+        a1_0.file_name,
+        a1_0.path,
+        a1_0.file_size 
+    from
+        avatar a1_0 
+    where
+        a1_0.path=?
+2023-11-19T23:51:40.662-07:00  INFO 1636 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-11-19T23:51:40.696-07:00  INFO 1636 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@59105cb8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b0d4a7e, org.springframework.security.web.context.SecurityContextHolderFilter@d2cb3c5, org.springframework.security.web.header.HeaderWriterFilter@ad35000, org.springframework.web.filter.CorsFilter@58653684, org.springframework.security.web.authentication.logout.LogoutFilter@4aad0256, com.cm.cinematchapp.security.JwtAuthenticationFilter@3dc3b3e3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7a7c40e0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6a3f4cff, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2c2240e7, org.springframework.security.web.session.SessionManagementFilter@4f70fe00, org.springframework.security.web.access.ExceptionTranslationFilter@1ccd7d55, org.springframework.security.web.access.intercept.AuthorizationFilter@4286c6a1]
+2023-11-19T23:51:40.750-07:00  WARN 1636 --- [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-11-19T23:51:40.841-07:00  INFO 1636 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-11-19T23:51:40.859-07:00  INFO 1636 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-11-19T23:51:40.867-07:00  INFO 1636 --- [restartedMain] c.c.c.CinematchAppApplication            : Started CinematchAppApplication in 1.538 seconds (process running for 17869.419)
+2023-11-19T23:51:40.869-07:00  INFO 1636 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
