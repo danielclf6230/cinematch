@@ -39,7 +39,7 @@ function GroupSwipe({ socket, username, room }) {
     };
 
     const maybe = () => {
-        const updatedMaybe = [...maybeCards, { ...cards[currentCard], score: 3 }];
+        const updatedMaybe = [...maybeCards, { ...cards[currentCard] }];
         setMaybeCards(updatedMaybe);
         setCards((prevCards) =>
             prevCards.filter((_, index) => index !== currentCard)
@@ -72,6 +72,11 @@ function GroupSwipe({ socket, username, room }) {
 
 
     useEffect(() => {
+
+        if (cards.length === 0) {
+            handleChooseMovie();
+        }
+
         socket.on('match_result', (matchedCardsWithScores) => {
             const resultText = `You got Matched. The movies are: ${matchedCardsWithScores.map(card => `Movie ${card.id} (Score: ${card.score})`).join(', ')}`;
             setResult(resultText);
@@ -87,7 +92,8 @@ function GroupSwipe({ socket, username, room }) {
             socket.off('match_result');
             // socket.off('no_match_result');
         };
-    }, []);
+    }, [cards]);
+
 
     return (
         <div className="App">
@@ -127,8 +133,8 @@ function GroupSwipe({ socket, username, room }) {
                 ) : (
                     <div>
                         <p>No more movies to swipe!</p>
-                        <button onClick={handleChooseMovie}>Start match</button>
-                        {waiting && <p>Waiting for the other user to choose a number.</p>}
+                        {/*<button onClick={handleChooseMovie}>Start match</button>*/}
+                        {waiting && <p>Other users not finished the swipe</p>}
                         {result && <p>{result}</p>}
                         {/*{renderMoviesList(likedCards, 'Liked Movies')}*/}
                         {/*{renderMoviesList(maybeCards, 'Maybe Movies')}*/}

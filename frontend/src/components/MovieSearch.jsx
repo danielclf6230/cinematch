@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { actionsApi } from '../api/actionsApi';
 import SideMenu from "./SideMenu";
+import PosterPreview from './PosterPreview';
 
 
 function MovieSearch() {
@@ -72,8 +73,7 @@ function MovieSearch() {
                         )}
                         {addedMovie.poster && (
                             <div>
-                                <h3>Poster Image</h3>
-                                <img src={addedMovie.poster.path} alt="Poster" />
+                                <PosterPreview movieId={addedMovie.id} />
                             </div>
                         )}
                     </div>

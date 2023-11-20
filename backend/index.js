@@ -20,24 +20,53 @@ const rooms = {};
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
-  //join room event, if room not exit, create a new room
-  socket.on('join_room', (room) => {
-    if (!rooms[room]) {
-      rooms[room] = [];
-    }
-    //push the user and the choice to the room array
+
+  socket.on('create_room', (room) => {
+    console.log(`Room: ${room}`)
+
+    rooms[room] = [];
     rooms[room].push({ id: socket.id, choice: undefined });
     //User join the room
     socket.join(room);
 
+    if (rooms[room].length !== 2) {
+      // Send an error message to the client
+      socket.emit('waiting', 'Waiting for other user');
+      return;
+    }
+
     //Check the number of user
     if (rooms[room].length === 2) {
-      //Create a new users array with only user ID
       const users = rooms[room].map(user => user.id);
-      //That room emit a event which is room ready, and pass the users data(ID)
       io.to(room).emit('room_ready', users);
     }
   });
+
+
+// join room event, if room not exist, create a new room
+  socket.on('join_room', (room) => {
+    // Check if the room exists
+    if (!rooms[room]) {
+      // Send an error message to the client
+      socket.emit('error', 'The room does not exist');
+      return;
+    }
+
+    if (rooms[room].length === 2) {
+      socket.emit('error', 'The room is full');
+      return;
+    }
+
+    rooms[room].push({ id: socket.id, choice: undefined });
+    socket.join(room);
+
+    if (rooms[room].length === 2) {
+      const users = rooms[room].map(user => user.id);
+      io.to(room).emit('room_ready', users);
+    }
+
+  });
+
 
   function resetChoices(room) {
     rooms[room] = [];
@@ -83,11 +112,9 @@ io.on('connection', (socket) => {
     });
 
     // Convert combinedScores object to an array of objects
-    const sortedCardsWithScores = Object.keys(combinedScores)
-        .map(cardId => ({ id: cardId, score: combinedScores[cardId] }))
+    return Object.keys(combinedScores)
+        .map(cardId => ({id: cardId, score: combinedScores[cardId]}))
         .sort((a, b) => b.score - a.score);
-
-    return sortedCardsWithScores;
   }
 
 // Helper function to get score based on card type
@@ -106,15 +133,16 @@ io.on('connection', (socket) => {
   }
 
 
-  // socket.on('disconnect', () => {
-  //   for (const room in rooms) {
-  //       //Remove the current user(socket.id) form the list when trigger disconnect
-  //     rooms[room] = rooms[room].filter(u => u.id !== socket.id);
-  //     if (rooms[room].length === 0) {
-  //       delete rooms[room];
-  //     }
-  //   }
-  // });
+  socket.on('disconnect', () => {
+    for (const room in rooms) {
+        //Remove the current user(socket.id) form the list when trigger disconnect
+      rooms[room] = rooms[room].filter(u => u.id !== socket.id);
+      if (rooms[room].length === 0) {
+        resetChoices(room);
+        delete rooms[room];
+      }
+    }
+  });
 
 
 });
