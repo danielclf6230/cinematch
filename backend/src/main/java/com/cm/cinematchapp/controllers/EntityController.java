@@ -6,7 +6,6 @@ import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.MovieService;
 import com.cm.cinematchapp.services.UserService;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -138,10 +134,12 @@ public class EntityController {
     }
 
     @GetMapping("/movies")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") //remove ROLE_USER
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<Movie>> getAllMovies() {
         return new ResponseEntity<>(movieService.getAllMovies(), HttpStatus.OK);
     }
+
+
 
     @DeleteMapping("/movies/{movie_id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')") //remove ROLE_USER
