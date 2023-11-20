@@ -39,7 +39,7 @@ function GroupSwipe({ socket, username, room }) {
     };
 
     const maybe = () => {
-        const updatedMaybe = [...maybeCards, { ...cards[currentCard], score: 3 }];
+        const updatedMaybe = [...maybeCards, { ...cards[currentCard] }];
         setMaybeCards(updatedMaybe);
         setCards((prevCards) =>
             prevCards.filter((_, index) => index !== currentCard)
