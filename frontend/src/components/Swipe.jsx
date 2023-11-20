@@ -49,6 +49,19 @@ function Swipe() {
         );
     };
 
+    const renderMoviesList = (movies, title) => (
+        <div>
+            <h3>{title}</h3>
+            <ul>
+                {movies.map((movie, index) => (
+                    <li key={index}>
+                        {`Movie ${movie.id}`}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+
     return (
         <div className="App">
             <SideMenu />
@@ -86,39 +99,14 @@ function Swipe() {
                         </div>
                     </div>
                 ) : (
-                    <p>No more movies to swipe!</p>
+                    <div>
+                        {renderMoviesList(likedCards, 'Liked Movies')}
+                        {renderMoviesList(maybeCards, 'Maybe Movies')}
+                        {renderMoviesList(dislikedCards, 'Disliked Movies')}
+                    </div>
                 )}
 
-                {/*<div className="liked-cards">*/}
-                {/*    <h2>Liked Movies</h2>*/}
-                {/*    <ul>*/}
-                {/*        {likedCards.map((likedCard, index) => (*/}
-                {/*            <li*/}
-                {/*                key={index}*/}
-                {/*            >{`Movie ${likedCard.id} (Score:${likedCard.score})`}</li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
-                {/*<div className="maybe-cards">*/}
-                {/*    <h2>Maybe Movies</h2>*/}
-                {/*    <ul>*/}
-                {/*        {maybeCards.map((maybeCard, index) => (*/}
-                {/*            <li*/}
-                {/*                key={index}*/}
-                {/*            >{`Movie ${maybeCard.id} (Score:${maybeCard.score})`}</li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
-                {/*<div className="disliked-cards">*/}
-                {/*    <h2>Dislike Movies</h2>*/}
-                {/*    <ul>*/}
-                {/*        {dislikedCards.map((dislikeCard, index) => (*/}
-                {/*            <li*/}
-                {/*                key={index}*/}
-                {/*            >{`Movie ${dislikeCard.id} (Score:${dislikeCard.score})`}</li>*/}
-                {/*        ))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
+
             </div>
         </div>
     );
