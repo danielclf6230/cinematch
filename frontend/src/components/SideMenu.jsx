@@ -15,7 +15,7 @@ class SideMenu extends Component {
                 <div>
                     <Link to="/home" className="navbar-brand"><h2>Profile</h2></Link> <br/>
                     <Link to="/swipe" className="navbar-brand"><h2>Messages</h2></Link> <br/>
-                    <Link to="/moviesearch" className="navbar-brand"><h2>Search</h2></Link> <br/>
+                    <Link to="/admin" className="navbar-brand"><h2>Search</h2></Link> <br/>
                 </div>
             </div>
         )}

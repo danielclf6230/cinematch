@@ -29,7 +29,7 @@ function Profile({ userId }) {
     };
 
     return (
-        <div>
+        <div className="App">
             {loading ? (
                 <p>Loading...</p>
             ) : (

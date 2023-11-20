@@ -21,7 +21,7 @@ function Home() {
 
         <div className="App">
             <SideMenu />
-            <div className="col">
+            <div className="profile">
                 <h2>User Information</h2>
                 <ul>
                     <AvatarUpload />

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import cardData from "./cardData";
 import Button from "./Button";
 import { swipefunction } from "./swipeUtils";
 import SideMenu from "./SideMenu";
+import MovieList from "./MovieList";
+import {entitiesApi} from "../api/entitiesApi";
+import {getMoviePosterById} from "../api/imagesApi";
 
 function Swipe() {
-    const [cards, setCards] = useState(cardData);
+    const [cards, setCards] = useState([]);
     const [currentCard, setCurrentCard] = useState(0);
     const [likedCards, setLikedCards] = useState([]);
     const [dislikedCards, setDislikedCards] = useState([]);
@@ -47,6 +50,30 @@ function Swipe() {
         setCards((prevCards) =>
             prevCards.filter((_, index) => index !== currentCard)
         );
+    };
+
+    useEffect(() => {
+        // Fetch movie data when the component mounts
+        fetchMovieData();
+    }, []);
+
+
+    const fetchMovieData = async () => {
+        try {
+            // Fetch movie data from the MovieList component
+            const movieData = await entitiesApi.getMovies(); // Use the actual function or method to fetch data from MovieList
+
+            // Update cardData with the formatted movie data
+            const updatedCardData = movieData.map(movie => ({
+                id: movie.id,
+                image: getMoviePosterById(movie.id),
+                score: 0,
+            }));
+
+            setCards(updatedCardData);
+        } catch (error) {
+            console.error('Error fetching movie data:', error);
+        }
     };
 
     const renderMoviesList = (movies, title) => (

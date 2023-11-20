@@ -3,9 +3,9 @@ html body {
 }
 
 .App {
-  text-align: center;
+  /*text-align: center;*/
   display: flex;
-  height: 100%;
+  /*height: 100vh;*/
 }
 
 .App-logo {
@@ -218,12 +218,12 @@ button:hover {
 }
 
 .sideMenu {
-  width: 200px;
+  width: 200px !important;
   padding: 20px;
-  height: 100vh;
+  min-height: 100vh;
   flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
   background-color: #FBE4A9; /* Optional: Set a background color for the side menu */
-  border-right: 10px solid #ccc; /* Optional: Add a border on the right side */
+  /*border-right: 10px solid #ccc; !* Optional: Add a border on the right side *!*/
 }
 
 
@@ -247,4 +247,26 @@ button:hover {
 /* ROOM STYLING */
 .Room h1 {
   color: #FFBC10;
+}
+
+.profile {
+  text-align: center;
+}
+
+.searchArea {
+  width: 90%;
+  background-color: #FFBC10;
+  text-align: center;
+  min-height: 80vh;
+  margin: auto;
+  margin-bottom: 10% !important;
+  padding: 20px;
+}
+
+.desc {
+  text-align: left;
+}
+
+ul {
+  list-style: none; /* Remove list-style dots */
 }

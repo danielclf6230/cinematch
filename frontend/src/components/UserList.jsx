@@ -63,14 +63,14 @@ function UserList() {
     return (
         <div>
             <h2>User List</h2>
-            <div>
-                <input
-                    type="text"
-                    placeholder="Search by username"
-                    value={searchQuery}
-                    onChange={handleInputChange} // Update results as you type
-                />
-            </div>
+            {/*<div>*/}
+            {/*    <input*/}
+            {/*        type="text"*/}
+            {/*        placeholder="Search by username"*/}
+            {/*        value={searchQuery}*/}
+            {/*        onChange={handleInputChange} // Update results as you type*/}
+            {/*    />*/}
+            {/*</div>*/}
             {loading ? (
                 <p>Loading...</p>
             ) : (
@@ -93,7 +93,7 @@ function UserList() {
                                     <td>
                                         <button
                                             onClick={() => handleOpenProfile(user.userId)}
-                                            style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                                            style={{ background: 'white', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
                                         >
                                             {user.username}
                                         </button>

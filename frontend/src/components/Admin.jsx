@@ -1,15 +1,17 @@
 import React from 'react';
 import { adminRoute } from '../security/AuthContext';
 import MovieSearch from "./MovieSearch";
+import SideMenu from "./SideMenu";
 
 function Admin() {
     return (
-        <div>
-            <h1>Admin Dashboard</h1>
-            <p>Welcome, Admin!</p>
-            <MovieSearch />
+        <div className="row">
+            <SideMenu />
+            <div className="col">
+                <h1>Admin Dashboard - Welcome Admin!</h1>
+                <MovieSearch />
+            </div>
         </div>
-
     );
 }
 
