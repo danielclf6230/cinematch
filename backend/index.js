@@ -133,15 +133,16 @@ io.on('connection', (socket) => {
   }
 
 
-  // socket.on('disconnect', () => {
-  //   for (const room in rooms) {
-  //       //Remove the current user(socket.id) form the list when trigger disconnect
-  //     rooms[room] = rooms[room].filter(u => u.id !== socket.id);
-  //     if (rooms[room].length === 0) {
-  //       delete rooms[room];
-  //     }
-  //   }
-  // });
+  socket.on('disconnect', () => {
+    for (const room in rooms) {
+        //Remove the current user(socket.id) form the list when trigger disconnect
+      rooms[room] = rooms[room].filter(u => u.id !== socket.id);
+      if (rooms[room].length === 0) {
+        resetChoices(room);
+        delete rooms[room];
+      }
+    }
+  });
 
 
 });
