@@ -5,7 +5,16 @@ export const entitiesApi = {
     getUsers,
     getUsersByUsername,
     getUsersById,
+    sendFriendRequest,
+    removeFriendRequest,
+    getFriendRequests,
+    acceptFriendRequest,
+    deleteFriendRequest,
+    getFriends,
+    getFriend,
+    removeFriend,
     getMovies,
+    deleteMovie,
 }
 export function getUserInfo(token) {
     console.log('Bearer token:', bearerAuth(token));
@@ -29,8 +38,55 @@ export async function getUsersById(userId) {
     return response.data;
 }
 
+export async function sendFriendRequest(recipientUserId) {
+    //we need to figure out what to do if a friend request exists, make button not appear
+    const response = await apiConfig.post(`/entities/users/friend-requests/${recipientUserId}`);
+    return response.data;
+}
+
+export async function removeFriendRequest(recipientUserId) {
+    const response = await apiConfig.delete(`/entities/users/friend-requests/${recipientUserId}`);
+    return response.data;
+}
+
+export async function getFriendRequests() {
+    const response = await apiConfig.get(`/entities/friend-requests`);
+    return response.data;
+}
+
+export async function acceptFriendRequest(requestId) {
+    const response = await apiConfig.put(`/entities/friend-requests/${requestId}`);
+    return response.data;
+}
+
+export async function deleteFriendRequest(requestId) {
+    const response = await apiConfig.delete(`/entities/friend-requests/${requestId}`);
+    return response.data;
+}
+
+export async function getFriends() {
+    const response = await apiConfig.get(`/entities/friends`);
+    return response.data;
+}
+
+export async function getFriend(friendUserId) {
+    const response = await apiConfig.get(`/entities/friends/${friendUserId}`);
+    return response.data;
+}
+
+export async function removeFriend(friendUserId) {
+    const response = await apiConfig.delete(`/entities/friends/${friendUserId}`);
+    return response.data;
+}
+
+
 export async function getMovies() {
     const response = await apiConfig.get(`/entities/movies`);
-    return response.data;//supposedly returns list of movies
+    return response.data;
+}
+
+export async function deleteMovie(movieId) {
+    const response = await apiConfig.delete(`/entities/movies/${movieId}`); //admin method
+    return response.data;
 }
 

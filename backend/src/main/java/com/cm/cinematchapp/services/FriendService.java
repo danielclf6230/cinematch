@@ -161,13 +161,10 @@ public class FriendService {
     }
 
 
-    /**
-     * Remove a friendship between two users.
-     *
-     * @param friendUser Friend of the authenticated user in current session.
-     */
-    public void removeFriend(User friendUser) {
 
+    public void removeFriend(Long friendUserId) {
+
+        User friendUser = userRepository.findByUserId(friendUserId).orElse(null);
         User user = securityService.getCurrentLoginUser().get();
 
         // Find the friendship record to delete for user A

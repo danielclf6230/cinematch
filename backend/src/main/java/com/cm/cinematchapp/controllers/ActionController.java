@@ -130,7 +130,7 @@ public class ActionController {
 //    }
 
     @PostMapping("/movie/search")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") // Remove ROLE_USER if necessary
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") // Remove ROLE_USER if necessary
     public ResponseEntity<List<Movie>> searchForMovie(@RequestBody String title) {
         try {
             return new ResponseEntity<>(movieService.searchForMovie(title), HttpStatus.OK);
@@ -140,7 +140,7 @@ public class ActionController {
     }
 
     @PostMapping("/movie/add")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')") //remove ROLE_USER
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") //remove ROLE_USER
     public ResponseEntity<Movie> createMovie(@RequestBody @Valid Movie movie) {
         try {
             return new ResponseEntity<>(movieService.createMovie(movie), HttpStatus.CREATED);

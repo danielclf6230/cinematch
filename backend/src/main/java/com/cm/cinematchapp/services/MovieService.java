@@ -3,6 +3,7 @@ package com.cm.cinematchapp.services;
 
 import com.cm.cinematchapp.constants.EntityConstants;
 import com.cm.cinematchapp.entities.*;
+import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
 import com.cm.cinematchapp.repositories.MoviePosterRepository;
 import com.cm.cinematchapp.repositories.MovieRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,6 +51,10 @@ public class MovieService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll();
+    }
 
     public List<Movie> searchForMovie(String title) throws JsonProcessingException {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -124,6 +129,23 @@ public class MovieService {
         return createdMovie;
     }
 
+    public void deleteMovieById(Long movieId) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+
+        if (movie != null) {
+            MoviePoster poster = movie.getPoster();
+
+            if (poster != null) {
+                movie.setPoster(null);
+                moviePosterRepository.delete(poster);
+            }
+
+            movieRepository.delete(movie);
+        } else {
+            throw new ResourceNotFoundException("Movie does not exist");
+        }
+    }
+
     public byte[] getMoviePosterByMovieId(Long movieId) throws IOException{
         Movie movie = movieRepository.getMovieById(movieId);
         MoviePoster moviePoster = movie.getPoster();
@@ -165,6 +187,45 @@ public class MovieService {
 
             return moviePoster;
         }
+    }
+
+
+    public MoviePoster uploadPoster(Long movieId, MultipartFile posterFile) throws IOException {
+
+        Movie movie = movieRepository.getMovieById(movieId);
+
+        //TODO change to cloud? something else rather than local file?
+
+        String fileName = generateUniqueFileName();
+        String filePath = kPostersPath + fileName;
+        Path localPath = Paths.get(filePath);
+
+        Files.copy(posterFile.getInputStream(), localPath, StandardCopyOption.REPLACE_EXISTING);
+
+        MoviePoster poster = new MoviePoster();
+        poster.setFilename(fileName);
+        poster.setPath(filePath);
+        poster.setSize(posterFile.getSize());
+        poster = moviePosterRepository.save(poster);
+
+        if (movieRepository.posterExistByMovieId(movieId)) {
+            deletePoster(movie);
+        }
+
+        movie.setPoster(poster);
+        movieRepository.save(movie);
+        return poster;
+    }
+
+    public void deletePoster(Movie movie) throws IOException{
+            MoviePoster poster = movie.getPoster();
+            String posterPath = poster.getPath();
+            Path path = Paths.get(posterPath);
+
+            movie.setPoster(null);
+            moviePosterRepository.delete(poster);
+
+            Files.delete(path);
     }
 
 

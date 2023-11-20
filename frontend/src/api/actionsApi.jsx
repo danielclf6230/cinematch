@@ -26,10 +26,6 @@ export function selectMovie(selectedMovie) {
     return apiConfig.post('/actions/movie/add', selectedMovie)
 }
 
-export async function getMovies() {
-    const response = await apiConfig.get('/entities/movies');
-    return response.data; // Return the list of users
-}
 
 
 

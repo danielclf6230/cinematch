@@ -1,6 +1,7 @@
 package com.cm.cinematchapp.controllers;
 
 import com.cm.cinematchapp.entities.Avatar;
+import com.cm.cinematchapp.entities.MoviePoster;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.services.MovieService;
 import com.cm.cinematchapp.services.SecurityService;
@@ -56,12 +57,21 @@ public class ImageController {
         return new ResponseEntity<>(userService.getAvatarById(userId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PostMapping("/upload/movie/{movie_id}")
+    public ResponseEntity<MoviePoster> uploadMoviePoster(
+            @PathVariable("movie_id") Long movieId,
+            @RequestParam("file") MultipartFile moviePosterFile) throws IOException {
+        return new ResponseEntity<>(movieService.uploadPoster(movieId, moviePosterFile), HttpStatus.OK);
+    }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/movie/{movieId}")
     public ResponseEntity<byte[]> getMoviePoster(@PathVariable Long movieId) throws IOException {
         return new ResponseEntity<>(movieService.getMoviePosterByMovieId(movieId), HttpStatus.OK);
     }
+
+
 
 
 }
