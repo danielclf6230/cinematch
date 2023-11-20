@@ -39,7 +39,7 @@ export async function uploadAvatar(formData) {
 
 export async function getMoviePosterById(movieId) {
     return apiConfig
-        .get(`/movie/${movieId}`, { responseType: 'arraybuffer' })
+        .get(`/images/movie/${movieId}`, { responseType: 'arraybuffer' })
         .then((response) => response.data)
         .catch((error) => {
             throw new Error('Error fetching movie poster by ID: ' + error);
@@ -49,7 +49,7 @@ export async function getMoviePosterById(movieId) {
 export async function uploadMoviePoster(movieId, formData) {
     //admin method
     return apiConfig
-        .post(`/movie/${movieId}`, formData, {headers: { 'Content-Type': 'multipart/form-data', },})
+        .post(`/images/movie/${movieId}`, formData, {headers: { 'Content-Type': 'multipart/form-data', },})
         .then((response) => response.data)
         .catch((error) => {
             console.log(error)

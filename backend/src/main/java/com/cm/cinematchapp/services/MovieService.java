@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,9 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.io.*;
 import java.net.*;
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
 
 import static com.cm.cinematchapp.constants.EntityConstants.kPostersPath;
 
@@ -145,6 +141,9 @@ public class MovieService {
             throw new ResourceNotFoundException("Movie does not exist");
         }
     }
+
+
+
 
     public byte[] getMoviePosterByMovieId(Long movieId) throws IOException{
         Movie movie = movieRepository.getMovieById(movieId);
