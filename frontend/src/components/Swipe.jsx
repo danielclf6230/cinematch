@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import cardData from "./cardData";
 import Button from "./Button";
 import { swipefunction } from "./swipeUtils";
 import SideMenu from "./SideMenu";
-import MovieList from "./MovieList";
 import {entitiesApi} from "../api/entitiesApi";
-import {getMoviePosterById} from "../api/imagesApi";
+import {getMoviePosterById, imagesApi} from "../api/imagesApi";
 
 function Swipe() {
     const [cards, setCards] = useState([]);
@@ -61,12 +59,17 @@ function Swipe() {
     const fetchMovieData = async () => {
         try {
             // Fetch movie data from the MovieList component
-            const movieData = await entitiesApi.getMovies(); // Use the actual function or method to fetch data from MovieList
+            const movieData = await entitiesApi.getMovies();
 
-            // Update cardData with the formatted movie data
-            const updatedCardData = movieData.map(movie => ({
+            // Use Promise.all to fetch all posters concurrently
+            const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
+            const posterDataArray = await Promise.all(posterPromises);
+
+            // Update cardData with the formatted movie data including posters
+            const updatedCardData = movieData.map((movie, index) => ({
                 id: movie.id,
-                image: getMoviePosterById(movie.id),
+                image: URL.createObjectURL(new Blob([posterDataArray[index]])),
+                title: movie.title, //this allows to print the title after
                 score: 0,
             }));
 
@@ -76,13 +79,27 @@ function Swipe() {
         }
     };
 
+    const fetchMoviePoster = async (movieId) => {
+        try {
+            // Fetch the movie poster using getMoviePosterById with movieId
+            const posterData = await imagesApi.getMoviePosterById(movieId);
+
+            // Return the poster data
+            return posterData;
+        } catch (error) {
+            console.error('Error fetching movie poster:', error);
+            // Return a placeholder or default poster data in case of an error
+            // return defaultPosterData;
+        }
+    };
+
     const renderMoviesList = (movies, title) => (
         <div>
             <h3>{title}</h3>
             <ul>
-                {movies.map((movie, index) => (
-                    <li key={index}>
-                        {`Movie ${movie.id}`}
+                {movies.map((movie) => (
+                    <li key={movie.id}>
+                        {`Movie ${movie.title}`}
                     </li>
                 ))}
             </ul>
@@ -106,7 +123,6 @@ function Swipe() {
                                 alt={`Card ${cards[currentCard].id}`}
                             />
                         </div>
-
                         <div className="buttons col align-self-center">
                             <Button
                                 onClick={() => swipe("left")}
