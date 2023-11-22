@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import socket from "../components/socket";
-import AuthContext from "../../../../Cinematch4.0/frontend/src/security/AuthContext";
+import AuthContext from "../security/AuthContext";
+
 
 const useSocketSetup = () => {
     const { userLogout } = useContext(AuthContext); // Assuming userLogout is a function in your AuthContext
