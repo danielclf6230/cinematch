@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 import GroupSwipe from "./GroupSwipe";
 import SideMenu from "./SideMenu";
-
-const socket = io.connect('http://localhost:3001');
-
+import socket from "./socket";
+import useSocketSetup from "./useSocketSetup";
 
 function Room() {
+    useSocketSetup();
     const [username, setUsername] = useState("");
     const [room, setRoom] = useState('');
     const [showSwipe, setShowSwipe] = useState(false);
