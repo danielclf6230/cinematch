@@ -15,10 +15,38 @@ const io = new Server(server, {
 });
 
 const rooms = {};
+const connectedUsers = {};
 
 //connected user
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
+
+  connectedUsers[socket.id] = {};
+
+  socket.on('sendFriendRequest', (request) => {
+    const targetSocket = io.sockets.sockets.get(request.id);
+    if (targetSocket) {
+      targetSocket.emit('friendRequest', { ...request, id: socket.id });
+    }
+  });
+
+  socket.on('acceptFriendRequest', (request) => {
+    const targetSocket = io.sockets.sockets.get(request.id);
+    if (targetSocket) {
+      targetSocket.emit('friendRequestAccepted', { id: socket.id });
+      socket.emit('friendRequestAccepted', { id: request.id });
+    }
+  });
+
+
+  socket.on('rejectFriendRequest', (request) => {
+    const targetSocket = io.sockets.sockets.get(request.id);
+    if (targetSocket) {
+      targetSocket.emit('friendRequestRejected', { id: socket.id });
+      socket.emit('friendRequestRejected', { id: request.id });
+    }
+  });
+
 
 
   socket.on('create_room', (room) => {
