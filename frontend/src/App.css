@@ -212,6 +212,7 @@ button {
   margin: 100px; /* Add margin to separate the buttons (adjust as needed) */
 }
 
+
 /* On hover, darken button color */
 button:hover {
   background-color: #FFBC10;

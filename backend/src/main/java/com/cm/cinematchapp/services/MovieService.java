@@ -60,7 +60,7 @@ public class MovieService {
         HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(EntityConstants.kRapidApiUrl)
-                .queryParam("title", title)
+                .queryParam("title", title.replace(" ", "%20"))
                 .queryParam("country", "ca")
                 .queryParam("show_type", "movie")
                 .queryParam("output_language", "en");
