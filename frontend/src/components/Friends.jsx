@@ -1,6 +1,6 @@
 // App.js
 import React, {useEffect, useState} from 'react';
-import {entitiesApi, getFriends, sendFriendRequest} from '../api/entitiesApi';
+import {entitiesApi} from '../api/entitiesApi';
 import SideMenu from "./SideMenu";
 
 const Friends = () => {
@@ -8,6 +8,7 @@ const Friends = () => {
     const [searchResult, setSearchResult] = useState([]);
     const [error, setError] = useState(null);
     const [friendList, setFriendList]= useState([]);
+    const [requestList, setRequestList]= useState([]);
 
     const handleSearchUser = async () => {
         try {
@@ -52,9 +53,8 @@ const Friends = () => {
 
 
     useEffect(() => {
-        // Fetch movie data when the component mounts
         fetchFriendsData();
-
+        fetchFriendRequest();
     }, []);
 
     const fetchFriendsData = async () => {
@@ -72,6 +72,23 @@ const Friends = () => {
         }
     };
 
+
+    const fetchFriendRequest = async () => {
+        try {
+            const friendRequestData = await entitiesApi.getFriendRequests();
+
+            const updatedRequestList = friendRequestData.map((request) => ({
+                request_id: request.request_id,
+                request_status: request.request_status,
+                recipient_id: request.recipient_id,
+                requester_id: request.requester_id,
+            }));
+
+            setRequestList(updatedRequestList);
+        } catch (error) {
+            console.error('Error fetching request data:', error);
+        }
+    };
 
     return (
         <div className="App">
@@ -109,6 +126,19 @@ const Friends = () => {
                         ))}
                     </ul>
                 </div>
+
+                <div>
+                    <h2>Friend Request</h2>
+                    <ul>
+                        {requestList.map((request) => (
+                            <li key={request.request_id}>
+                                {request.requester_id}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+
             </div>
         </div>
     );
