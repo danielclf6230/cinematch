@@ -1,12 +1,13 @@
 // App.js
-import React, { useState } from 'react';
-import {entitiesApi, sendFriendRequest} from '../api/entitiesApi';
+import React, {useEffect, useState} from 'react';
+import {entitiesApi, getFriends, sendFriendRequest} from '../api/entitiesApi';
 import SideMenu from "./SideMenu";
 
 const Friends = () => {
     const [searchUserName, setSearchUserName] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [error, setError] = useState(null);
+    const [friendList, setFriendList]= useState([]);
 
     const handleSearchUser = async () => {
         try {
@@ -50,6 +51,28 @@ const Friends = () => {
     };
 
 
+    useEffect(() => {
+        // Fetch movie data when the component mounts
+        fetchFriendsData();
+
+    }, []);
+
+    const fetchFriendsData = async () => {
+        try {
+            const friendListData = await entitiesApi.getFriends();
+
+            const updatedFriendList = friendListData.map((friend) => ({
+                userID: friend.userID,
+                username: friend.username,
+            }));
+
+            setFriendList(updatedFriendList);
+        } catch (error) {
+            console.error('Error fetching friend data:', error);
+        }
+    };
+
+
     return (
         <div className="App">
             <SideMenu />
@@ -78,7 +101,13 @@ const Friends = () => {
 
                 <div>
                     <h2>Friend List</h2>
-
+                    <ul>
+                        {friendList.map((friend) => (
+                            <li key={friend.userId}>
+                                {friend.username}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
