@@ -19,18 +19,14 @@ const Friends = () => {
             }
             const userSearch = await entitiesApi.getUsersByUsername(searchUserName);
             console.log(userSearch);
-            const updatedUserSearch = userSearch.map((user) => ({
-                username: user.username,
-                userId: user.userId,
-            }));
 
 
-            if(updatedUserSearch.length===0){
+            if(userSearch.length===0){
                 setError('No user found');
                 return;
             }
 
-            setSearchResult(updatedUserSearch); // Ensure searchResult is always an array
+            setSearchResult(userSearch); // Ensure searchResult is always an array
             setError(null);
 
         } catch (error) {
@@ -39,6 +35,20 @@ const Friends = () => {
         }
     };
 
+    const handleAcceptFriendRequest = async (requestId) => {
+        try {
+            // Call the acceptFriendRequest function from entitiesApi
+            await entitiesApi.acceptFriendRequest(requestId);
+            // Optionally, you can update the request list or perform any other actions
+            console.log('Friend request accepted successfully');
+            // After accepting the request, you may want to refresh the friend requests list
+            fetchFriendsData();
+            fetchFriendRequest();
+        } catch (error) {
+            console.error('Error accepting friend request:', error);
+            // Handle the error, e.g., show an error message to the user
+        }
+    };
     const handleSendFriendRequest = async (recipientUserId) => {
         try {
             // Call the sendFriendRequest function from entitiesApi
@@ -51,6 +61,20 @@ const Friends = () => {
         }
     };
 
+    const handleDeleteFriend = async (friendUserId) => {
+        try {
+            await entitiesApi.removeFriend(friendUserId);
+            // Update friend list after successful deletion
+            const updatedFriendList = friendList.filter(friend => friend.userId !== friendUserId);
+            setFriendList(updatedFriendList);
+            console.log('Friend Deleted');
+        } catch (error) {
+            console.error('Error delete friend:', error);
+            // Handle the error, e.g., show an error message to the user
+        }
+    };
+
+
 
     useEffect(() => {
         fetchFriendsData();
@@ -60,13 +84,7 @@ const Friends = () => {
     const fetchFriendsData = async () => {
         try {
             const friendListData = await entitiesApi.getFriends();
-
-            const updatedFriendList = friendListData.map((friend) => ({
-                userID: friend.userID,
-                username: friend.username,
-            }));
-
-            setFriendList(updatedFriendList);
+            setFriendList(friendListData);
         } catch (error) {
             console.error('Error fetching friend data:', error);
         }
@@ -76,15 +94,8 @@ const Friends = () => {
     const fetchFriendRequest = async () => {
         try {
             const friendRequestData = await entitiesApi.getFriendRequests();
-
-            const updatedRequestList = friendRequestData.map((request) => ({
-                request_id: request.request_id,
-                request_status: request.request_status,
-                recipient_id: request.recipient_id,
-                requester_id: request.requester_id,
-            }));
-
-            setRequestList(updatedRequestList);
+            setRequestList(friendRequestData);
+            console.log(friendRequestData);
         } catch (error) {
             console.error('Error fetching request data:', error);
         }
@@ -122,7 +133,11 @@ const Friends = () => {
                         {friendList.map((friend) => (
                             <li key={friend.userId}>
                                 {friend.username}
+                                <button onClick={() => handleDeleteFriend(friend.userId)}>
+                                    Delete
+                                </button>
                             </li>
+
                         ))}
                     </ul>
                 </div>
@@ -131,14 +146,21 @@ const Friends = () => {
                     <h2>Friend Request</h2>
                     <ul>
                         {requestList.map((request) => (
-                            <li key={request.request_id}>
-                                {request.requester_id}
+                            <li key={request.requestId}>
+                                {request.requester && (
+                                    <>
+                                        {request.requester.username} wants to be your friend
+                                        {request.requestStatus === 'PENDING' && (
+                                            <button onClick={() => handleAcceptFriendRequest(request.requestId)}>
+                                                Accept
+                                            </button>
+                                        )}
+                                    </>
+                                )}
                             </li>
                         ))}
                     </ul>
                 </div>
-
-
             </div>
         </div>
     );
