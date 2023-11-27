@@ -48,18 +48,6 @@ function GroupSwipe({ socket, username, room }) {
         );
     };
 
-    // const renderMoviesList = (movies, title) => (
-    //     <div>
-    //         <h3>{title}</h3>
-    //         <ul>
-    //             {movies.map((movie, index) => (
-    //                 <li key={index}>
-    //                     {`Movie ${movie.id} (Score:${movie.score})`}
-    //                 </li>
-    //             ))}
-    //         </ul>
-    //     </div>
-    // );
 
     const handleChooseMovie = () => {
         if (likedCards !== null && room !== '') {
@@ -72,40 +60,40 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
-    const fetchMovieData = async () => {
-        try {
-            // Fetch movie data from the MovieList component
-            const movieData = await entitiesApi.getMovies();
-
-            // Use Promise.all to fetch all posters concurrently
-            const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
-            const posterDataArray = await Promise.all(posterPromises);
-
-            // Update cardData with the formatted movie data including posters
-            const updatedCardData = movieData.map((movie, index) => ({
-                id: movie.id,
-                image: URL.createObjectURL(new Blob([posterDataArray[index]])),
-                title: movie.title, //this allows to print the title after
-                score: 0,
-            }));
-
-            setCards(updatedCardData);
-        } catch (error) {
-            console.error('Error fetching movie data:', error);
-        }
-    };
-
-    const fetchMoviePoster = async (movieId) => {
-        try {
-            // Fetch the movie poster using getMoviePosterById with movieId
-            // Return the poster data
-            return await imagesApi.getMoviePosterById(movieId);
-        } catch (error) {
-            console.error('Error fetching movie poster:', error);
-            // Return a placeholder or default poster data in case of an error
-            // return defaultPosterData;
-        }
-    };
+    // const fetchMovieData = async () => {
+    //     try {
+    //         // Fetch movie data from the MovieList component
+    //         const movieData = await entitiesApi.getMovies();
+    //
+    //         // Use Promise.all to fetch all posters concurrently
+    //         const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
+    //         const posterDataArray = await Promise.all(posterPromises);
+    //
+    //         // Update cardData with the formatted movie data including posters
+    //         const updatedCardData = movieData.map((movie, index) => ({
+    //             id: movie.id,
+    //             image: URL.createObjectURL(new Blob([posterDataArray[index]])),
+    //             title: movie.title, //this allows to print the title after
+    //             score: 0,
+    //         }));
+    //
+    //         setCards(updatedCardData);
+    //     } catch (error) {
+    //         console.error('Error fetching movie data:', error);
+    //     }
+    // };
+    //
+    // const fetchMoviePoster = async (movieId) => {
+    //     try {
+    //         // Fetch the movie poster using getMoviePosterById with movieId
+    //         // Return the poster data
+    //         return await imagesApi.getMoviePosterById(movieId);
+    //     } catch (error) {
+    //         console.error('Error fetching movie poster:', error);
+    //         // Return a placeholder or default poster data in case of an error
+    //         // return defaultPosterData;
+    //     }
+    // };
 
 
     useEffect(() => {
@@ -115,13 +103,15 @@ function GroupSwipe({ socket, username, room }) {
         }
 
         socket.on('match_result', (matchedCardsWithScores) => {
-            console.log(matchedCardsWithScores)
-            const resultList = matchedCardsWithScores.map((card, index) => (
-                <li key={index}>
-                    {`${index + 1}. ${card.title} (Score: ${card.score})`}
-                </li>
-            ));
-            setResult(resultList);
+            console.log(matchedCardsWithScores);
+            const formattedResult = matchedCardsWithScores
+                .slice(0, 3)
+                .map((card, index) => (
+                    <li key={index}>
+                        {index + 1}. {card.title} (Score: {card.score})
+                    </li>
+                ));
+            setResult(formattedResult);
             setWaiting(false);
         });
 
@@ -136,10 +126,10 @@ function GroupSwipe({ socket, username, room }) {
         };
     }, [cards]);
 
-    useEffect(() => {
-        // Fetch movie data when the component mounts
-        fetchMovieData();
-    }, []);
+    // useEffect(() => {
+    //     // Fetch movie data when the component mounts
+    //     fetchMovieData();
+    // }, []);
 
 
     return (
@@ -179,23 +169,8 @@ function GroupSwipe({ socket, username, room }) {
                     </div>
                 ) : (
                     <div className="cm-form">
-                        {/*<button onClick={handleChooseMovie}>Start match</button>*/}
                         {waiting && <p>Wait for other users to finish...</p>}
-
-                        {result && (
-                            <ul className="result-list">
-                                {result.slice(0, 3).map((item, index) => (
-                                    <li key={index} className="result-item">
-                                        <span className="index">{index + 1}.</span>
-                                        <span className="content">{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-
-                        {/*{renderMoviesList(likedCards, 'Liked Movies')}*/}
-                        {/*{renderMoviesList(maybeCards, 'Maybe Movies')}*/}
-                        {/*{renderMoviesList(dislikedCards, 'Disliked Movies')}*/}
+                        {result && <ul className="result-list">{result}</ul>}
                     </div>
                 )}
             </div>
