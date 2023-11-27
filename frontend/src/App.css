@@ -270,3 +270,10 @@ button:hover {
 ul {
   list-style: none; /* Remove list-style dots */
 }
+
+/*Room styling*/
+.cm-form.room {
+  height: 20rem;
+  background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
+}
+

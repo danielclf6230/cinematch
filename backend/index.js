@@ -73,6 +73,7 @@ io.on('connection', (socket) => {
 
 // join room event, if room not exist, create a new room
   socket.on('join_room', (room) => {
+    console.log(rooms[room]);
     // Check if the room exists
     if (!rooms[room]) {
       // Send an error message to the client

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import GroupSwipe from "./GroupSwipe";
 import SideMenu from "./SideMenu";
-import {io} from "socket.io-client";
+
+const socket = io.connect('http://localhost:3001');
+
 
 function Room() {
-    const socket = new io('http://localhost:3001');
     const [username, setUsername] = useState("");
     const [room, setRoom] = useState('');
     const [showSwipe, setShowSwipe] = useState(false);
@@ -37,7 +39,7 @@ function Room() {
 
         if (errorMessage === "The room does not exist" || errorMessage !== "The room is full" || errorMessage !== "The room cannot be empty") {
             setShowSwipe(true);
-    }
+        }
 
     };
 
@@ -70,26 +72,30 @@ function Room() {
     return (
         <div className="App">
             <SideMenu/>
-
             {!showSwipe && !waiting && (
-                <div className="Room text-center">
+                <div className="cm-form room">
                     <div>
-                        <h1>Create Room</h1>
+                        <h2>Create Room</h2>
                         <button onClick={createRoom}>Create Room</button>
                     </div>
+                    <br/>
                     <div>
-                        <h1>Join Room</h1>
-                        <input
-                            type="text"
-                            onChange={(event) => {
-                                setRoom(event.target.value);
-                            }}
-                            placeholder="Enter Room Number"
-                        />
+                        <h2>Join Room</h2>
+                        <label className="custom-field">
+                            <input
+                                type="text"
+                                onChange={(event) => {
+                                    setRoom(event.target.value);
+                                }}
+                                placeholder="Room Number"
+                            />
+                        </label>
+
                         <button onClick={joinRoom}>Join Room</button>
                         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     </div>
                 </div>
+
             )}
 
             {!showSwipe && waiting && (
