@@ -175,10 +175,11 @@ function GroupSwipe({ socket, username, room }) {
                         </div>
                     </div>
                 ) : (
-                    <div className="cm-form">
+                    <div className="cm-form result">
                         {waiting && <p>Wait for other users to finish...</p>}
                         {result && <ul className="result-list">{result}</ul>}
                     </div>
+
                 )}
             </div>
         </div>
