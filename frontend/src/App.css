@@ -275,5 +275,18 @@ ul {
 .cm-form.room {
   height: 20rem;
   background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
+  text-align: center; /* Center-align the content */
 }
+
+
+.cm-form.waitingRoom {
+  height: 20rem;
+  background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
+  justify-content: flex-start;
+}
+
+.cm-form.waitingRoom h3 {
+  margin-bottom: 80px; /* Add some bottom margin to separate room number and waiting message */
+}
+
 

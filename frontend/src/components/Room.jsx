@@ -99,12 +99,9 @@ function Room() {
             )}
 
             {!showSwipe && waiting && (
-                <div className="Room text-center">
-                    <div>
-                        <h3>Room: {room}</h3>
-                        <p>{waitingMessage}</p>
-                    </div>
-
+                <div className="cm-form waitingRoom">
+                    <h3>Room: {room}</h3>
+                   <p>{waitingMessage}</p>
                 </div>
             )}
 
