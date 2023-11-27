@@ -107,7 +107,7 @@ function Room() {
 
             {showSwipe && !waiting &&(
                 <div>
-                    <h3>Room: {room}</h3>
+                    <h3 className="roomNumber">Room: {room}</h3>
                     <GroupSwipe socket={socket} username={username} room={room}/>
                 </div>
             )}

@@ -6,7 +6,7 @@ import {entitiesApi} from "../api/entitiesApi";
 import {imagesApi} from "../api/imagesApi";
 
 function GroupSwipe({ socket, username, room }) {
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState(cardData);
     const [currentCard, setCurrentCard] = useState(0);
     const [likedCards, setLikedCards] = useState([]);
     const [dislikedCards, setDislikedCards] = useState([]);
@@ -115,8 +115,13 @@ function GroupSwipe({ socket, username, room }) {
         }
 
         socket.on('match_result', (matchedCardsWithScores) => {
-            const resultText = `You got Matched. The movies are: ${matchedCardsWithScores.map(card => `Movie ${card.id} (Score: ${card.score})`).join(', ')}`;
-            setResult(resultText);
+            console.log(matchedCardsWithScores)
+            const resultList = matchedCardsWithScores.map((card, index) => (
+                <li key={index}>
+                    {`${index + 1}. ${card.title} (Score: ${card.score})`}
+                </li>
+            ));
+            setResult(resultList);
             setWaiting(false);
         });
 
@@ -173,11 +178,21 @@ function GroupSwipe({ socket, username, room }) {
                         </div>
                     </div>
                 ) : (
-                    <div>
-                        <p>No more movies to swipe!</p>
+                    <div className="cm-form">
                         {/*<button onClick={handleChooseMovie}>Start match</button>*/}
-                        {waiting && <p>Other users not finished the swipe</p>}
-                        {result && <p>{result}</p>}
+                        {waiting && <p>Wait for other users to finish...</p>}
+
+                        {result && (
+                            <ul className="result-list">
+                                {result.slice(0, 3).map((item, index) => (
+                                    <li key={index} className="result-item">
+                                        <span className="index">{index + 1}.</span>
+                                        <span className="content">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+
                         {/*{renderMoviesList(likedCards, 'Liked Movies')}*/}
                         {/*{renderMoviesList(maybeCards, 'Maybe Movies')}*/}
                         {/*{renderMoviesList(dislikedCards, 'Disliked Movies')}*/}

@@ -135,15 +135,17 @@ io.on('connection', (socket) => {
         userChoices[cardType].forEach(card => {
           const cardId = card.id;
           const score = getScoreByCardType(cardType); // Get the score based on the card type
-          combinedScores[cardId] = (combinedScores[cardId] || 0) + score;
+          combinedScores[cardId] = {
+            id: cardId,
+            title: card.title, // Include the title in the result
+            score: (combinedScores[cardId] ? combinedScores[cardId].score : 0) + score,
+          };
         });
       });
     });
 
     // Convert combinedScores object to an array of objects
-    return Object.keys(combinedScores)
-        .map(cardId => ({id: cardId, score: combinedScores[cardId]}))
-        .sort((a, b) => b.score - a.score);
+    return Object.values(combinedScores).sort((a, b) => b.score - a.score);
   }
 
 // Helper function to get score based on card type
