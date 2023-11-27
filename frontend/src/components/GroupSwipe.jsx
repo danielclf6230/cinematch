@@ -108,7 +108,6 @@ function GroupSwipe({ socket, username, room }) {
                 .slice(0, 3)
                 .map((card, index) => (
                     <li key={index}>
-                        {index + 1}.
                         <div className="resultPoster">
                             <img
                                 src={card.poster}
@@ -116,7 +115,7 @@ function GroupSwipe({ socket, username, room }) {
                             />
                             <div className="movieTitle">{card.title}</div>
                         </div>
-                        (Score: {card.score})
+                        {/*(Score: {card.score})*/}
                     </li>
                 ));
             setResult(formattedResult);
