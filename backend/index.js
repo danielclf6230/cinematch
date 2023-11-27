@@ -138,6 +138,7 @@ io.on('connection', (socket) => {
           combinedScores[cardId] = {
             id: cardId,
             title: card.title, // Include the title in the result
+            poster: card.image,
             score: (combinedScores[cardId] ? combinedScores[cardId].score : 0) + score,
           };
         });

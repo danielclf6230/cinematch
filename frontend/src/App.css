@@ -296,22 +296,34 @@ ul {
 
 /*Final Result style*/
 .result-list {
-  list-style-type: none; /* Remove default list styling */
-  padding: 0; /* Remove default padding */
+  list-style-type: none;
+  padding: 0;
 }
 
-.result-item {
-  margin-bottom: 10px; /* Adjust spacing between list items */
+.result-list li {
+  margin-bottom: 8px;
 }
 
-.index {
-  font-weight: bold; /* Make the index text bold */
-  margin-right: 5px; /* Add some space between the index and content */
+
+.result-list {
+  list-style-type: none;
+  padding: 0;
 }
 
-.content {
-  /* Add any additional styles for the content here */
+.result-list li {
+  margin-bottom: 8px;
 }
 
+.resultPoster {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.resultPoster img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
 
 
