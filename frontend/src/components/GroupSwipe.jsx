@@ -150,11 +150,14 @@ function GroupSwipe({ socket, username, room }) {
                         onDragStart={handleDragStart}
                         onDragEnd={handleDragEnd}
                     >
-                        <div>
+                        <div className="posterContainer">
                             <img className="posterImage"
                                 src={cards[currentCard].image}
                                 alt={`Card ${cards[currentCard].id}`}
                             />
+                            <div className="darkOverlay">
+                                <h2>{cards[currentCard].title}</h2>
+                            </div>
                         </div>
 
                         <div className="buttons col align-self-center">
