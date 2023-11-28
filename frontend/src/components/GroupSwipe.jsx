@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import cardData from "./cardData";
-import { swipefunction } from "./swipeUtils";
+import {swipefunction} from "./swipeUtils";
 import Button from "./Button";
+import {entitiesApi} from "../api/entitiesApi";
+import {imagesApi} from "../api/imagesApi";
 
 function GroupSwipe({ socket, username, room }) {
     const [cards, setCards] = useState(cardData);
@@ -46,18 +48,6 @@ function GroupSwipe({ socket, username, room }) {
         );
     };
 
-    // const renderMoviesList = (movies, title) => (
-    //     <div>
-    //         <h3>{title}</h3>
-    //         <ul>
-    //             {movies.map((movie, index) => (
-    //                 <li key={index}>
-    //                     {`Movie ${movie.id} (Score:${movie.score})`}
-    //                 </li>
-    //             ))}
-    //         </ul>
-    //     </div>
-    // );
 
     const handleChooseMovie = () => {
         if (likedCards !== null && room !== '') {
@@ -70,6 +60,41 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
+    // const fetchMovieData = async () => {
+    //     try {
+    //         // Fetch movie data from the MovieList component
+    //         const movieData = await entitiesApi.getMovies();
+    //
+    //         // Use Promise.all to fetch all posters concurrently
+    //         const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
+    //         const posterDataArray = await Promise.all(posterPromises);
+    //
+    //         // Update cardData with the formatted movie data including posters
+    //         const updatedCardData = movieData.map((movie, index) => ({
+    //             id: movie.id,
+    //             image: URL.createObjectURL(new Blob([posterDataArray[index]])),
+    //             title: movie.title, //this allows to print the title after
+    //             score: 0,
+    //         }));
+    //
+    //         setCards(updatedCardData);
+    //     } catch (error) {
+    //         console.error('Error fetching movie data:', error);
+    //     }
+    // };
+    //
+    // const fetchMoviePoster = async (movieId) => {
+    //     try {
+    //         // Fetch the movie poster using getMoviePosterById with movieId
+    //         // Return the poster data
+    //         return await imagesApi.getMoviePosterById(movieId);
+    //     } catch (error) {
+    //         console.error('Error fetching movie poster:', error);
+    //         // Return a placeholder or default poster data in case of an error
+    //         // return defaultPosterData;
+    //     }
+    // };
+
 
     useEffect(() => {
 
@@ -78,8 +103,24 @@ function GroupSwipe({ socket, username, room }) {
         }
 
         socket.on('match_result', (matchedCardsWithScores) => {
-            const resultText = `You got Matched. The movies are: ${matchedCardsWithScores.map(card => `Movie ${card.id} (Score: ${card.score})`).join(', ')}`;
-            setResult(resultText);
+            console.log(matchedCardsWithScores);
+            const formattedResult = matchedCardsWithScores
+                .slice(0, 3)
+                .map((card, index) => (
+                    <li key={index}>
+                        <div className="resultPoster">
+                            <img
+                                src={card.poster}
+                                alt={`Card ${card.id}`}
+                            />
+                            <div className="movieTitle">
+                                <span className="idNumber">#{index + 1}.</span> {card.title}
+                            </div>
+                        </div>
+                        {/*(Score: {card.score})*/}
+                    </li>
+                ));
+            setResult(formattedResult);
             setWaiting(false);
         });
 
@@ -94,22 +135,29 @@ function GroupSwipe({ socket, username, room }) {
         };
     }, [cards]);
 
+    // useEffect(() => {
+    //     // Fetch movie data when the component mounts
+    //     fetchMovieData();
+    // }, []);
+
 
     return (
-        <div className="App">
+        <div>
             <div className="cardArea">
                 {cards.length > 0 ? (
-                    <div
-                        className="card-container"
+                    <div className="cardContainer"
                         draggable
                         onDragStart={handleDragStart}
                         onDragEnd={handleDragEnd}
                     >
-                        <div className="card col align-self-center">
-                            <img
+                        <div className="posterContainer">
+                            <img className="posterImage"
                                 src={cards[currentCard].image}
                                 alt={`Card ${cards[currentCard].id}`}
                             />
+                            <div className="darkOverlay">
+                                <h2>{cards[currentCard].title}</h2>
+                            </div>
                         </div>
 
                         <div className="buttons col align-self-center">
@@ -131,15 +179,16 @@ function GroupSwipe({ socket, username, room }) {
                         </div>
                     </div>
                 ) : (
-                    <div>
-                        <p>No more movies to swipe!</p>
-                        {/*<button onClick={handleChooseMovie}>Start match</button>*/}
-                        {waiting && <p>Other users not finished the swipe</p>}
-                        {result && <p>{result}</p>}
-                        {/*{renderMoviesList(likedCards, 'Liked Movies')}*/}
-                        {/*{renderMoviesList(maybeCards, 'Maybe Movies')}*/}
-                        {/*{renderMoviesList(dislikedCards, 'Disliked Movies')}*/}
+                    <div className="cm-form result">
+                        {waiting && <p>Wait for other users to finish...</p>}
+                        {result && (
+                            <React.Fragment>
+                                <h1>Your Top 3!</h1>
+                                <ul className="result-list">{result}</ul>
+                            </React.Fragment>
+                        )}
                     </div>
+
                 )}
             </div>
         </div>

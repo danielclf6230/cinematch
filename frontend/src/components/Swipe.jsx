@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "./Button";
-import { swipefunction } from "./swipeUtils";
+import {swipefunction} from "./swipeUtils";
 import SideMenu from "./SideMenu";
 import {entitiesApi} from "../api/entitiesApi";
-import {getMoviePosterById, imagesApi} from "../api/imagesApi";
+import {imagesApi} from "../api/imagesApi";
 
 function Swipe() {
     const [cards, setCards] = useState([]);
@@ -82,10 +82,8 @@ function Swipe() {
     const fetchMoviePoster = async (movieId) => {
         try {
             // Fetch the movie poster using getMoviePosterById with movieId
-            const posterData = await imagesApi.getMoviePosterById(movieId);
-
             // Return the poster data
-            return posterData;
+            return await imagesApi.getMoviePosterById(movieId);
         } catch (error) {
             console.error('Error fetching movie poster:', error);
             // Return a placeholder or default poster data in case of an error

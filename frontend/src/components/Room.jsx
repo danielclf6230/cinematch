@@ -39,7 +39,7 @@ function Room() {
 
         if (errorMessage === "The room does not exist" || errorMessage !== "The room is full" || errorMessage !== "The room cannot be empty") {
             setShowSwipe(true);
-    }
+        }
 
     };
 
@@ -72,41 +72,42 @@ function Room() {
     return (
         <div className="App">
             <SideMenu/>
-
             {!showSwipe && !waiting && (
-                <div className="Room text-center">
+                <div className="cm-form room">
                     <div>
-                        <h1>Create Room</h1>
+                        <h2>Create Room</h2>
                         <button onClick={createRoom}>Create Room</button>
                     </div>
+                    <br/>
                     <div>
-                        <h1>Join Room</h1>
-                        <input
-                            type="text"
-                            onChange={(event) => {
-                                setRoom(event.target.value);
-                            }}
-                            placeholder="Enter Room Number"
-                        />
+                        <h2>Join Room</h2>
+                        <label className="custom-field">
+                            <input
+                                type="text"
+                                onChange={(event) => {
+                                    setRoom(event.target.value);
+                                }}
+                                placeholder="Room Number"
+                            />
+                        </label>
+
                         <button onClick={joinRoom}>Join Room</button>
                         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                     </div>
                 </div>
+
             )}
 
             {!showSwipe && waiting && (
-                <div className="Room text-center">
-                    <div>
-                        <h3>Room: {room}</h3>
-                        <p>{waitingMessage}</p>
-                    </div>
-
+                <div className="cm-form waitingRoom">
+                    <h3>Room: {room}</h3>
+                   <p>{waitingMessage}</p>
                 </div>
             )}
 
             {showSwipe && !waiting &&(
                 <div>
-                    <h3>Room: {room}</h3>
+                    <h3 className="roomNumber">Room: {room}</h3>
                     <GroupSwipe socket={socket} username={username} room={room}/>
                 </div>
             )}

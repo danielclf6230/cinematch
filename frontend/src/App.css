@@ -228,13 +228,7 @@ button:hover {
 }
 
 
-.cardArea {
-  justify-content: center; /* Center the content horizontally */
-  align-items: center; /* Center the content vertically */
-  width: 100vw;
-  flex: 1; /* Card area takes up 2 parts of the available space */
-  padding: 20px; /* Optional: Add some padding for spacing */
-}
+
 
 @keyframes App-logo-spin {
   from {
@@ -271,3 +265,143 @@ button:hover {
 ul {
   list-style: none; /* Remove list-style dots */
 }
+
+/*Room styling*/
+.cm-form.room {
+  height: 20rem;
+  background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
+  text-align: center; /* Center-align the content */
+}
+
+
+.cm-form.waitingRoom {
+  height: 20rem;
+  background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
+  justify-content: flex-start;
+}
+
+.cm-form.waitingRoom h3 {
+  margin-bottom: 80px;
+}/* Add some bottom margin to separate room number and waiting message */
+
+.roomNumber{
+  text-align: center; /* Center-align the content */
+  margin-top: 20px;
+  margin-left: 100px;
+}
+
+/*Final Result style*/
+.cm-form.result{
+  background-color: #aaa !important;
+  padding: 5px;
+  margin-top: 10px !important;
+}
+
+.result-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 20px; /* Adjust the margin between list items */
+}
+
+.result-list li {
+  margin: 10px; /* Adjust the margin between list items */
+
+}
+
+.resultPoster {
+  position: relative;
+  width: 20rem;
+  height: 8rem; /* Set a fixed height for the poster */
+  overflow: hidden;
+  border: 2px solid #FFBC10; /* Adjust the border color and width */
+  margin-bottom: 20px;
+}
+
+.resultPoster img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  filter: brightness(40%) blur(3px);
+  clip-path: polygon(0 0%, 100% 0%, 100% 100%, 0% 100%); /* Clip the image to the middle part */
+  opacity: 0.9; /* Adjust the opacity level */
+  border: 2px solid #FFBC10; /* Adjust the border color and width */
+}
+
+
+.movieTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 28px; /* Adjust the font size */
+  font-weight: bold;
+  text-align: center;
+  width: 80%; /* Set a width to prevent long titles from overflowing */
+}
+
+.idNumber {
+  color: black; /* or any other color you prefer */
+  -webkit-text-stroke: 1px #FFBC10; /* for WebKit browsers like Chrome and Safari */
+}
+
+.cm-form.result h1{
+  padding-top: 20px;
+  color: #FFBC10;
+}
+
+.cardArea {
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  flex: 1; /* Card area takes up 2 parts of the available space */
+  margin-left: 100px;
+}
+
+.cardContainer {
+  padding-top: 2%;
+  text-align: center;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+.posterContainer {
+  height: 40rem;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.posterImage {
+  height: 100%;
+  object-fit: cover;
+}
+
+.darkOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;  /* Adjust the height of the dark overlay as needed */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+}
+
+.darkOverlay h2 {
+  position: absolute;
+  bottom: 0;
+  left: 10px; /* Adjust the left position as needed */
+  text-align: start;
+  margin: 0; /* Remove default margin */
+  color: white; /* Set the text color as needed */
+  padding: 10px;
+  padding-bottom: 20px;
+}
+
+
+
+
+
+
+
+
+
