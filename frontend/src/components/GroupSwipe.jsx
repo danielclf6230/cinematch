@@ -142,17 +142,16 @@ function GroupSwipe({ socket, username, room }) {
 
 
     return (
-        <div className="App">
+        <div>
             <div className="cardArea">
                 {cards.length > 0 ? (
-                    <div
-                        className="card-container"
+                    <div className="cardContainer"
                         draggable
                         onDragStart={handleDragStart}
                         onDragEnd={handleDragEnd}
                     >
-                        <div className="card col align-self-center">
-                            <img
+                        <div>
+                            <img className="posterImage"
                                 src={cards[currentCard].image}
                                 alt={`Card ${cards[currentCard].id}`}
                             />
