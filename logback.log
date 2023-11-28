@@ -1,1 +1,773 @@
 2023-11-27T19:17:45.391-07:00  WARN 26292 --- [HikariPool-5 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Thread starvation or clock leap detected (housekeeper delta=2d20h10m33s930ms351µs200ns).
+2023-11-27T19:26:39.815-07:00  INFO 18820 --- [restartedMain] c.c.c.CinematchAppApplication            : Starting CinematchAppApplication using Java 19 with PID 18820 (C:\Users\jrven\Documents\GitHub\Cinematch\backend\target\classes started by jrven in C:\Users\jrven\Documents\GitHub\Cinematch)
+2023-11-27T19:26:39.817-07:00  INFO 18820 --- [restartedMain] c.c.c.CinematchAppApplication            : No active profile set, falling back to 1 default profile: "default"
+2023-11-27T19:26:39.848-07:00  INFO 18820 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-11-27T19:26:39.848-07:00  INFO 18820 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-11-27T19:26:40.524-07:00  INFO 18820 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-11-27T19:26:40.574-07:00  INFO 18820 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 44 ms. Found 7 JPA repository interfaces.
+2023-11-27T19:26:41.028-07:00  INFO 18820 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-11-27T19:26:41.035-07:00  INFO 18820 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-11-27T19:26:41.035-07:00  INFO 18820 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.12]
+2023-11-27T19:26:41.079-07:00  INFO 18820 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-11-27T19:26:41.079-07:00  INFO 18820 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1231 ms
+2023-11-27T19:26:41.493-07:00  INFO 18820 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-11-27T19:26:41.505-07:00  INFO 18820 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-11-27T19:26:41.745-07:00  INFO 18820 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@415093cf
+2023-11-27T19:26:41.746-07:00  INFO 18820 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-11-27T19:26:42.584-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friend_request 
+       modify column request_status  enum ('ACCEPTED','PENDING','REJECTED') not null
+2023-11-27T19:26:42.596-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    alter table friendship 
+       modify column friendship_status  enum ('ACCEPTED') not null
+2023-11-27T19:26:42.631-07:00  INFO 18820 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-11-27T19:26:42.810-07:00  INFO 18820 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2023-11-27T19:26:43.270-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        a1_0.avatar_id,
+        a1_0.file_name,
+        a1_0.path,
+        a1_0.file_size 
+    from
+        avatar a1_0 
+    where
+        a1_0.path=?
+2023-11-27T19:26:43.287-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-27T19:26:43.293-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        r1_0.role_id,
+        r1_0.name 
+    from
+        role r1_0 
+    where
+        r1_0.name=?
+2023-11-27T19:26:43.296-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-27T19:26:43.298-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-27T19:26:43.299-07:00 DEBUG 18820 --- [restartedMain] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-27T19:26:43.725-07:00  INFO 18820 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2023-11-27T19:26:43.769-07:00  INFO 18820 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7eb71eb8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5cc044c2, org.springframework.security.web.context.SecurityContextHolderFilter@8968c3a, org.springframework.security.web.header.HeaderWriterFilter@36e77e44, org.springframework.web.filter.CorsFilter@396fbe9c, org.springframework.security.web.authentication.logout.LogoutFilter@248ae4b8, com.cm.cinematchapp.security.JwtAuthenticationFilter@2b3a39bb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3e66dab6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@54dbd160, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6b73633c, org.springframework.security.web.session.SessionManagementFilter@6a9aed2e, org.springframework.security.web.access.ExceptionTranslationFilter@41b4a9c7, org.springframework.security.web.access.intercept.AuthorizationFilter@b0aa9b5]
+2023-11-27T19:26:43.876-07:00  WARN 18820 --- [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2023-11-27T19:26:44.000-07:00  INFO 18820 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-11-27T19:26:44.047-07:00  INFO 18820 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-11-27T19:26:44.058-07:00  INFO 18820 --- [restartedMain] c.c.c.CinematchAppApplication            : Started CinematchAppApplication in 4.52 seconds (process running for 5.143)
+2023-11-27T19:26:44.215-07:00  INFO 18820 --- [RMI TCP Connection(2)-192.168.56.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-11-27T19:26:57.506-07:00 DEBUG 18820 --- [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/actions/login
+2023-11-27T19:26:57.527-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing POST /api/actions/login
+2023-11-27T19:26:57.531-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2023-11-27T19:26:57.538-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured POST /api/actions/login
+2023-11-27T19:26:57.575-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? limit ?
+2023-11-27T19:26:57.577-07:00  INFO 18820 --- [http-nio-8080-exec-2] c.c.c.s.JwtAuthenticationProvider        : authenticate, username:Admin1, password:password123?
+2023-11-27T19:26:57.582-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:26:57.587-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:26:57.590-07:00  INFO 18820 --- [http-nio-8080-exec-2] c.c.c.s.JwtAuthenticationProvider        : [ROLE_USER, ROLE_ADMIN]
+2023-11-27T19:26:57.716-07:00 DEBUG 18820 --- [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/entities/user
+2023-11-27T19:26:57.719-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/entities/user
+2023-11-27T19:26:57.720-07:00  INFO 18820 --- [http-nio-8080-exec-5] c.c.c.security.JwtAuthenticationFilter   : authToken:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDExNDIwMTcsInVzZXJuYW1lIjoiQWRtaW4xIn0.YaV0YnU8kIkImc-yw3oVeCcoKF2BJxZI1zlyp56y8ds
+2023-11-27T19:26:57.732-07:00  INFO 18820 --- [http-nio-8080-exec-5] c.c.c.security.JwtAuthenticationFilter   : username: Admin1
+2023-11-27T19:26:57.734-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:26:57.735-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:26:57.737-07:00  INFO 18820 --- [http-nio-8080-exec-5] c.c.c.security.JwtAuthenticationFilter   : Authorities: [ROLE_USER, ROLE_ADMIN]
+2023-11-27T19:26:57.737-07:00  INFO 18820 --- [http-nio-8080-exec-5] c.c.c.security.JwtAuthenticationFilter   : SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Admin1, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER, ROLE_ADMIN]]]
+2023-11-27T19:26:57.740-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/entities/user
+2023-11-27T19:26:57.741-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.EntityController.getCurrentUser(); target is of class [com.cm.cinematchapp.controllers.EntityController]
+2023-11-27T19:26:57.762-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.EntityController.getCurrentUser(); target is of class [com.cm.cinematchapp.controllers.EntityController]
+2023-11-27T19:26:57.765-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:26:57.766-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:26:57.768-07:00 DEBUG 18820 --- [http-nio-8080-exec-5] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.user_id=?
+2023-11-27T19:26:57.802-07:00 DEBUG 18820 --- [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/entities/movies
+2023-11-27T19:26:57.806-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/entities/movies
+2023-11-27T19:26:57.807-07:00  INFO 18820 --- [http-nio-8080-exec-4] c.c.c.security.JwtAuthenticationFilter   : authToken:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDExNDIwMTcsInVzZXJuYW1lIjoiQWRtaW4xIn0.YaV0YnU8kIkImc-yw3oVeCcoKF2BJxZI1zlyp56y8ds
+2023-11-27T19:26:57.807-07:00  INFO 18820 --- [http-nio-8080-exec-4] c.c.c.security.JwtAuthenticationFilter   : username: Admin1
+2023-11-27T19:26:57.809-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:26:57.811-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:26:57.812-07:00  INFO 18820 --- [http-nio-8080-exec-4] c.c.c.security.JwtAuthenticationFilter   : Authorities: [ROLE_USER, ROLE_ADMIN]
+2023-11-27T19:26:57.812-07:00  INFO 18820 --- [http-nio-8080-exec-4] c.c.c.security.JwtAuthenticationFilter   : SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Admin1, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER, ROLE_ADMIN]]]
+2023-11-27T19:26:57.814-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/entities/movies
+2023-11-27T19:26:57.815-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.EntityController.getAllMovies(); target is of class [com.cm.cinematchapp.controllers.EntityController]
+2023-11-27T19:26:57.815-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.EntityController.getAllMovies(); target is of class [com.cm.cinematchapp.controllers.EntityController]
+2023-11-27T19:26:57.824-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.movie_id,
+        m1_0.description,
+        m1_0.poster_id,
+        m1_0.rated,
+        m1_0.title,
+        m1_0.year 
+    from
+        movie m1_0
+2023-11-27T19:26:57.828-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.830-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.831-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.832-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.832-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.833-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.834-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.834-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.835-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:26:57.840-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.843-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.844-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.846-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.848-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.849-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.850-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.851-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:26:57.852-07:00 DEBUG 18820 --- [http-nio-8080-exec-4] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:12.020-07:00 DEBUG 18820 --- [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/actions/movie/search
+2023-11-27T19:27:12.023-07:00 DEBUG 18820 --- [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/actions/movie/search
+2023-11-27T19:27:12.024-07:00  INFO 18820 --- [http-nio-8080-exec-8] c.c.c.security.JwtAuthenticationFilter   : authToken:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDExNDIwMTcsInVzZXJuYW1lIjoiQWRtaW4xIn0.YaV0YnU8kIkImc-yw3oVeCcoKF2BJxZI1zlyp56y8ds
+2023-11-27T19:27:12.024-07:00  INFO 18820 --- [http-nio-8080-exec-8] c.c.c.security.JwtAuthenticationFilter   : username: Admin1
+2023-11-27T19:27:12.026-07:00 DEBUG 18820 --- [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:27:12.027-07:00 DEBUG 18820 --- [http-nio-8080-exec-8] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:27:12.028-07:00  INFO 18820 --- [http-nio-8080-exec-8] c.c.c.security.JwtAuthenticationFilter   : Authorities: [ROLE_USER, ROLE_ADMIN]
+2023-11-27T19:27:12.029-07:00  INFO 18820 --- [http-nio-8080-exec-8] c.c.c.security.JwtAuthenticationFilter   : SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Admin1, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER, ROLE_ADMIN]]]
+2023-11-27T19:27:12.030-07:00 DEBUG 18820 --- [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/actions/movie/search
+2023-11-27T19:27:12.031-07:00 DEBUG 18820 --- [http-nio-8080-exec-8] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.ActionController.searchForMovie(java.lang.String); target is of class [com.cm.cinematchapp.controllers.ActionController]
+2023-11-27T19:27:12.031-07:00 DEBUG 18820 --- [http-nio-8080-exec-8] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.ActionController.searchForMovie(java.lang.String); target is of class [com.cm.cinematchapp.controllers.ActionController]
+2023-11-27T19:27:33.043-07:00 DEBUG 18820 --- [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/actions/movie/add
+2023-11-27T19:27:33.046-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /api/actions/movie/add
+2023-11-27T19:27:33.047-07:00  INFO 18820 --- [http-nio-8080-exec-10] c.c.c.security.JwtAuthenticationFilter   : authToken:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDExNDIwMTcsInVzZXJuYW1lIjoiQWRtaW4xIn0.YaV0YnU8kIkImc-yw3oVeCcoKF2BJxZI1zlyp56y8ds
+2023-11-27T19:27:33.047-07:00  INFO 18820 --- [http-nio-8080-exec-10] c.c.c.security.JwtAuthenticationFilter   : username: Admin1
+2023-11-27T19:27:33.050-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:27:33.052-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:27:33.055-07:00  INFO 18820 --- [http-nio-8080-exec-10] c.c.c.security.JwtAuthenticationFilter   : Authorities: [ROLE_USER, ROLE_ADMIN]
+2023-11-27T19:27:33.055-07:00  INFO 18820 --- [http-nio-8080-exec-10] c.c.c.security.JwtAuthenticationFilter   : SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Admin1, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER, ROLE_ADMIN]]]
+2023-11-27T19:27:33.056-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Secured POST /api/actions/movie/add
+2023-11-27T19:27:33.063-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.ActionController.createMovie(com.cm.cinematchapp.entities.Movie); target is of class [com.cm.cinematchapp.controllers.ActionController]
+2023-11-27T19:27:33.064-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.ActionController.createMovie(com.cm.cinematchapp.entities.Movie); target is of class [com.cm.cinematchapp.controllers.ActionController]
+2023-11-27T19:27:33.806-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        movie_poster
+        (file_name,path,file_size) 
+    values
+        (?,?,?)
+2023-11-27T19:27:33.819-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        movie
+        (description,poster_id,rated,title,year) 
+    values
+        (?,?,?,?,?)
+2023-11-27T19:27:33.823-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        country_info
+        (streaming_info_id,link,service,streaming_type) 
+    values
+        (?,?,?,?)
+2023-11-27T19:27:33.824-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        country_info
+        (streaming_info_id,link,service,streaming_type) 
+    values
+        (?,?,?,?)
+2023-11-27T19:27:33.824-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        country_info
+        (streaming_info_id,link,service,streaming_type) 
+    values
+        (?,?,?,?)
+2023-11-27T19:27:33.825-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        country_info
+        (streaming_info_id,link,service,streaming_type) 
+    values
+        (?,?,?,?)
+2023-11-27T19:27:33.825-07:00 DEBUG 18820 --- [http-nio-8080-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        country_info
+        (streaming_info_id,link,service,streaming_type) 
+    values
+        (?,?,?,?)
+2023-11-27T19:27:43.067-07:00 DEBUG 18820 --- [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/entities/movies
+2023-11-27T19:27:43.073-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/entities/movies
+2023-11-27T19:27:43.074-07:00  INFO 18820 --- [http-nio-8080-exec-2] c.c.c.security.JwtAuthenticationFilter   : authToken:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDExNDIwMTcsInVzZXJuYW1lIjoiQWRtaW4xIn0.YaV0YnU8kIkImc-yw3oVeCcoKF2BJxZI1zlyp56y8ds
+2023-11-27T19:27:43.074-07:00  INFO 18820 --- [http-nio-8080-exec-2] c.c.c.security.JwtAuthenticationFilter   : username: Admin1
+2023-11-27T19:27:43.077-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.avatar_id,
+        u1_0.email,
+        u1_0.first_name,
+        u1_0.last_name,
+        u1_0.password,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        upper(u1_0.username)=upper(?)
+2023-11-27T19:27:43.079-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_1.role_id,
+        r1_1.name 
+    from
+        user_roles r1_0 
+    join
+        role r1_1 
+            on r1_1.role_id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2023-11-27T19:27:43.082-07:00  INFO 18820 --- [http-nio-8080-exec-2] c.c.c.security.JwtAuthenticationFilter   : Authorities: [ROLE_USER, ROLE_ADMIN]
+2023-11-27T19:27:43.082-07:00  INFO 18820 --- [http-nio-8080-exec-2] c.c.c.security.JwtAuthenticationFilter   : SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Admin1, Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[ROLE_USER, ROLE_ADMIN]]]
+2023-11-27T19:27:43.084-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/entities/movies
+2023-11-27T19:27:43.085-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] horizationManagerBeforeMethodInterceptor : Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.EntityController.getAllMovies(); target is of class [com.cm.cinematchapp.controllers.EntityController]
+2023-11-27T19:27:43.085-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] horizationManagerBeforeMethodInterceptor : Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.cm.cinematchapp.controllers.EntityController.getAllMovies(); target is of class [com.cm.cinematchapp.controllers.EntityController]
+2023-11-27T19:27:43.087-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.movie_id,
+        m1_0.description,
+        m1_0.poster_id,
+        m1_0.rated,
+        m1_0.title,
+        m1_0.year 
+    from
+        movie m1_0
+2023-11-27T19:27:43.088-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.090-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.092-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.094-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.096-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.098-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.099-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.100-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.101-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.102-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        m1_0.poster_id,
+        m1_0.file_name,
+        m1_0.path,
+        m1_0.file_size 
+    from
+        movie_poster m1_0 
+    where
+        m1_0.poster_id=?
+2023-11-27T19:27:43.108-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.112-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.116-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.119-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.123-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.125-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.128-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.129-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.131-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
+2023-11-27T19:27:43.132-07:00 DEBUG 18820 --- [http-nio-8080-exec-2] org.hibernate.SQL                        : 
+    select
+        c1_0.streaming_info_id,
+        c1_0.link,
+        c1_0.service,
+        c1_0.streaming_type 
+    from
+        country_info c1_0 
+    where
+        c1_0.streaming_info_id=?
