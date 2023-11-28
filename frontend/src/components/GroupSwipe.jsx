@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import cardData from "./cardData";
 import {swipefunction} from "./swipeUtils";
-import Button from "./Button";
+import Button from "./SwipeButton";
 import {entitiesApi} from "../api/entitiesApi";
 import {imagesApi} from "../api/imagesApi";
 
@@ -139,12 +139,6 @@ function GroupSwipe({ socket, username, room }) {
             // socket.off('no_match_result');
         };
     }, [cards]);
-
-    // useEffect(() => {
-    //     // Fetch movie data when the component mounts
-    //     fetchMovieData();
-    // }, []);
-
 
     return (
         <div>

@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "./Button";
+import Button from "./SwipeButton";
 import {swipefunction} from "./swipeUtils";
 import SideMenu from "./SideMenu";
 import {entitiesApi} from "../api/entitiesApi";
 import {imagesApi} from "../api/imagesApi";
+import DislikeButton from "./SwipeButton";
+import LikeButton from "./LikeButton";
+import MaybeButton from "./MaybeButton";
 
 function Swipe() {
     const [cards, setCards] = useState([]);
@@ -70,6 +73,7 @@ function Swipe() {
                 id: movie.id,
                 image: URL.createObjectURL(new Blob([posterDataArray[index]])),
                 title: movie.title, //this allows to print the title after
+                rated: movie.rated,
                 score: 0,
             }));
 
@@ -115,27 +119,29 @@ function Swipe() {
                         onDragStart={handleDragStart}
                         onDragEnd={handleDragEnd}
                     >
-                        <div className="card col align-self-center">
-                            <img
-                                src={cards[currentCard].image}
-                                alt={`Card ${cards[currentCard].id}`}
+                        <div className="posterContainer">
+                            <img className="posterImage"
+                                 src={cards[currentCard].image}
+                                 alt={`Card ${cards[currentCard].id}`}
                             />
+                            <div className="darkOverlay">
+                                <h2>{cards[currentCard].title} / {cards[currentCard].rated}</h2>
+                            </div>
                         </div>
-                        <div className="buttons col align-self-center">
-                            <Button
-                                className="swipeButton"
+                        <div className="swipeButtons col align-self-center">
+                            <DislikeButton
                                 onClick={() => swipe("left")}
-                                text="Dislike"
+                                text=""
                                 disabled={cards.length === 0}
                             />
-                            <Button
+                            <MaybeButton
                                 onClick={maybe}
-                                text="Maybe"
+                                text=""
                                 disabled={cards.length === 0}
                             />
-                            <Button
+                            <LikeButton
                                 onClick={() => swipe("right")}
-                                text="Like"
+                                text=""
                                 disabled={cards.length === 0}
                             />
                         </div>
