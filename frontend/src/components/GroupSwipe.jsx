@@ -60,41 +60,46 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
-    // const fetchMovieData = async () => {
-    //     try {
-    //         // Fetch movie data from the MovieList component
-    //         const movieData = await entitiesApi.getMovies();
-    //
-    //         // Use Promise.all to fetch all posters concurrently
-    //         const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
-    //         const posterDataArray = await Promise.all(posterPromises);
-    //
-    //         // Update cardData with the formatted movie data including posters
-    //         const updatedCardData = movieData.map((movie, index) => ({
-    //             id: movie.id,
-    //             image: URL.createObjectURL(new Blob([posterDataArray[index]])),
-    //             title: movie.title, //this allows to print the title after
-    //             score: 0,
-    //         }));
-    //
-    //         setCards(updatedCardData);
-    //     } catch (error) {
-    //         console.error('Error fetching movie data:', error);
-    //     }
-    // };
-    //
-    // const fetchMoviePoster = async (movieId) => {
-    //     try {
-    //         // Fetch the movie poster using getMoviePosterById with movieId
-    //         // Return the poster data
-    //         return await imagesApi.getMoviePosterById(movieId);
-    //     } catch (error) {
-    //         console.error('Error fetching movie poster:', error);
-    //         // Return a placeholder or default poster data in case of an error
-    //         // return defaultPosterData;
-    //     }
-    // };
+    useEffect(() => {
+        // Fetch movie data when the component mounts
+        fetchMovieData();
+    }, []);
 
+
+    const fetchMovieData = async () => {
+        try {
+            // Fetch movie data from the MovieList component
+            const movieData = await entitiesApi.getMovies();
+
+            // Use Promise.all to fetch all posters concurrently
+            const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
+            const posterDataArray = await Promise.all(posterPromises);
+
+            // Update cardData with the formatted movie data including posters
+            const updatedCardData = movieData.map((movie, index) => ({
+                id: movie.id,
+                image: URL.createObjectURL(new Blob([posterDataArray[index]])),
+                title: movie.title, //this allows to print the title after
+                score: 0,
+            }));
+
+            setCards(updatedCardData);
+        } catch (error) {
+            console.error('Error fetching movie data:', error);
+        }
+    };
+
+    const fetchMoviePoster = async (movieId) => {
+        try {
+            // Fetch the movie poster using getMoviePosterById with movieId
+            // Return the poster data
+            return await imagesApi.getMoviePosterById(movieId);
+        } catch (error) {
+            console.error('Error fetching movie poster:', error);
+            // Return a placeholder or default poster data in case of an error
+            // return defaultPosterData;
+        }
+    };
 
     useEffect(() => {
 
