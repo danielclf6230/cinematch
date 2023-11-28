@@ -113,7 +113,9 @@ function GroupSwipe({ socket, username, room }) {
                                 src={card.poster}
                                 alt={`Card ${card.id}`}
                             />
-                            <div className="movieTitle">{card.title}</div>
+                            <div className="movieTitle">
+                                <span className="idNumber">#{index + 1}.</span> {card.title}
+                            </div>
                         </div>
                         {/*(Score: {card.score})*/}
                     </li>
@@ -177,7 +179,12 @@ function GroupSwipe({ socket, username, room }) {
                 ) : (
                     <div className="cm-form result">
                         {waiting && <p>Wait for other users to finish...</p>}
-                        {result && <ul className="result-list">{result}</ul>}
+                        {result && (
+                            <React.Fragment>
+                                <h1>Your Top 3!</h1>
+                                <ul className="result-list">{result}</ul>
+                            </React.Fragment>
+                        )}
                     </div>
 
                 )}

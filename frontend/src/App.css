@@ -296,6 +296,7 @@ ul {
 
 /*Final Result style*/
 .cm-form.result{
+  background-color: #aaa !important;
   padding: 5px;
   margin-top: 10px !important;
 }
@@ -308,6 +309,7 @@ ul {
 
 .result-list li {
   margin: 10px; /* Adjust the margin between list items */
+
 }
 
 .resultPoster {
@@ -315,15 +317,20 @@ ul {
   width: 20rem;
   height: 9rem; /* Set a fixed height for the poster */
   overflow: hidden;
+
 }
 
 .resultPoster img {
   object-fit: cover;
   width: 100%;
   height: 100%;
-  filter: blur(3px); /* Adjust the blur effect */
+  filter: brightness(70%) blur(3px); /* Adjust the blur effect */
+;
+  /* Adjust the brightness level (70% for dimming) */
   clip-path: polygon(0 5%, 100% 5%, 100% 85%, 0% 85%); /* Clip the image to the middle part */
+  opacity: 0.9; /* Adjust the opacity level */
 }
+
 
 .movieTitle {
   position: absolute;
@@ -336,6 +343,17 @@ ul {
   text-align: center;
   width: 80%; /* Set a width to prevent long titles from overflowing */
 }
+
+.idNumber {
+  color: black !important; /* or any other color you prefer */
+  -webkit-text-stroke: 1px #FFBC10; /* for WebKit browsers like Chrome and Safari */
+}
+
+.cm-form.result h1{
+  padding-top: 20px;
+  color: #FFBC10 !important;
+}
+
 
 
 
