@@ -324,7 +324,7 @@ ul {
   object-fit: cover;
   width: 100%;
   height: 100%;
-  filter: brightness(70%) blur(3px);
+  filter: brightness(40%) blur(3px);
   clip-path: polygon(0 5%, 100% 5%, 100% 85%, 0% 85%); /* Clip the image to the middle part */
   opacity: 0.9; /* Adjust the opacity level */
 }
