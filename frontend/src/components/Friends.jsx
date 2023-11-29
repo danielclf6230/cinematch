@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {entitiesApi} from '../api/entitiesApi';
 import SideMenu from "./SideMenu";
+import {AiOutlineSearch} from "react-icons/ai";
 
 const Friends = () => {
     const [searchUserName, setSearchUserName] = useState('');
@@ -112,15 +113,17 @@ const Friends = () => {
             <SideMenu />
             <div className="cm-form friends">
                 <h2>Search User</h2>
-                <div className="row">
-                    <input
-                        className="col"
-                        type="text"
-                        placeholder="Enter username"
-                        value={searchUserName}
-                        onChange={(e) => setSearchUserName(e.target.value)}
+                <div className="friendSearch">
+                    <input className="searchInput"
+                           type="text"
+                           placeholder="Enter username"
+                           value={searchUserName}
+                           onChange={(e) => setSearchUserName(e.target.value)}
                     />
-                    <button onClick={handleSearchUser}>Search</button>
+
+                    <button className="searchButton" onClick={handleSearchUser}>
+                        <AiOutlineSearch />
+                    </button>
                 </div>
 
 
