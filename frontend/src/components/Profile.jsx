@@ -35,13 +35,15 @@ function Profile({ userId }) {
             ) : (
                 <div>
                     {userProfile ? (
-                        <div>
-                            <h2>User Profile</h2>
-                            <img src={userProfile.avatar} alt="AvatarPreview" />
+                        <div className="Profile">
+                            <div className="col">
+                                <h2>User Profile</h2>
+                                <img src={userProfile.avatar} alt="AvatarPreview" />
+                            </div>
+
                             <p>Name: {userProfile.firstName} {userProfile.lastName}</p>
                             <p>Username: {userProfile.username}</p>
                             <p>Email: {userProfile.email}</p>
-                            {/* Add more user profile information as needed */}
                         </div>
                     ) : (
                         <p>No user profile available</p>

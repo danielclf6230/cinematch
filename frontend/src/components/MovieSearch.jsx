@@ -2,6 +2,7 @@ import React, {useRef, useState} from 'react';
 import { actionsApi } from '../api/actionsApi';
 import PosterPreview from './PosterPreview';
 import MovieList from "./MovieList";
+import SideMenu from "./SideMenu";
 
 function MovieSearch() {
     const [searchTerm, setSearchTerm] = useState({
@@ -47,7 +48,6 @@ function MovieSearch() {
 
     return (
         <div className="App">
-            {/*<SideMenu />*/}
             <div className="searchArea">
                 <input
                     type="text"

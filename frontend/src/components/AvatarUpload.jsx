@@ -36,8 +36,8 @@ function AvatarUpload() {
     };
 
         return (
-            <div>
-                <h2>Avatar Upload</h2>
+            <div className="avatarUpload">
+                <h4>Avatar Upload</h4>
                 <input type="file" onChange={handleFileChange} accept=".jpg, .jpeg, .png, .gif, .bmp, .svg, .webp" />
                 {src && (
                     <>

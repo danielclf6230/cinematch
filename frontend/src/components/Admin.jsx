@@ -5,7 +5,7 @@ import SideMenu from "./SideMenu";
 
 function Admin() {
     return (
-        <div className="row">
+        <div className="App Admin">
             <SideMenu />
             <div className="col">
                 <h1>Admin Dashboard - Welcome Admin!</h1>

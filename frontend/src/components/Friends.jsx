@@ -9,14 +9,18 @@ const Friends = () => {
     const [error, setError] = useState(null);
     const [friendList, setFriendList]= useState([]);
     const [requestList, setRequestList]= useState([]);
+    const [friendRequestSent, setFriendRequestSent] = useState(false);
 
     const handleSearchUser = async () => {
         try {
-
             if (!searchUserName) {
                 setError('Please enter a username');
                 return;
             }
+
+            // Reset the friendRequestSent state when initiating a new search
+            setFriendRequestSent(false);
+
             const userSearch = await entitiesApi.getUsersByUsername(searchUserName);
             console.log(userSearch);
             const updatedUserSearch = userSearch.map((user) => ({
@@ -24,8 +28,7 @@ const Friends = () => {
                 userId: user.userId,
             }));
 
-
-            if(updatedUserSearch.length===0){
+            if (updatedUserSearch.length === 0) {
                 setError('No user found');
                 return;
             }
@@ -53,12 +56,15 @@ const Friends = () => {
             // Handle the error, e.g., show an error message to the user
         }
     };
+
+
     const handleSendFriendRequest = async (recipientUserId) => {
         try {
             // Call the sendFriendRequest function from entitiesApi
             await entitiesApi.sendFriendRequest(recipientUserId);
             // Optionally, you can update the search result or perform any other actions
             console.log('Friend request sent successfully');
+            setFriendRequestSent(true); // Update state to indicate the request has been sent
         } catch (error) {
             console.error('Error sending friend request:', error);
             // Handle the error, e.g., show an error message to the user
@@ -104,25 +110,34 @@ const Friends = () => {
     return (
         <div className="App">
             <SideMenu />
-            <div>
+            <div className="cm-form friends">
                 <h2>Search User</h2>
-                <input
-                    type="text"
-                    placeholder="Enter username"
-                    value={searchUserName}
-                    onChange={(e) => setSearchUserName(e.target.value)}
-                />
-                <button onClick={handleSearchUser}>Search</button>
+                <div className="row">
+                    <input
+                        className="col"
+                        type="text"
+                        placeholder="Enter username"
+                        value={searchUserName}
+                        onChange={(e) => setSearchUserName(e.target.value)}
+                    />
+                    <button onClick={handleSearchUser}>Search</button>
+                </div>
+
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
 
                 <ul>
                     {searchResult.map((user) => (
                         <li key={user.userId}>
+                            <br />
                             {user.username}{' '}
-                            <button onClick={() => handleSendFriendRequest(user.userId)}>
-                                Add Friend
-                            </button>
+                            {friendRequestSent ? (
+                                <span>Friend Request Sent</span>
+                            ) : (
+                                <button onClick={() => handleSendFriendRequest(user.userId)}>
+                                    Add Friend
+                                </button>
+                            )}
                         </li>
                     ))}
                 </ul>

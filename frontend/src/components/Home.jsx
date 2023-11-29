@@ -21,19 +21,26 @@ function Home() {
 
         <div className="App">
             <SideMenu />
-            <div className="profile">
-                <h2>User Information</h2>
-                <ul>
-                    <AvatarUpload />
-                    <li><AvatarPreview /></li>
-                    <li><strong>ID:</strong> {userData.userId}</li>
-                    <li><strong>First Name:</strong> {userData.firstName}</li>
-                    <li><strong>Last Name:</strong> {userData.lastName}</li>
-                    <li><strong>Username:</strong> {userData.username}</li>
-                    <li><strong>Email:</strong> {userData.email}</li>
-                </ul>
-
-                <UserList />
+            <div className="Profile container">
+                <div className="col-sm-12 gx-0">
+                    <h1>Welcome {userData.firstName}!</h1>
+                </div>
+                <div className="row">
+                    <div className="col-6">
+                        <AvatarUpload />
+                        <AvatarPreview />
+                    </div>
+                    <div className="userInfo col-6">
+                            {/*<h2><strong>ID:</strong> {userData.userId}</h2>*/}
+                            <h2><strong>First Name:</strong> {userData.firstName}</h2>
+                            <h2><strong>Last Name:</strong> {userData.lastName}</h2>
+                            <h2><strong>Username:</strong> {userData.username}</h2>
+                            <h2><strong>Email:</strong> {userData.email}</h2>
+                    </div>
+                </div>
+                {/*<div className="col-12">*/}
+                {/*    <UserList />*/}
+                {/*</div>*/}
             </div>
         </div>
     );

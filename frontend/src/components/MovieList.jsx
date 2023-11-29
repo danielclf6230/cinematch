@@ -64,7 +64,7 @@ function MovieList() {
                                 <th className="col-2">Title</th>
                                 <th className="col-7">Description</th>
                                 <th className="col-1">Rating</th>
-                                <th className="col-1"></th>
+                                <th className="col-1">Remove</th>
                             </tr>
                             </thead>
                             <tbody>

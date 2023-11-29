@@ -20,7 +20,7 @@ function AvatarPreview() {
     };
 
     return (
-        <div>
+        <div className="Avatar">
             {avatar ? (
                 <img src={avatar} alt="AvatarPreview" />
             ) : (
