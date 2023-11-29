@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "./SwipeButton";
 import {swipefunction} from "./swipeUtils";
 import SideMenu from "./SideMenu";
 import {entitiesApi} from "../api/entitiesApi";
@@ -8,15 +7,23 @@ import {imagesApi} from "../api/imagesApi";
 import DislikeButton from "./SwipeButton";
 import LikeButton from "./LikeButton";
 import MaybeButton from "./MaybeButton";
+import cardData from "./cardData";
 
 function Swipe() {
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState(cardData);
     const [currentCard, setCurrentCard] = useState(0);
     const [likedCards, setLikedCards] = useState([]);
     const [dislikedCards, setDislikedCards] = useState([]);
     const [maybeCards, setMaybeCards] = useState([]);
 
+    console.log(cards);
+
     let startX = 0;
+
+    useEffect(() => {
+        // Fetch movie data when the component mounts
+        fetchMovieData();
+    }, []);
 
     const swipe = (direction) => {
         swipefunction(
@@ -53,10 +60,7 @@ function Swipe() {
         );
     };
 
-    useEffect(() => {
-        // Fetch movie data when the component mounts
-        fetchMovieData();
-    }, []);
+
 
 
     const fetchMovieData = async () => {

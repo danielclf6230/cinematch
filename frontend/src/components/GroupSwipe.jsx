@@ -14,7 +14,52 @@ function GroupSwipe({ socket, username, room }) {
     const [waiting, setWaiting] = useState(false);
     const [result, setResult] = useState('');
 
+    console.log(cards)
+
     let startX = 0;
+    useEffect(() => {
+        // Fetch movie data when the component mounts
+        fetchMovieData();
+    }, []);
+
+    useEffect(() => {
+
+        if (cards.length === 0) {
+            handleChooseMovie();
+        }
+
+        socket.on('match_result', (matchedCardsWithScores) => {
+            console.log(matchedCardsWithScores);
+            const formattedResult = matchedCardsWithScores
+                .slice(0, 3)
+                .map((card, index) => (
+                    <li key={index}>
+                        <div className="resultPoster">
+                            <img
+                                src={card.poster}
+                                alt={`Card ${card.id}`}
+                            />
+                            <div className="movieTitle">
+                                <span className="idNumber">#{index + 1}.</span> {card.title}
+                            </div>
+                        </div>
+                        {/*(Score: {card.score})*/}
+                    </li>
+                ));
+            setResult(formattedResult);
+            setWaiting(false);
+        });
+
+        // socket.on('no_match_result', (choices) => {
+        //     setResult(`Sorry, no match found. Your choice: ${numberInput}, Other's choice: ${choices.find(num => num !== parseInt(numberInput))}`);
+        //     setWaiting(false);
+        // });
+
+        return () => {
+            socket.off('match_result');
+            // socket.off('no_match_result');
+        };
+    }, [cards]);
 
     const swipe = (direction) => {
         swipefunction(
@@ -60,12 +105,6 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
-    useEffect(() => {
-        // Fetch movie data when the component mounts
-        fetchMovieData();
-    }, []);
-
-
     const fetchMovieData = async () => {
         try {
             // Fetch movie data from the MovieList component
@@ -82,7 +121,7 @@ function GroupSwipe({ socket, username, room }) {
                 title: movie.title, //this allows to print the title after
                 score: 0,
             }));
-
+            console.log(updatedCardData);
             setCards(updatedCardData);
         } catch (error) {
             console.error('Error fetching movie data:', error);
@@ -101,58 +140,24 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
-    useEffect(() => {
 
-        if (cards.length === 0) {
-            handleChooseMovie();
-        }
 
-        socket.on('match_result', (matchedCardsWithScores) => {
-            console.log(matchedCardsWithScores);
-            const formattedResult = matchedCardsWithScores
-                .slice(0, 3)
-                .map((card, index) => (
-                    <li key={index}>
-                        <div className="resultPoster">
-                            <img
-                                src={card.poster}
-                                alt={`Card ${card.id}`}
-                            />
-                            <div className="movieTitle">
-                                <span className="idNumber">#{index + 1}.</span> {card.title}
-                            </div>
-                        </div>
-                        {/*(Score: {card.score})*/}
-                    </li>
-                ));
-            setResult(formattedResult);
-            setWaiting(false);
-        });
 
-        // socket.on('no_match_result', (choices) => {
-        //     setResult(`Sorry, no match found. Your choice: ${numberInput}, Other's choice: ${choices.find(num => num !== parseInt(numberInput))}`);
-        //     setWaiting(false);
-        // });
 
-        return () => {
-            socket.off('match_result');
-            // socket.off('no_match_result');
-        };
-    }, [cards]);
 
     return (
         <div>
             <div className="cardArea">
                 {cards.length > 0 ? (
                     <div className="cardContainer"
-                        draggable
-                        onDragStart={handleDragStart}
-                        onDragEnd={handleDragEnd}
+                         draggable
+                         onDragStart={handleDragStart}
+                         onDragEnd={handleDragEnd}
                     >
                         <div className="posterContainer">
                             <img className="posterImage"
-                                src={cards[currentCard].image}
-                                alt={`Card ${cards[currentCard].id}`}
+                                 src={cards[currentCard].image}
+                                 alt={`Card ${cards[currentCard].id}`}
                             />
                             <div className="darkOverlay">
                                 <h2>{cards[currentCard].title}</h2>
