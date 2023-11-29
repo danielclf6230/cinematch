@@ -1,5 +1,9 @@
 import React from "react";
-
-const MaybeButton = ({ onClick, text }) => <button className="swipeButton maybe" onClick={onClick}>{text}</button>;
+import { FaMehRollingEyes } from 'react-icons/fa';
+const MaybeButton = ({ onClick, text }) =>
+    <button className="swipeButton maybe" onClick={onClick}>
+        {text}
+    <FaMehRollingEyes  className="shrink-icon"/>
+    </button>;
 
 export default MaybeButton;

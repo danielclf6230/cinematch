@@ -288,12 +288,13 @@ button:hover {
 }
 
 .dislike {
-  background-image: url('components\\res\\thumbs_down.png') !important;
+  /*background-image: url('components\\res\\thumbs_down.png') !important;*/
+  background-size: cover;
   margin: 10% 0 0 0;
 }
 
 .maybe {
-  background-image: url('components\\res\\shrug.png') !important;
+  /*background-image: url('components\\res\\shrug.png') !important;*/
   background-size: cover;
   min-width: 120px; /* Adjust the width and height as needed */
   min-height: 120px;
@@ -303,7 +304,7 @@ button:hover {
 
 .like {
   background-size: cover; /* Adjust the background size */
-  background-image: url('components\\res\\thumbs_up.png') !important;
+  /*background-image: url('components\\res\\thumbs_up.png') !important;*/
   margin: 10% 0 0 0;
 }
 
@@ -529,4 +530,13 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.shrink-icon{
+  font-size: 50px;
+}
+
+.thumbsUp{
+  color: rgba(0, 0, 255, 0.88);
+  font-size: 50px;
 }
