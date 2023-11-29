@@ -78,6 +78,24 @@ header > .row {
   box-sizing: border-box;
 }
 
+.sideMenu {
+  min-width: 12% !important;
+  max-width: 20%;
+  padding: 20px;
+  min-height: 100vh;
+  flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
+  background-color: #FBE4A9; /* Optional: Set a background color for the side menu */
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Form CSS */
 .custom-field {
   position: relative;
@@ -266,6 +284,7 @@ header > .row {
   width: 100%;
   border: none;
   padding: 0;
+  padding-left: 30px;
   cursor: pointer;
   display: inline-block;
 }
@@ -296,8 +315,8 @@ button:hover {
 .maybe {
   /*background-image: url('components\\res\\shrug.png') !important;*/
   background-size: cover;
-  min-width: 120px; /* Adjust the width and height as needed */
-  min-height: 120px;
+  /*min-width: 120px; !* Adjust the width and height as needed *!*/
+  /*min-height: 120px;*/
   border-radius: 50%;
   margin: 10% 5% 0 5%;
 }
@@ -308,22 +327,25 @@ button:hover {
   margin: 10% 0 0 0;
 }
 
-.sideMenu {
-  min-width: 12% !important;
-  max-width: 20%;
-  padding: 20px;
-  min-height: 100vh;
-  flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
-  background-color: #FBE4A9; /* Optional: Set a background color for the side menu */
+.shrink-icon{
+  font-size: 70px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.dis-button button:hover {
+  color: #FF0505;
+}
+
+.may-button button:hover {
+  color: yellow;
+}
+
+.lik-button button:hover {
+  color: #00AFA4;
+}
+
+.thumbsUp{
+  color: rgba(0, 0, 255, 0.88);
+  font-size: 50px;
 }
 
 /* Movie Search CSS */
@@ -406,8 +428,12 @@ ul {
 
 .roomNumber{
   text-align: center; /* Center-align the content */
-  margin-top: 20px;
-  margin-left: 100px;
+  margin-top: 5px;
+  /*margin-left: 100px;*/
+}
+
+.GSwipeArea {
+  margin: 5px auto;
 }
 
 /*Final Result style*/
@@ -530,13 +556,4 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.shrink-icon{
-  font-size: 50px;
-}
-
-.thumbsUp{
-  color: rgba(0, 0, 255, 0.88);
-  font-size: 50px;
 }

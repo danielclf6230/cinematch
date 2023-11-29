@@ -3,6 +3,8 @@ import { actionsApi } from '../api/actionsApi';
 import PosterPreview from './PosterPreview';
 import MovieList from "./MovieList";
 import SideMenu from "./SideMenu";
+import {AiOutlineSearch} from "react-icons/ai";
+
 
 function MovieSearch() {
     const [searchTerm, setSearchTerm] = useState({
@@ -55,7 +57,7 @@ function MovieSearch() {
                     value={searchTerm.title}
                     onChange={(e) => setSearchTerm(e.target.value )}
                 />
-                <button onClick={handleSearch}>Search</button>
+                <button onClick={handleSearch}><AiOutlineSearch /></button>
                 {searchResult.length > 0 && (
                     <div>
                         <h2>Search Results</h2>

@@ -4,7 +4,7 @@ import {swipefunction} from "./swipeUtils";
 import SideMenu from "./SideMenu";
 import {entitiesApi} from "../api/entitiesApi";
 import {imagesApi} from "../api/imagesApi";
-import DislikeButton from "./SwipeButton";
+import DislikeButton from "./DislikeButton";
 import LikeButton from "./LikeButton";
 import MaybeButton from "./MaybeButton";
 import cardData from "./cardData";
@@ -132,22 +132,28 @@ function Swipe() {
                                 <h2>{cards[currentCard].title} / {cards[currentCard].rated}</h2>
                             </div>
                         </div>
-                        <div className="swipeButtons col align-self-center">
-                            <DislikeButton
-                                onClick={() => swipe("left")}
-                                text=""
-                                disabled={cards.length === 0}
-                            />
+                        <div className="swipeButtons row align-self-center">
+                            <div className="dis-button col">
+                                <DislikeButton
+                                    onClick={() => swipe("left")}
+                                    text=""
+                                    disabled={cards.length === 0}
+                                />
+                            </div>
+                            <div className="may-button col">
                             <MaybeButton
                                 onClick={maybe}
                                 text=""
                                 disabled={cards.length === 0}
                             />
+                            </div>
+                            <div className="lik-button col">
                             <LikeButton
                                 onClick={() => swipe("right")}
                                 text=""
                                 disabled={cards.length === 0}
                             />
+                            </div>
                         </div>
                     </div>
                 ) : (

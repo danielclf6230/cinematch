@@ -12,18 +12,23 @@ const Friends = () => {
     const [requestList, setRequestList]= useState([]);
     const [friendRequestSent, setFriendRequestSent] = useState(false);
 
+    const resetSearch = () => {
+        setSearchUserName('');
+        setSearchResult([]);
+        setError(null);
+        setFriendRequestSent(false);
+    };
+
     const handleSearchUser = async () => {
         try {
+            resetSearch(); // Reset the search fields and results
+
             if (!searchUserName) {
                 setError('Please enter a username');
                 return;
             }
 
-            // Reset the friendRequestSent state when initiating a new search
-            setFriendRequestSent(false);
-
             const userSearch = await entitiesApi.getUsersByUsername(searchUserName);
-            console.log(userSearch);
             const updatedUserSearch = userSearch.map((user) => ({
                 username: user.username,
                 userId: user.userId,
@@ -34,7 +39,7 @@ const Friends = () => {
                 return;
             }
 
-            setSearchResult(updatedUserSearch); // Ensure searchResult is always an array
+            setSearchResult(updatedUserSearch);
             setError(null);
 
         } catch (error) {
@@ -42,6 +47,37 @@ const Friends = () => {
             setError('An error occurred while fetching user data');
         }
     };
+
+    // const handleSearchUser = async () => {
+    //     try {
+    //         if (!searchUserName) {
+    //             setError('Please enter a username');
+    //             return;
+    //         }
+    //
+    //         // Reset the friendRequestSent state when initiating a new search
+    //         setFriendRequestSent(false);
+    //
+    //         const userSearch = await entitiesApi.getUsersByUsername(searchUserName);
+    //         console.log(userSearch);
+    //         const updatedUserSearch = userSearch.map((user) => ({
+    //             username: user.username,
+    //             userId: user.userId,
+    //         }));
+    //
+    //         if (updatedUserSearch.length === 0) {
+    //             setError('No user found');
+    //             return;
+    //         }
+    //
+    //         setSearchResult(updatedUserSearch); // Ensure searchResult is always an array
+    //         setError(null);
+    //
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //         setError('An error occurred while fetching user data');
+    //     }
+    // };
 
     const handleAcceptFriendRequest = async (requestId) => {
         try {
@@ -126,7 +162,6 @@ const Friends = () => {
                     </button>
                 </div>
 
-
                 {error && <p style={{ color: 'red' }}>{error}</p>}
 
                 <ul>
@@ -134,16 +169,37 @@ const Friends = () => {
                         <li key={user.userId}>
                             <br />
                             {user.username}{' '}
-                            {friendRequestSent ? (
-                                <span>Friend Request Sent</span>
+                            {friendList.some((friend) => friend.userId === user.userId) ? (
+                                <span>Already a Friend</span>
                             ) : (
-                                <button onClick={() => handleSendFriendRequest(user.userId)}>
-                                    Add Friend
-                                </button>
+                                friendRequestSent ? (
+                                    <span>Friend Request Sent</span>
+                                ) : (
+                                    <button onClick={() => handleSendFriendRequest(user.userId)}>
+                                        Add Friend
+                                    </button>
+                                )
                             )}
                         </li>
                     ))}
                 </ul>
+                {/*{error && <p style={{ color: 'red' }}>{error}</p>}*/}
+
+                {/*<ul>*/}
+                {/*    {searchResult.map((user) => (*/}
+                {/*        <li key={user.userId}>*/}
+                {/*            <br />*/}
+                {/*            {user.username}{' '}*/}
+                {/*            {friendRequestSent ? (*/}
+                {/*                <span>Friend Request Sent</span>*/}
+                {/*            ) : (*/}
+                {/*                <button onClick={() => handleSendFriendRequest(user.userId)}>*/}
+                {/*                    Add Friend*/}
+                {/*                </button>*/}
+                {/*            )}*/}
+                {/*        </li>*/}
+                {/*    ))}*/}
+                {/*</ul>*/}
 
                 <div>
                     <h2>Friend List</h2>

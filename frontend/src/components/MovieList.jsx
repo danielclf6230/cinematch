@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {entitiesApi} from "../api/entitiesApi";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 function MovieList() {
     const [movies, setMovies] = useState([]);
@@ -74,7 +76,8 @@ function MovieList() {
                                     <td className="col-2">{movie.title}</td>
                                     <td className="desc col-7">{movie.description}</td>
                                     <td className="col-1">{movie.rated}</td>
-                                    <td className="col-1"><button onClick={() => handleDeleteMovie(movie)}>Delete</button></td>
+                                    <td className="col-1"><button onClick={() => handleDeleteMovie(movie)}><FontAwesomeIcon icon={faTrash} />
+                                    </button></td>
                                 </tr>
                             ))}
                             </tbody>

@@ -4,6 +4,9 @@ import {swipefunction} from "./swipeUtils";
 import Button from "./SwipeButton";
 import {entitiesApi} from "../api/entitiesApi";
 import {imagesApi} from "../api/imagesApi";
+import DislikeButton from "./DislikeButton";
+import MaybeButton from "./MaybeButton";
+import LikeButton from "./LikeButton";
 
 function GroupSwipe({ socket, username, room }) {
     const [cards, setCards] = useState(cardData);
@@ -140,11 +143,6 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
-
-
-
-
-
     return (
         <div>
             <div className="cardArea">
@@ -163,24 +161,46 @@ function GroupSwipe({ socket, username, room }) {
                                 <h2>{cards[currentCard].title}</h2>
                             </div>
                         </div>
-
-                        <div className="buttons col align-self-center">
-                            <Button
-                                onClick={() => swipe("left")}
-                                text="Dislike"
-                                disabled={cards.length === 0}
-                            />
-                            <Button
-                                onClick={maybe}
-                                text="Maybe"
-                                disabled={cards.length === 0}
-                            />
-                            <Button
-                                onClick={() => swipe("right")}
-                                text="Like"
-                                disabled={cards.length === 0}
-                            />
+                        <div className="swipeButtons row align-self-center">
+                            <div className="dis-button col">
+                                <DislikeButton
+                                    onClick={() => swipe("left")}
+                                    text=""
+                                    disabled={cards.length === 0}
+                                />
+                            </div>
+                            <div className="may-button col">
+                                <MaybeButton
+                                    onClick={maybe}
+                                    text=""
+                                    disabled={cards.length === 0}
+                                />
+                            </div>
+                            <div className="lik-button col">
+                                <LikeButton
+                                    onClick={() => swipe("right")}
+                                    text=""
+                                    disabled={cards.length === 0}
+                                />
+                            </div>
                         </div>
+                        {/*<div className="buttons col align-self-center">*/}
+                        {/*    <Button*/}
+                        {/*        onClick={() => swipe("left")}*/}
+                        {/*        text="Dislike"*/}
+                        {/*        disabled={cards.length === 0}*/}
+                        {/*    />*/}
+                        {/*    <Button*/}
+                        {/*        onClick={maybe}*/}
+                        {/*        text="Maybe"*/}
+                        {/*        disabled={cards.length === 0}*/}
+                        {/*    />*/}
+                        {/*    <Button*/}
+                        {/*        onClick={() => swipe("right")}*/}
+                        {/*        text="Like"*/}
+                        {/*        disabled={cards.length === 0}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </div>
                 ) : (
                     <div className="cm-form result">

@@ -4,7 +4,7 @@ import { FaThumbsDown } from 'react-icons/fa';
 const DislikeButton = ({ onClick, text }) =>
     <button className="swipeButton dislike" onClick={onClick} >
     {text}
-        <FaThumbsDown style={{ color: 'blue' }} />
+        <FaThumbsDown className="shrink-icon" />
     </button>;
 
 export default DislikeButton;
