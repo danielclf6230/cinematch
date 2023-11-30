@@ -15,6 +15,10 @@ export const entitiesApi = {
     removeFriend,
     getMovies,
     deleteMovie,
+    addFavorites,
+    getFavourites,
+    addSharedFavorites,
+    getSharedFavorites,
 }
 export function getUserInfo(token) {
     console.log('Bearer token:', bearerAuth(token));
@@ -39,7 +43,6 @@ export async function getUsersById(userId) {
 }
 
 export async function sendFriendRequest(recipientUserId) {
-    //we need to figure out what to do if a friend request exists, make button not appear
     const response = await apiConfig.post(`/entities/users/friend-requests/${recipientUserId}`);
     return response.data;
 }
@@ -90,3 +93,26 @@ export async function deleteMovie(movieId) {
     return response.data;
 }
 
+//give the ids of the 3 movies in the solo swipe
+// ex.  {
+//          "movieIds": [4, 7, 9]
+//      }
+export async function addFavorites(moviesId) {
+   return apiConfig.post(`/entities/user/favorite-movies`, moviesId);
+
+}
+
+//returns an array of 3 movies.
+export async function getFavourites() {
+    return apiConfig.get(`/entities/user/favorite-movies`);
+}
+
+//just use this on one of the pair of users.
+export async function addSharedFavorites(otherUsersId, moviesId) {
+    return apiConfig.post(`/entities/share-movies/${otherUsersId}`, moviesId);
+}
+
+
+export async function getSharedFavorites(otherUsersId) {
+    return apiConfig.get(`/entities/share-movies/${otherUsersId}`);
+}

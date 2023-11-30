@@ -1,11 +1,14 @@
 package com.cm.cinematchapp.controllers;
 
+import com.cm.cinematchapp.dto.FavoriteMovieDTO;
 import com.cm.cinematchapp.entities.FriendRequest;
 import com.cm.cinematchapp.entities.Movie;
 import com.cm.cinematchapp.entities.User;
 import com.cm.cinematchapp.services.FriendService;
 import com.cm.cinematchapp.services.MovieService;
 import com.cm.cinematchapp.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The `EntityController` class is responsible for handling HTTP requests related to entities, such as users.
@@ -147,6 +151,56 @@ public class EntityController {
         movieService.deleteMovieById(movieId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+    @PostMapping("/user/favorite-movies")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Void> addFavoriteMoviesToCurrentUser(@RequestBody @Valid FavoriteMovieDTO favoriteMovieDTO) {
+        try {
+            Set<Long> movieIds = favoriteMovieDTO.getMovieIds();
+            movieService.addFavoriteMoviesToUser(movieIds);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping("/user/favorite-movies")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Set<Movie>> getFavoriteMovies() {
+        try {
+            Set<Movie> favoriteMovies = movieService.getFavoriteMovies();
+            return new ResponseEntity<>(favoriteMovies, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/share-movies/{user_id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Void> shareMoviesBetweenUsers(@PathVariable("user_id") Long userId,
+                                                        @RequestBody @Valid FavoriteMovieDTO favoriteMovieDTO) {
+        try {
+            Set<Long> movieIds = favoriteMovieDTO.getMovieIds();
+            movieService.shareMoviesBetweenUsers(userId, movieIds);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/share-movies/{user_id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+    public ResponseEntity<Set<Movie>> getSharedMoviesBetweenUsers(@PathVariable("user_id") Long userId) {
+        try {
+            Set<Movie> sharedMovies = movieService.getSharedMoviesBetweenUsers(userId);
+            return new ResponseEntity<>(sharedMovies, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 }

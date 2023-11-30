@@ -6,8 +6,11 @@ import com.cm.cinematchapp.entities.*;
 import com.cm.cinematchapp.exceptions.ResourceNotFoundException;
 import com.cm.cinematchapp.repositories.MoviePosterRepository;
 import com.cm.cinematchapp.repositories.MovieRepository;
+import com.cm.cinematchapp.repositories.SharedFavoriteMoviesRepository;
+import com.cm.cinematchapp.repositories.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +29,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.io.*;
 import java.net.*;
+import java.util.stream.Collectors;
 
 import static com.cm.cinematchapp.constants.EntityConstants.kPostersPath;
 
@@ -44,6 +46,16 @@ public class MovieService {
 
     @Autowired
     private MoviePosterRepository moviePosterRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SharedFavoriteMoviesRepository sharedFavoriteMoviesRepository;
+
+    @Autowired
+    private SecurityService securityService;
+
 
     @Autowired
     private RestTemplate restTemplate;
@@ -143,13 +155,11 @@ public class MovieService {
     }
 
 
-
-
-    public byte[] getMoviePosterByMovieId(Long movieId) throws IOException{
+    public byte[] getMoviePosterByMovieId(Long movieId) throws IOException {
         Movie movie = movieRepository.getMovieById(movieId);
         MoviePoster moviePoster = movie.getPoster();
         Path posterPath = Paths.get(moviePoster.getPath());
-            return Files.readAllBytes(posterPath);
+        return Files.readAllBytes(posterPath);
 //        else {
 //            moviePoster = moviePosterRepository.findByFilename("default_poster.png");
 //            Path defaultPath = Paths.get(moviePoster.getPath());
@@ -216,15 +226,15 @@ public class MovieService {
         return poster;
     }
 
-    public void deletePoster(Movie movie) throws IOException{
-            MoviePoster poster = movie.getPoster();
-            String posterPath = poster.getPath();
-            Path path = Paths.get(posterPath);
+    public void deletePoster(Movie movie) throws IOException {
+        MoviePoster poster = movie.getPoster();
+        String posterPath = poster.getPath();
+        Path path = Paths.get(posterPath);
 
-            movie.setPoster(null);
-            moviePosterRepository.delete(poster);
+        movie.setPoster(null);
+        moviePosterRepository.delete(poster);
 
-            Files.delete(path);
+        Files.delete(path);
     }
 
 
@@ -234,4 +244,89 @@ public class MovieService {
         // For example, using timestamp or UUID
         return "poster_image_" + System.currentTimeMillis() + ".jpg";
     }
+
+
+    public void addFavoriteMoviesToUser(Set<Long> movieIds) {
+        User user = securityService.getCurrentLoginUser().get();
+
+        if (user != null) {
+            if (movieIds != null && !movieIds.isEmpty()) {
+                Set<Movie> favoriteMovies = movieRepository.findAllById(movieIds).stream().collect(Collectors.toSet());
+
+                if (favoriteMovies.size() == movieIds.size()) {
+                    // Replace existing favorite movies with new ones
+                    user.getFavoriteMovies().clear();
+                    user.getFavoriteMovies().addAll(favoriteMovies);
+
+                    userRepository.save(user);
+                } else {
+                    throw new IllegalArgumentException("Invalid movie IDs provided.");
+                }
+            } else {
+                throw new IllegalArgumentException("At least one movie ID should be provided.");
+            }
+        } else {
+            throw new EntityNotFoundException("User not found.");
+        }
+    }
+
+
+    public Set<Movie> getFavoriteMovies() {
+        User user = securityService.getCurrentLoginUser().get();
+
+        if (user != null) {
+            return user.getFavoriteMovies();
+        } else {
+            throw new EntityNotFoundException("User not found.");
+        }
+    }
+
+
+    public void shareMoviesBetweenUsers(Long userId2, Set<Long> movieIds) {
+        User user1 = securityService.getCurrentLoginUser().orElse(null);
+        User user2 = userRepository.findById(userId2).orElse(null);
+
+        if (user1 != null && user2 != null) {
+            if (movieIds != null && movieIds.size() == 3) {
+                SharedFavoriteMovies existingSharedMovies = sharedFavoriteMoviesRepository
+                        .findByUsers(user1, user2)
+                        .orElse(null);
+
+                if (existingSharedMovies == null) {
+                    if (movieIds != null && movieIds.size() == 3) {
+                        Iterable<Movie> moviesIterable = movieRepository.findAllById(movieIds);
+                        Set<Movie> moviesToShare = new HashSet<>();
+                        for (Movie movie : moviesIterable) {
+                            moviesToShare.add(movie);
+                        }
+
+
+                        if (moviesToShare.size() == 3) {
+                            SharedFavoriteMovies sharedFavoriteMovies = new SharedFavoriteMovies();
+                            sharedFavoriteMovies.setUser1(user1);
+                            sharedFavoriteMovies.setUser2(user2);
+                            sharedFavoriteMovies.getFavoriteMovies().addAll(moviesToShare);
+
+                            sharedFavoriteMoviesRepository.save(sharedFavoriteMovies);
+                        } else {
+                            throw new IllegalArgumentException("Exactly three valid movie IDs should be provided.");
+                        }
+                    } else {
+                        throw new IllegalStateException("Movies already shared between these users.");
+                    }
+                } else {
+                    throw new IllegalArgumentException("Exactly three movie IDs should be provided.");
+                }
+            } else {
+                throw new EntityNotFoundException("Users not found.");
+            }
+        }
+    }
+    public Set<Movie> getSharedMoviesBetweenUsers(Long userId2) {
+        Long userId1 = securityService.getCurrentLoginUserId();
+        return sharedFavoriteMoviesRepository.findMoviesByUserIds(userId1, userId2);
+    }
+
+
+
 }

@@ -103,6 +103,24 @@ public class User {
     private List<Friendship> friendships = new ArrayList<>();
 
 
+    // Favorite movies of this user
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_movies",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
+    private Set<Movie> favoriteMovies = new HashSet<>();
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
+    private Set<SharedFavoriteMovies> sharedMoviesAsUser1 = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL)
+    private Set<SharedFavoriteMovies> sharedMoviesAsUser2 = new HashSet<>();
+
 
 
 }
