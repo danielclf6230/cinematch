@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { swipefunction } from "./swipeUtils";
 import SideMenu from "./SideMenu";
-import { entitiesApi } from "../api/entitiesApi";
+import { addFavorites, entitiesApi } from "../api/entitiesApi";
 import { imagesApi } from "../api/imagesApi";
 import DislikeButton from "./DislikeButton";
 import LikeButton from "./LikeButton";
@@ -20,6 +20,7 @@ function Swipe() {
     const [showDescription, setShowDescription] = useState(false);
     const [totalCards, setTotalCards] = useState(0);
     const [swipeIndex, setSwipeIndex] = useState(0);
+    const [swipingComplete, setSwipingComplete] = useState(false); // Track swiping completion
 
     let startX = 0;
 
@@ -35,8 +36,20 @@ function Swipe() {
     }, [likedCards, maybeCards, dislikedCards]);
 
     const swipe = (direction) => {
-        swipefunction(direction, cards, currentCard, setCards, setLikedCards, setDislikedCards);
+        swipefunction(
+            direction,
+            cards,
+            currentCard,
+            setCards,
+            setLikedCards,
+            setDislikedCards
+        );
         setSwipeIndex((prevIndex) => prevIndex + 1);
+
+        // Check if all swipes are completed
+        if (swipeIndex === totalCards - 1) {
+            setSwipingComplete(true);
+        }
     };
 
     const handleDragStart = (e) => {
@@ -74,7 +87,6 @@ function Swipe() {
 
             setCards(updatedCardData);
             setTotalCards(updatedCardData.length); // Set the total number of cards
-
         } catch (error) {
             console.error('Error fetching movie data:', error);
         }
@@ -104,6 +116,30 @@ function Swipe() {
             </ul>
         </div>
     );
+
+    const handleResult = async (moviesId) => {
+        try {
+            // Call the acceptFriendRequest function from entitiesApi
+            await entitiesApi.addFavorites(moviesId);
+            // Optionally, you can update the request list or perform any other actions
+            console.log('Movie Result Saved');
+            // After accepting the request, you may want to refresh the friend requests list
+        } catch (error) {
+            console.error('Error movie save:', error);
+            // Handle the error, e.g., show an error message to the user
+        }
+    };
+
+    useEffect(() => {
+        // Call handleResult when swiping is complete
+        if (swipingComplete) {
+            const movieIds = combinedList
+                .slice(0, 3)
+                .map((movie) => movie.id);
+            console.log(movieIds);
+            handleResult(movieIds);
+        }
+    }, [swipingComplete, combinedList]);
 
     const showInfo = () => {
         setShowDescription(true);
