@@ -18,6 +18,8 @@ class Header extends Component {
                             <Link to="/home" className="navbar-brand">home</Link>
                             <Link to="/register" className="navbar-brand">register</Link>
                             <Link to="/" className="navbar-brand">login</Link>
+                            <Link to="/" className="navbar-brand">logout</Link>
+
                         </div>
                         <div className="cm-title col">
                             <h1>CINEMATCH</h1>

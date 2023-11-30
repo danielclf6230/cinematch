@@ -136,7 +136,7 @@ function Swipe() {
                                 alt={`Card ${cards[currentCard].id}`}
                             />
                             <div className="darkOverlay">
-                                <h2>{cards[currentCard].title} / {cards[currentCard].rated}</h2>
+                                <h2>{cards[currentCard].title} | {cards[currentCard].rated}</h2>
                             </div>
                             {showDescription && (
                                 <div className="overlay" onClick={hideInfo}>

@@ -53,7 +53,8 @@ html body {
 }
 
 .cm-title > h1 {
-  color: #FFBC10;
+  color: black; /* or any other color you prefer */
+  -webkit-text-stroke: 1px #FFBC10;
   font-family: Helvetica, sans-serif;
   margin-bottom: 0 !important;
 }
@@ -448,6 +449,9 @@ ul {
   text-align: center; /* Center-align the content */
 }
 
+.cm-form.room button {
+  border-radius: 10px;
+}
 
 .cm-form.waitingRoom {
   height: 20rem;
@@ -473,7 +477,7 @@ ul {
 .cm-form.result{
   background-color: #aaa !important;
   padding: 5px;
-  margin-top: 10px !important;
+  margin-top: 7% !important;
 }
 
 .result-list {
@@ -530,28 +534,26 @@ ul {
 }
 
 /* Friends CSS */
-.cm-form.friends {
+.friends {
   background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
-  text-align: center; /* Center-align the content */
   min-width: 20rem;
   max-width: 20rem;
-  align-items: center;
-  justify-content: center;
   text-align: left; /* Center text inside the box */
   padding: 30px;
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: auto; /* Enable scrolling if content exceeds the box height */
-
-  margin: auto !important; /* Reset the margin for .cm-form.friends */
+  margin: 5% auto auto auto !important; /* Reset the margin for .cm-form.friends */
 }
 
-.cm-form.friends li {
+.friends li {
   margin-bottom: 0.7rem;
+
 }
 
-.cm-form.friends li button {
+.friends li button {
   margin-left: 10px;
+  border-radius: 10px;
 }
 
 .friendSearch {
@@ -609,12 +611,14 @@ ul {
 .descriptionModal {
   background: rgba(0, 0, 0, 0.3);
   padding: 20px;
+  border-radius: 5%;
   max-width: 80%;
   max-height: 80%;
   max-height: 80%;
   overflow-y: auto;
-  box-shadow: 0 0 10px rgb(255, 188, 16);
+  box-shadow: 0 0 20px rgb(255, 188, 16);
   text-align: center;
+  font-size: 1.2rem;
 }
 
 .descriptionModal p{

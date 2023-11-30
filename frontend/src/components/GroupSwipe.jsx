@@ -212,23 +212,6 @@ function GroupSwipe({ socket, username, room }) {
                                 />
                             </div>
                         </div>
-                        {/*<div className="buttons col align-self-center">*/}
-                        {/*    <Button*/}
-                        {/*        onClick={() => swipe("left")}*/}
-                        {/*        text="Dislike"*/}
-                        {/*        disabled={cards.length === 0}*/}
-                        {/*    />*/}
-                        {/*    <Button*/}
-                        {/*        onClick={maybe}*/}
-                        {/*        text="Maybe"*/}
-                        {/*        disabled={cards.length === 0}*/}
-                        {/*    />*/}
-                        {/*    <Button*/}
-                        {/*        onClick={() => swipe("right")}*/}
-                        {/*        text="Like"*/}
-                        {/*        disabled={cards.length === 0}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
                     </div>
                 ) : (
                     <div className="cm-form result">
