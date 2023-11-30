@@ -49,11 +49,10 @@ io.on('connection', (socket) => {
 
 
 
-  socket.on('create_room', (room) => {
-    console.log(`Room: ${room}`)
-
+  socket.on('create_room', ({room, userID}) => {
     rooms[room] = [];
-    rooms[room].push({ id: socket.id, choice: undefined });
+    rooms[room].push({ id: socket.id, choice: undefined, userid: userID});
+    console.log(rooms[room]);
     //User join the room
     socket.join(room);
 
@@ -65,14 +64,14 @@ io.on('connection', (socket) => {
 
     //Check the number of user
     if (rooms[room].length === 2) {
-      const users = rooms[room].map(user => user.id);
+      const users = rooms[room].map(user => ({ id: user.id, userID: user.userID }) );
       io.to(room).emit('room_ready', users);
     }
   });
 
 
 // join room event, if room not exist, create a new room
-  socket.on('join_room', (room) => {
+  socket.on('join_room', ({ room, userID }) => {
     console.log(rooms[room]);
     // Check if the room exists
     if (!rooms[room]) {
@@ -86,14 +85,15 @@ io.on('connection', (socket) => {
       return;
     }
 
-    rooms[room].push({ id: socket.id, choice: undefined });
+    rooms[room].push({ id: socket.id, choice: undefined, userID });
     socket.join(room);
 
     if (rooms[room].length === 2) {
-      const users = rooms[room].map(user => user.id);
+      const users = rooms[room].map(user => ({ id: user.id, userID: user.userID }));
       io.to(room).emit('room_ready', users);
     }
 
+    console.log(rooms[room]);
   });
 
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import GroupSwipe from "./GroupSwipe";
 import SideMenu from "./SideMenu";
+import {useAuth} from "../security/AuthContext";
 
 const socket = io.connect('http://localhost:3001');
 
@@ -14,20 +15,25 @@ function Room() {
     const [waitingMessage, setWaitingMessage] = useState('');
     const [waiting, setWaiting] = useState(false);
 
+    const { getUserData } = useAuth(); // Access the user data from the context
+    const userData = getUserData();
+    const userID = userData.userId;
+
+    console.log(userID);
 
     const createRoom = () => {
-        setRoom(prevRoom => {
-            // Use the previous state to calculate the new state
+        const userID = userData.userId;
+        console.log(userID);
+
+        setRoom((prevRoom) => {
             const newRoom = String(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
-            socket.emit('create_room', newRoom);
+            socket.emit('create_room', { room: newRoom, userID }); // Pass room and userID as an object
             setShowSwipe(true);
             setWaiting(true);
 
-            // Return the new state
             return newRoom;
         });
     };
-
 
     const joinRoom = () => {
         if (room.trim() === "") {
@@ -35,13 +41,15 @@ function Room() {
             return;
         }
 
-        socket.emit('join_room', room);
+        const userID = userData.userId; // Get the userID
+
+        socket.emit('join_room', { room, userID }); // Pass room and userID as an object
 
         if (errorMessage === "The room does not exist" || errorMessage !== "The room is full" || errorMessage !== "The room cannot be empty") {
             setShowSwipe(true);
         }
-
     };
+
 
     useEffect(() => {
 
