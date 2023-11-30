@@ -21,12 +21,16 @@ function Swipe() {
     const [totalCards, setTotalCards] = useState(0);
     const [swipeIndex, setSwipeIndex] = useState(0);
     const [swipingComplete, setSwipingComplete] = useState(false); // Track swiping completion
+    const [topThree, setTopThree] = useState([]);
+    const [fetchResultComplete, setFetchResultComplete] = useState(false); //
+
 
     let startX = 0;
 
     useEffect(() => {
         // Fetch movie data when the component mounts
         fetchMovieData();
+        fetchResult();
     }, []);
 
     useEffect(() => {
@@ -129,6 +133,24 @@ function Swipe() {
         </div>
     );
 
+    const renderTopThree = (movies) => (
+        <div>
+            <ul className="result-list">
+                {Array.isArray(movies) && movies.map((movie, index) => (
+                    <li key={index}>
+                        <div className="resultPoster">
+                            <img src={movie.image} alt={`Card ${movie.id}`} />
+                            <div className="movieTitle">
+                                <span className="idNumber">#{index + 1}.</span> {movie.title}
+                            </div>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+
+
     const handleResult = async (moviesId) => {
         try {
             // Call the acceptFriendRequest function from entitiesApi
@@ -141,6 +163,23 @@ function Swipe() {
             // Handle the error, e.g., show an error message to the user
         }
     };
+
+    const fetchResult = async () => {
+        try {
+            const FavouriteListData = await entitiesApi.getFavourites();
+            // Check if the FavouriteListData is empty
+            if (FavouriteListData.data.length === 0) {
+                setFetchResultComplete(false);
+            } else {
+                setFetchResultComplete(true);
+                setTopThree(FavouriteListData);
+            }
+        } catch (error) {
+            setFetchResultComplete(false);
+            console.error('Error fetching Favourite List:', error);
+        }
+    };
+
 
 
     const showInfo = () => {
@@ -165,6 +204,7 @@ function Swipe() {
     return (
         <div className="App">
             <SideMenu />
+            {!fetchResultComplete ? (
             <div className="cardArea">
                 {cards.length > 0 ? (
                     <div
@@ -215,8 +255,16 @@ function Swipe() {
                     </div>
                 )}
             </div>
+                ):(
+                <div className="cm-form result">
+                    <h1>Your Top 3!</h1>
+                    {renderTopThree(topThree, 'TopThree Movies')}
+                </div>
+                )}
         </div>
     );
 }
 
 export default Swipe;
+
+
