@@ -26,8 +26,12 @@ function MovieSearch() {
 
     const handleSelectMovie = async (selectedMovie) => {
         try {
-            const response = await actionsApi.selectMovie(selectedMovie);
-            setSelectedMovie(response.data); // Update addedMovie state with the selected movie details
+            const confirmation = window.confirm(`Would you like to add ${selectedMovie.title} (${selectedMovie.year})?`);
+            if (confirmation) {
+                const response = await actionsApi.selectMovie(selectedMovie);
+                setSelectedMovie(response.data); // Update addedMovie state with the selected movie details
+                handleAddedMovie(selectedMovie);
+            }
         } catch (error) {
             console.error('Error selecting movie:', error);
         }
@@ -45,6 +49,8 @@ function MovieSearch() {
             console.error('Error adding movie:', error);
         }
     };
+
+    console.log(addedMovie);
 
     const movieListRef = useRef(); // Create a ref
 
@@ -69,11 +75,6 @@ function MovieSearch() {
                                 </li>
                             ))}
                         </ul>
-                    </div>
-                )}
-                {selectedMovie && (
-                    <div>
-                        <p>Would you like to add {`${selectedMovie.title} (${selectedMovie.year})`}? <button onClick={() => handleAddedMovie(selectedMovie)}>Add Movie</button></p>
                     </div>
                 )}
                 {addedMovie && (
