@@ -247,6 +247,15 @@ header > .row {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
 }
 
+.darkOverlay2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;  /* Adjust the height of the dark overlay as needed */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
 .darkOverlay h2 {
   position: absolute;
   bottom: 0;
@@ -254,9 +263,25 @@ header > .row {
   text-align: start;
   margin: 0; /* Remove default margin */
   color: white; /* Set the text color as needed */
-  padding: 10px;
-  padding-bottom: 20px;
+  padding: 10px 10px 20px;
 }
+
+.infoo {
+  font-size: 30px;
+  color: #ffffff;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: transform 0.3s; /* Add a smooth transition effect */
+
+  &:hover {
+    transform: scale(1.2); /* Adjust the scale factor for the hover effect */
+  }
+}
+
+
+
 
 /* Liked, Maybe, Disliked cards styling */
 .liked-cards,
@@ -347,6 +372,10 @@ button:hover {
   color: rgba(0, 0, 255, 0.88);
   font-size: 50px;
 }
+
+
+
+
 
 /* Movie Search CSS */
 .searchArea {
@@ -556,4 +585,34 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+
+
+
+
+
+
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Transparent black overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; /* Ensure the overlay is above other content except darkOverlay2 */
+}
+
+.descriptionModal {
+  background: #fff;
+  padding: 20px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }

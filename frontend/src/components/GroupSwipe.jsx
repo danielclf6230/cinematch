@@ -7,6 +7,7 @@ import {imagesApi} from "../api/imagesApi";
 import DislikeButton from "./DislikeButton";
 import MaybeButton from "./MaybeButton";
 import LikeButton from "./LikeButton";
+import {HiOutlineInformationCircle} from "react-icons/hi";
 
 function GroupSwipe({ socket, username, room }) {
     const [cards, setCards] = useState(cardData);
@@ -16,6 +17,7 @@ function GroupSwipe({ socket, username, room }) {
     const [maybeCards, setMaybeCards] = useState([]);
     const [waiting, setWaiting] = useState(false);
     const [result, setResult] = useState('');
+    const [showDescription, setShowDescription] = useState(false);
 
     console.log(cards)
 
@@ -122,7 +124,8 @@ function GroupSwipe({ socket, username, room }) {
                 id: movie.id,
                 image: URL.createObjectURL(new Blob([posterDataArray[index]])),
                 title: movie.title, //this allows to print the title after
-                score: 0,
+                rated: movie.rated,
+                description: movie.description,
             }));
             console.log(updatedCardData);
             setCards(updatedCardData);
@@ -143,6 +146,14 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
+    const showInfo = () => {
+        setShowDescription(true);
+    };
+
+    const hideInfo = () => {
+        setShowDescription(false);
+    };
+
     return (
         <div>
             <div className="cardArea">
@@ -158,7 +169,18 @@ function GroupSwipe({ socket, username, room }) {
                                  alt={`Card ${cards[currentCard].id}`}
                             />
                             <div className="darkOverlay">
-                                <h2>{cards[currentCard].title}</h2>
+                                <h2>{cards[currentCard].title} / {cards[currentCard].rated}</h2>
+                            </div>
+                            {showDescription && (
+                                <div className="overlay" onClick={hideInfo}>
+                                    <div className="descriptionModal">
+                                        <h2>{cards[currentCard].title}</h2>
+                                        <p>{cards[currentCard].description}</p>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="darkOverlay2">
+                                <HiOutlineInformationCircle className="infoo" onClick={showInfo} />
                             </div>
                         </div>
                         <div className="swipeButtons row align-self-center">
