@@ -35,17 +35,17 @@ function Swipe() {
         setCombinedList(updatedCombinedList);
     }, [likedCards, maybeCards, dislikedCards]);
 
-    // useEffect(() => {
-    //     // Call handleResult when swiping is complete
-    //     if (swipingComplete) {
-    //         const movieIds = combinedList
-    //             .sort(sortByType)
-    //             .slice(0, 3)
-    //             .map((movie) => movie.id);
-    //         console.log(movieIds);
-    //         handleResult(movieIds);
-    //     }
-    // }, [swipingComplete, combinedList]);
+    useEffect(() => {
+        // Call handleResult when swiping is complete
+        if (swipingComplete) {
+            const movieIds = combinedList
+                .sort(sortByType)
+                .slice(0, 3)
+                .map((movie) => movie.id);
+            console.log(movieIds);
+            handleResult(movieIds);
+        }
+    }, [swipingComplete, combinedList]);
 
     const swipe = (direction) => {
         swipefunction(
@@ -156,11 +156,11 @@ function Swipe() {
         return typeOrder[a.type] - typeOrder[b.type];
     };
 
-    const movieIds = combinedList
-        .sort(sortByType)
-        .slice(0, 3)
-        .map((movie) => movie.id);
-    console.log(movieIds);
+    // const movieIds = combinedList
+    //     .sort(sortByType)
+    //     .slice(0, 3)
+    //     .map((movie) => movie.id);
+    // console.log(movieIds);
 
     return (
         <div className="App">
@@ -212,9 +212,6 @@ function Swipe() {
                     <div className="cm-form result">
                         <h1>Your Top 3!</h1>
                         {renderMoviesList(combinedList.sort(sortByType), 'Combined Movies')}
-                        <button onClick={() => handleResult(movieIds)}>
-                            Save
-                        </button>
                     </div>
                 )}
             </div>

@@ -19,8 +19,6 @@ const connectedUsers = {};
 
 //connected user
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
   connectedUsers[socket.id] = {};
 
   socket.on('sendFriendRequest', (request) => {
