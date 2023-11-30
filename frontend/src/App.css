@@ -612,6 +612,10 @@ ul {
   text-align: center;
 }
 
-.descriptionModal p, h2{
+.descriptionModal p{
+  color: white !important;
+}
+
+.descriptionModal h2{
   color: white !important;
 }
