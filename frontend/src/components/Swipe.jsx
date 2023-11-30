@@ -137,6 +137,7 @@ function Swipe() {
                                 <div className="overlay" onClick={hideInfo}>
                                     <div className="descriptionModal">
                                         <h2>{cards[currentCard].title}</h2>
+                                        <br/>
                                         <p>{cards[currentCard].description}</p>
                                     </div>
                                 </div>
