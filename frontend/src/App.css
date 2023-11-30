@@ -80,8 +80,8 @@ header > .row {
 }
 
 .sideMenu {
-  min-width: 12% !important;
-  max-width: 20%;
+  min-width: 225px !important;
+  max-width: 22%;
   padding: 20px;
   min-height: 100vh;
   flex: 0 0 auto; /* Side menu takes up 1 part of the available space */
