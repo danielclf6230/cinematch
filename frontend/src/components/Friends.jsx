@@ -147,7 +147,8 @@ const Friends = () => {
     return (
         <div className="App">
             <SideMenu />
-            <div className="cm-form friends">
+            <div className="friends">
+
                 <h2>Search User</h2>
                 <div className="friendSearch">
                     <input className="searchInput"
@@ -156,7 +157,6 @@ const Friends = () => {
                            value={searchUserName}
                            onChange={(e) => setSearchUserName(e.target.value)}
                     />
-
                     <button className="searchButton" onClick={handleSearchUser}>
                         <AiOutlineSearch />
                     </button>
@@ -183,23 +183,6 @@ const Friends = () => {
                         </li>
                     ))}
                 </ul>
-                {/*{error && <p style={{ color: 'red' }}>{error}</p>}*/}
-
-                {/*<ul>*/}
-                {/*    {searchResult.map((user) => (*/}
-                {/*        <li key={user.userId}>*/}
-                {/*            <br />*/}
-                {/*            {user.username}{' '}*/}
-                {/*            {friendRequestSent ? (*/}
-                {/*                <span>Friend Request Sent</span>*/}
-                {/*            ) : (*/}
-                {/*                <button onClick={() => handleSendFriendRequest(user.userId)}>*/}
-                {/*                    Add Friend*/}
-                {/*                </button>*/}
-                {/*            )}*/}
-                {/*        </li>*/}
-                {/*    ))}*/}
-                {/*</ul>*/}
 
                 <div>
                     <h2>Friend List</h2>
