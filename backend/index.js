@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
       return;
     }
 
-    rooms[room].push({ id: socket.id, choice: undefined, userID });
+    rooms[room].push({ id: socket.id, choice: undefined, userid: userID });
     socket.join(room);
 
     if (rooms[room].length === 2) {
