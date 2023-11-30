@@ -9,6 +9,7 @@ import LikeButton from "./LikeButton";
 import MaybeButton from "./MaybeButton";
 import cardData from "./cardData";
 import { HiOutlineInformationCircle } from "react-icons/hi";
+import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 
 function Swipe() {
     const [cards, setCards] = useState(cardData);
@@ -20,10 +21,12 @@ function Swipe() {
     const [showDescription, setShowDescription] = useState(false);
     const [totalCards, setTotalCards] = useState(0);
     const [swipeIndex, setSwipeIndex] = useState(0);
-    const [swipingComplete, setSwipingComplete] = useState(false); // Track swiping completion
+    const [swipingComplete, setSwipingComplete] = useState(false);
     const [topThree, setTopThree] = useState([]);
-    const [fetchResultComplete, setFetchResultComplete] = useState(false); //
+    const [fetchResultComplete, setFetchResultComplete] = useState(false);
+    const [reset, setReset] = useState(false);
 
+    const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
     let startX = 0;
 
@@ -52,19 +55,30 @@ function Swipe() {
     }, [swipingComplete, combinedList]);
 
     const swipe = (direction) => {
-        swipefunction(
-            direction,
-            cards,
-            currentCard,
-            setCards,
-            setLikedCards,
-            setDislikedCards
-        );
-        setSwipeIndex((prevIndex) => prevIndex + 1);
+        if (reset) {
+            setLikedCards([]);
+            setDislikedCards([]);
+            setMaybeCards([]);
+            setCombinedList([]);
+            setSwipeIndex(0);
+            setSwipingComplete(false);
+            setReset(false); // Reset the reset flag
+        } else {
+            // Continue with normal swiping logic
+            swipefunction(
+                direction,
+                cards,
+                currentCard,
+                setCards,
+                setLikedCards,
+                setDislikedCards
+            );
+            setSwipeIndex((prevIndex) => prevIndex + 1);
 
-        // Check if all swipes are completed
-        if (swipeIndex === totalCards - 1) {
-            setSwipingComplete(true);
+            // Check if all swipes are completed
+            if (swipeIndex === totalCards - 1) {
+                setSwipingComplete(true);
+            }
         }
     };
 
@@ -102,7 +116,7 @@ function Swipe() {
             }));
 
             setCards(updatedCardData);
-            setTotalCards(updatedCardData.length); // Set the total number of cards
+            setTotalCards(updatedCardData.length);
         } catch (error) {
             console.error('Error fetching movie data:', error);
         }
@@ -119,16 +133,18 @@ function Swipe() {
     const renderMoviesList = (movies) => (
         <div>
             <ul className="result-list">
-                {movies.slice(0, 3).map((movie, index) => (
-                    <li key={index}>
-                        <div className="resultPoster">
-                            <img src={movie.image} alt={`Card ${movie.id}`} />
-                            <div className="movieTitle">
-                                <span className="idNumber">#{index + 1}.</span> {movie.title}
+                {Array.isArray(movies) && movies
+                    .slice(0, 3)
+                    .map((movie, index) => (
+                        <li key={index}>
+                            <div className="resultPoster">
+                                <img src={movie.image} alt={`Card ${movie.id}`} />
+                                <div className="movieTitle">
+                                    <span className="idNumber">#{index + 1}.</span> {movie.title}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                ))}
+                        </li>
+                    ))}
             </ul>
         </div>
     );
@@ -136,39 +152,34 @@ function Swipe() {
     const renderTopThree = (movies) => (
         <div>
             <ul className="result-list">
-                {Array.isArray(movies) && movies.map((movie, index) => (
-                    <li key={index}>
-                        <div className="resultPoster">
-                            <img src={movie.image} alt={`Card ${movie.id}`} />
-                            <div className="movieTitle">
-                                <span className="idNumber">#{index + 1}.</span> {movie.title}
+                {Array.isArray(movies) && movies
+                    .map((movie, index) => (
+                        <li key={index}>
+                            <div className="resultPoster">
+                                <img src={movie.image} alt={`Card ${movie.id}`} />
+                                <div className="movieTitle">
+                                    <span className="idNumber">#{index + 1}.</span> {movie.title}
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                ))}
+                        </li>
+                    ))}
             </ul>
         </div>
     );
 
-
     const handleResult = async (moviesId) => {
         try {
-            // Call the acceptFriendRequest function from entitiesApi
             await entitiesApi.addFavorites(moviesId);
-            // Optionally, you can update the request list or perform any other actions
             console.log('Movie Result Saved');
-            // After accepting the request, you may want to refresh the friend requests list
         } catch (error) {
             console.error('Error movie save:', error);
-            // Handle the error, e.g., show an error message to the user
         }
     };
 
     const fetchResult = async () => {
         try {
             const FavouriteListData = await entitiesApi.getFavourites();
-            // Check if the FavouriteListData is empty
-            if (FavouriteListData.data.length === 0) {
+            if (FavouriteListData.data.length === 0 || reset) {
                 setFetchResultComplete(false);
             } else {
                 setFetchResultComplete(true);
@@ -179,8 +190,6 @@ function Swipe() {
             console.error('Error fetching Favourite List:', error);
         }
     };
-
-
 
     const showInfo = () => {
         setShowDescription(true);
@@ -195,76 +204,79 @@ function Swipe() {
         return typeOrder[a.type] - typeOrder[b.type];
     };
 
-    // const movieIds = combinedList
-    //     .sort(sortByType)
-    //     .slice(0, 3)
-    //     .map((movie) => movie.id);
-    // console.log(movieIds);
+    const handleReset = () => {
+        setReset(true);
+        window.location.reload();
+    };
 
     return (
         <div className="App">
             <SideMenu />
             {!fetchResultComplete ? (
-            <div className="cardArea">
-                {cards.length > 0 ? (
-                    <div
-                        className="card-container"
-                        draggable
-                        onDragStart={handleDragStart}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <div className="posterContainer">
-                            <img
-                                className="posterImage"
-                                src={cards[currentCard].image}
-                                alt={`Card ${cards[currentCard].id}`}
-                            />
-                            <div className="darkOverlay">
-                                <h2>{cards[currentCard].title} | {cards[currentCard].rated}</h2>
-                            </div>
-                            {showDescription && (
-                                <div className="overlay" onClick={hideInfo}>
-                                    <div className="descriptionModal">
-                                        <h2>{cards[currentCard].title}</h2>
-                                        <br/>
-                                        <p>{cards[currentCard].description}</p>
-                                    </div>
+                <div className="cardArea">
+                    {cards.length > 0 ? (
+                        <div
+                            className="card-container"
+                            draggable
+                            onDragStart={handleDragStart}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <div className="posterContainer">
+                                <img
+                                    className="posterImage"
+                                    src={cards[currentCard].image}
+                                    alt={`Card ${cards[currentCard].id}`}
+                                />
+                                <div className="darkOverlay">
+                                    <h2>{cards[currentCard].title} | {cards[currentCard].rated}</h2>
                                 </div>
-                            )}
-                            <div className="darkOverlay2">
-                                <p className="counter">{swipeIndex + 1}/{totalCards}</p>
-                                <HiOutlineInformationCircle className="info" onClick={showInfo} />
+                                {showDescription && (
+                                    <div className="overlay" onClick={hideInfo}>
+                                        <div className="descriptionModal">
+                                            <h2>{cards[currentCard].title}</h2>
+                                            <br/>
+                                            <p>{cards[currentCard].description}</p>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="darkOverlay2">
+                                    <p className="counter">{swipeIndex + 1}/{totalCards}</p>
+                                    <HiOutlineInformationCircle className="info" onClick={showInfo} />
+                                </div>
+                            </div>
+                            <div className="swipeButtons row align-self-center">
+                                <div className="dis-button col">
+                                    <DislikeButton onClick={() => swipe("left")} text="" disabled={cards.length === 0} />
+                                </div>
+                                <div className="may-button col">
+                                    <MaybeButton onClick={maybe} text="" disabled={cards.length === 0} />
+                                </div>
+                                <div className="lik-button col">
+                                    <LikeButton onClick={() => swipe("right")} text="" disabled={cards.length === 0} />
+                                </div>
                             </div>
                         </div>
-                        <div className="swipeButtons row align-self-center">
-                            <div className="dis-button col">
-                                <DislikeButton onClick={() => swipe("left")} text="" disabled={cards.length === 0} />
-                            </div>
-                            <div className="may-button col">
-                                <MaybeButton onClick={maybe} text="" disabled={cards.length === 0} />
-                            </div>
-                            <div className="lik-button col">
-                                <LikeButton onClick={() => swipe("right")} text="" disabled={cards.length === 0} />
+                    ) : (
+                        <div className="cm-form result">
+                            <h1>Your Top 3!</h1>
+                            {renderMoviesList(combinedList.sort(sortByType))}
+                            <div className="reset-button">
+                                <button onClick={handleReset}>Reset</button>
                             </div>
                         </div>
-                    </div>
-                ) : (
-                    <div className="cm-form result">
-                        <h1>Your Top 3!</h1>
-                        {renderMoviesList(combinedList.sort(sortByType), 'Combined Movies')}
-                    </div>
-                )}
-            </div>
-                ):(
+                    )}
+                </div>
+            ) : (
                 <div className="cm-form result">
                     <h1>Your Top 3!</h1>
-                    {renderTopThree(topThree, 'TopThree Movies')}
+                    {renderTopThree(topThree)}
+                    <div className="reset-button">
+                        <button onClick={handleReset}>Reset</button>
+                    </div>
                 </div>
-                )}
+            )}
         </div>
     );
 }
 
 export default Swipe;
-
-
