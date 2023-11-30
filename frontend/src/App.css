@@ -257,7 +257,7 @@ header > .row {
 }
 
 .darkOverlay h2 {
-  position: absolute;
+  position: absolute !important;
   bottom: 0;
   left: 10px; /* Adjust the left position as needed */
   text-align: start;
@@ -266,7 +266,7 @@ header > .row {
   padding: 10px 10px 20px;
 }
 
-.infoo {
+.info {
   font-size: 30px;
   color: #ffffff;
   cursor: pointer;
@@ -280,7 +280,11 @@ header > .row {
   }
 }
 
-
+.counter{
+  padding-top: 10px;
+  color: #ffffff;
+  text-align: center;
+}
 
 
 /* Liked, Maybe, Disliked cards styling */
@@ -606,6 +610,7 @@ ul {
   background: rgba(0, 0, 0, 0.3);
   padding: 20px;
   max-width: 80%;
+  max-height: 80%;
   max-height: 80%;
   overflow-y: auto;
   box-shadow: 0 0 10px rgb(255, 188, 16);

@@ -18,6 +18,8 @@ function Swipe() {
     const [maybeCards, setMaybeCards] = useState([]);
     const [combinedList, setCombinedList] = useState([]);
     const [showDescription, setShowDescription] = useState(false);
+    const [totalCards, setTotalCards] = useState(0);
+    const [swipeIndex, setSwipeIndex] = useState(0);
 
     let startX = 0;
 
@@ -34,6 +36,7 @@ function Swipe() {
 
     const swipe = (direction) => {
         swipefunction(direction, cards, currentCard, setCards, setLikedCards, setDislikedCards);
+        setSwipeIndex((prevIndex) => prevIndex + 1);
     };
 
     const handleDragStart = (e) => {
@@ -70,6 +73,8 @@ function Swipe() {
             }));
 
             setCards(updatedCardData);
+            setTotalCards(updatedCardData.length); // Set the total number of cards
+
         } catch (error) {
             console.error('Error fetching movie data:', error);
         }
@@ -143,7 +148,8 @@ function Swipe() {
                                 </div>
                             )}
                             <div className="darkOverlay2">
-                                <HiOutlineInformationCircle className="infoo" onClick={showInfo} />
+                                <p className="counter">{swipeIndex + 1}/{totalCards}</p>
+                                <HiOutlineInformationCircle className="info" onClick={showInfo} />
                             </div>
                         </div>
                         <div className="swipeButtons row align-self-center">

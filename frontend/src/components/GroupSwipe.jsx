@@ -18,6 +18,8 @@ function GroupSwipe({ socket, username, room }) {
     const [waiting, setWaiting] = useState(false);
     const [result, setResult] = useState('');
     const [showDescription, setShowDescription] = useState(false);
+    const [totalCards, setTotalCards] = useState(0);
+    const [swipeIndex, setSwipeIndex] = useState(0);
 
     console.log(cards)
 
@@ -73,8 +75,9 @@ function GroupSwipe({ socket, username, room }) {
             currentCard,
             setCards,
             setLikedCards,
-            setDislikedCards
+            setDislikedCards,
         );
+        setSwipeIndex((prevIndex) => prevIndex + 1);
     };
 
     const handleDragStart = (e) => {
@@ -127,8 +130,9 @@ function GroupSwipe({ socket, username, room }) {
                 rated: movie.rated,
                 description: movie.description,
             }));
-            console.log(updatedCardData);
             setCards(updatedCardData);
+            setTotalCards(updatedCardData.length); // Set the total number of cards
+
         } catch (error) {
             console.error('Error fetching movie data:', error);
         }
@@ -153,6 +157,7 @@ function GroupSwipe({ socket, username, room }) {
     const hideInfo = () => {
         setShowDescription(false);
     };
+
 
     return (
         <div>
@@ -180,7 +185,8 @@ function GroupSwipe({ socket, username, room }) {
                                 </div>
                             )}
                             <div className="darkOverlay2">
-                                <HiOutlineInformationCircle className="infoo" onClick={showInfo} />
+                                <p className="counter">{swipeIndex + 1}/{totalCards}</p>
+                                <HiOutlineInformationCircle className="info" onClick={showInfo} />
                             </div>
                         </div>
                         <div className="swipeButtons row align-self-center">
