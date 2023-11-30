@@ -7,6 +7,12 @@ function MovieList() {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
 
+
+    useEffect(() => {
+        // Initially, fetch all movies
+        fetchAllMoviesRef.current();
+    }, []);
+
     const fetchAllMovies = async () => {
         try {
             const movieData = await entitiesApi.getMovies();
@@ -25,10 +31,7 @@ function MovieList() {
 
     const fetchAllMoviesRef = useRef(fetchAllMovies);
 
-    useEffect(() => {
-        // Initially, fetch all movies
-        fetchAllMoviesRef.current();
-    }, []);
+
 
     const handleDeleteMovie = async (selectedMovie) => {
         try {

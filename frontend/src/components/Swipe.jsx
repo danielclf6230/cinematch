@@ -15,8 +15,8 @@ function Swipe() {
     const [likedCards, setLikedCards] = useState([]);
     const [dislikedCards, setDislikedCards] = useState([]);
     const [maybeCards, setMaybeCards] = useState([]);
+    const [combinedList, setCombinedList] = useState([]);
 
-    console.log(cards);
 
     let startX = 0;
 
@@ -24,6 +24,13 @@ function Swipe() {
         // Fetch movie data when the component mounts
         fetchMovieData();
     }, []);
+
+    useEffect(() => {
+        // Update the combined list whenever liked, maybe, or disliked cards change
+        const updatedCombinedList = [...likedCards, ...maybeCards, ...dislikedCards];
+        setCombinedList(updatedCombinedList);
+    }, [likedCards, maybeCards, dislikedCards]);
+
 
     const swipe = (direction) => {
         swipefunction(
@@ -99,18 +106,33 @@ function Swipe() {
         }
     };
 
-    const renderMoviesList = (movies, title) => (
+    const renderMoviesList = (movies) => (
         <div>
-            <h3>{title}</h3>
             <ul>
-                {movies.map((movie) => (
-                    <li key={movie.id}>
-                        {`Movie ${movie.title}`}
+                {movies
+                    .slice(0, 3)
+                    .map((movie,index) => (
+                    <li key={index}>
+                        <div className="resultPoster">
+                            <img
+                                src={movie.image}
+                                alt={`Card ${movie.id}`}
+                            />
+                            <div className="movieTitle">
+                                <span className="idNumber">#{index + 1}.</span> {movie.title}
+                            </div>
+                        </div>
+                        {/*(Score: {card.score})*/}
                     </li>
                 ))}
             </ul>
         </div>
     );
+
+    const sortByType = (a, b) => {
+        const typeOrder = { Like: 1, Maybe: 2, Dislike: 3 };
+        return typeOrder[a.type] - typeOrder[b.type];
+    };
 
     return (
         <div className="App">
@@ -157,10 +179,9 @@ function Swipe() {
                         </div>
                     </div>
                 ) : (
-                    <div>
-                        {renderMoviesList(likedCards, 'Liked Movies')}
-                        {renderMoviesList(maybeCards, 'Maybe Movies')}
-                        {renderMoviesList(dislikedCards, 'Disliked Movies')}
+                    <div className="cm-form result">
+                        <h1>Your Top 3!</h1>
+                        {renderMoviesList(combinedList.sort(sortByType), 'Combined Movies')}
                     </div>
                 )}
 
