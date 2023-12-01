@@ -147,8 +147,8 @@ const Friends = () => {
     return (
         <div className="App">
             <SideMenu />
-            <div className="friends">
-
+            <div className="row friends">
+                <div className="searchBox col-6">
                 <h2>Search User</h2>
                 <div className="friendSearch">
                     <input className="searchInput"
@@ -183,7 +183,9 @@ const Friends = () => {
                         </li>
                     ))}
                 </ul>
+                </div>
 
+                <div className="col-6">
                 <div>
                     <h2>Friend List</h2>
                     <ul>
@@ -197,25 +199,25 @@ const Friends = () => {
                         ))}
                     </ul>
                 </div>
-
-                <div>
-                    <h2>Friend Request</h2>
-                    <ul>
-                        {requestList.map((request) => (
-                            <li key={request.requestId}>
-                                {request.requester && (
-                                    <>
-                                        {request.requester.username} wants to be your friend
-                                        {request.requestStatus === 'PENDING' && (
-                                            <button onClick={() => handleAcceptFriendRequest(request.requestId)}>
-                                                Accept
-                                            </button>
+                    {requestList.length > 0 && (
+                        <div>
+                            <h2>Friend Request</h2>
+                            <ul>
+                                {requestList.map((request) => (
+                                    <li key={request.requestId}>
+                                        {request.requester && (
+                                            <>
+                                                {request.requester.username} wants to be your friend
+                                                {request.requestStatus === 'PENDING' && (
+                                                    <button onClick={() => handleAcceptFriendRequest(request.requestId)}>Accept</button>
+                                                )}
+                                            </>
                                         )}
-                                    </>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

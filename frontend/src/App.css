@@ -585,7 +585,6 @@ ul {
 .friends {
   background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
   min-width: 20rem;
-  max-width: 20rem;
   text-align: left; /* Center text inside the box */
   padding: 30px;
   border: 1px solid #ccc;
@@ -608,6 +607,10 @@ ul {
   width: 100%;
   position: relative;
   display: flex;
+}
+
+.searchBox{
+  border-right: 1px solid #000000;
 }
 
 
