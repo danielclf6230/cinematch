@@ -49,7 +49,7 @@ function AvatarUpload() {
                 </label>
                 {src && (
                     <>
-                        <img src={src} ref={imageRef} alt="Selected Image" />
+                        <img className="Avatar" src={src} ref={imageRef} alt="Selected Image" />
                         <button className="separateButton" onClick={handleUpload}>
                             Confirm
                         </button>
