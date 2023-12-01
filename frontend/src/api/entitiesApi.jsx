@@ -98,7 +98,8 @@ export async function deleteMovie(movieId) {
 //          "movieIds": [4, 7, 9]
 //      }
 export async function addFavorites(moviesId) {
-   return apiConfig.post(`/entities/user/favorite-movies`, moviesId);
+    const favoriteMovieDTO = { movieIds: moviesId };
+   return apiConfig.post(`/entities/user/favorite-movies`, favoriteMovieDTO);
 
 }
 
@@ -109,7 +110,8 @@ export async function getFavourites() {
 
 //just use this on one of the pair of users.
 export async function addSharedFavorites(otherUsersId, moviesId) {
-    return apiConfig.post(`/entities/share-movies/${otherUsersId}`, moviesId);
+    const favoriteMovieDTO = { movieIds: moviesId };
+    return apiConfig.post(`/entities/share-movies/${otherUsersId}`, favoriteMovieDTO);
 }
 
 
