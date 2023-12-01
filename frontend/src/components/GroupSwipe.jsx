@@ -129,6 +129,7 @@ function GroupSwipe({ socket, username, room }) {
                 title: movie.title, //this allows to print the title after
                 rated: movie.rated,
                 description: movie.description,
+                year: movie.year,
             }));
             setCards(updatedCardData);
             setTotalCards(updatedCardData.length); // Set the total number of cards

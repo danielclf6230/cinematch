@@ -122,8 +122,8 @@ io.on('connection', (socket) => {
 
 
   function combineAndSortScores(choices) {
-    // Initialize combinedScores object
-    const combinedScores = {};
+    // Initialize combinedScores array
+    const combinedScores = [];
 
     // Iterate through each user's choices
     choices.forEach(userChoices => {
@@ -133,18 +133,35 @@ io.on('connection', (socket) => {
         userChoices[cardType].forEach(card => {
           const cardId = card.id;
           const score = getScoreByCardType(cardType); // Get the score based on the card type
-          combinedScores[cardId] = {
-            id: cardId,
-            title: card.title, // Include the title in the result
-            poster: card.image,
-            score: (combinedScores[cardId] ? combinedScores[cardId].score : 0) + score,
-          };
+          const existingCard = combinedScores.find(existing => existing.id === cardId);
+
+          if (existingCard) {
+            // Update existing card score
+            existingCard.score += score;
+          } else {
+            // Add new card to combinedScores array
+            combinedScores.push({
+              id: cardId,
+              title: card.title, // Include the title in the result
+              poster: card.image,
+              score: score,
+              year: card.year,
+            });
+          }
         });
       });
     });
 
+
     // Convert combinedScores object to an array of objects
-    return Object.values(combinedScores).sort((a, b) => b.score - a.score);
+    return combinedScores.sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score; // Sort by combined score in descending order
+      } else {
+        return b.year - a.year; // Sort by movie year in descending order
+      }
+    });
+
   }
 
 // Helper function to get score based on card type
