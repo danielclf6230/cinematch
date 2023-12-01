@@ -37,7 +37,7 @@ function AvatarUpload() {
 
         return (
             <div className="avatarUpload">
-                <h4>Avatar Upload</h4>
+                <br/>
                 <label className="uploadButton">
                     Upload Image
                     <input
