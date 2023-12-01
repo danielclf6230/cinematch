@@ -11,7 +11,7 @@ export const swipefunction = (
     }
 
     if (direction === "left") {
-        const currentDislikedCard = { ...cards[currentCard]};
+        const currentDislikedCard = { ...cards[currentCard], score: 0};
         setDislikedCards((prevDislikedCards) => [
             //This is a way to make a copy of the previous dislikedCards state array
             ...prevDislikedCards,
@@ -22,7 +22,7 @@ export const swipefunction = (
             prevCards.filter((_, index) => index !== currentCard)
         );
     } else if (direction === "right") {
-        const currentLikedCard = { ...cards[currentCard]};
+        const currentLikedCard = { ...cards[currentCard], score: 5};
         setLikedCards((prevLikedCards) => [...prevLikedCards, currentLikedCard]);
         setCards((prevCards) =>
             prevCards.filter((_, index) => index !== currentCard)

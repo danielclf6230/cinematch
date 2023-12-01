@@ -48,6 +48,7 @@ function Swipe() {
     useEffect(() => {
         // Update the combined list whenever liked, maybe, or disliked cards change
         const updatedCombinedList = [...likedCards, ...maybeCards, ...dislikedCards];
+        console.log("Updated Combined List:", updatedCombinedList);
         setCombinedList(updatedCombinedList);
     }, [likedCards, maybeCards, dislikedCards]);
 
@@ -55,7 +56,7 @@ function Swipe() {
         // Call handleResult when swiping is complete
         if (swipingComplete) {
             const movieIds = combinedList
-                .sort(sortByType)
+                .sort(sortByScoreAndYear)
                 .slice(0, 3)
                 .map((movie) => movie.id);
             console.log(movieIds);
@@ -116,6 +117,7 @@ function Swipe() {
                 title: movie.title,
                 rated: movie.rated,
                 description: movie.description,
+                year: movie.year,
             }));
 
             setCards(updatedCardData);
@@ -124,6 +126,8 @@ function Swipe() {
             console.error('Error fetching movie data:', error);
         }
     };
+
+
 
     const fetchMoviePoster = async (movieId) => {
         try {
@@ -185,10 +189,19 @@ function Swipe() {
         setShowDescription(false);
     };
 
-    const sortByType = (a, b) => {
-        const typeOrder = { Like: 1, Maybe: 2, Dislike: 3 };
-        return typeOrder[a.type] - typeOrder[b.type];
+    const sortByScoreAndYear = (a, b) => {
+        // If types are equal, compare by score
+        const scoreComparison = b.score - a.score; // Sorting in descending order by score
+        // If scores are equal, compare by year
+        if (scoreComparison === 0) {
+            return b.year - a.year;
+        }
+
+        return scoreComparison;
     };
+
+
+
 
     const handleReset = () => {
         setLikedCards([]);
@@ -254,7 +267,7 @@ function Swipe() {
                     ) : (
                         <div className="cm-form result">
                             <h1>Your Top 3!</h1>
-                            {renderMoviesList(combinedList.sort(sortByType))}
+                            {renderMoviesList(combinedList.sort(sortByScoreAndYear))}
                             <div className="reset-button">
                                 <button onClick={handleReset}>Reset</button>
                             </div>
