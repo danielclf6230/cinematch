@@ -452,8 +452,8 @@ ul {
 }
 
 .uploadButton {
-  background-color: #3498db;
-  color: #fff;
+  background-color: #FFBC10;
+  color: #000000;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
@@ -475,8 +475,8 @@ ul {
 }
 
 .separateButton {
-  background-color: #3498db;
-  color: #fff;
+  background-color: #FFBC10;
+  color: #000000;
   padding: 10px 15px;
   margin-top: 10px;
   border: none;
@@ -484,7 +484,6 @@ ul {
   cursor: pointer;
   font-size: 16px;
 }
-
 
 
 /*Room styling*/
