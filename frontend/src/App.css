@@ -88,6 +88,18 @@ header > .row {
   background-color: #FBE4A9; /* Optional: Set a background color for the side menu */
 }
 
+
+.sideMenuContainer{
+  padding: 10px;
+}
+
+.sideButton{
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #000000;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

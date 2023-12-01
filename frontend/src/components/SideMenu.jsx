@@ -22,29 +22,13 @@ class SideMenu extends Component {
         return (
 
             <div className="sideMenu">
-                <div>
-                    <Link to="/home" className="navbar-brand">
-                        <h2>Profile</h2>
-                    </Link>
-                    <br />
-                    <Link to="/swipe" className="navbar-brand">
-                        <h2>Swipe</h2>
-                    </Link>
-                    <br />
-                    <Link to="/room" className="navbar-brand">
-                        <h2>Group Swipe</h2>
-                    </Link>
-                    <br />
-                    <Link to="/friends" className="navbar-brand">
-                        <h2>Friends</h2>
-                    </Link>
-                    <br />
-                    {isAdmin && (
-                        <Link to="/admin" className="navbar-brand">
-                            <h2>Search</h2>
-                        </Link>
-                    )}
-                    <br />
+                <div className="sideMenuContainer">
+                    <Link to="/home" className="navbar-brand"><h2 className="sideButton">Profile</h2></Link> <br/>
+                    <Link to="/swipe" className="navbar-brand"><h2 className="sideButton">Swipe</h2></Link> <br/>
+                    <Link to="/room" className="navbar-brand"><h2 className="sideButton">Group Swipe</h2></Link> <br/>
+                    <Link to="/friends" className="navbar-brand"><h2 className="sideButton">Friends</h2></Link> <br/>
+                    {isAdmin && <Link to="/admin" className="navbar-brand" ><h2 className="sideButton">Search</h2></Link> }<br />
+                    {/*<Link to="/admin" className="navbar-brand"><h2>Search</h2></Link> <br/>*/}
                 </div>
             </div>
         )}
