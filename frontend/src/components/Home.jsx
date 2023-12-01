@@ -25,17 +25,30 @@ function Home() {
                 <div className="col-sm-12 gx-0">
                     <h1>Welcome {userData.firstName}!</h1>
                 </div>
-                <div className="row">
+                <div className="row pro">
                     <div className="col-6">
-                        <AvatarUpload />
                         <AvatarPreview />
+                        <AvatarUpload />
                     </div>
                     <div className="userInfo col-6">
-                            {/*<h2><strong>ID:</strong> {userData.userId}</h2>*/}
-                            <h2><strong>First Name:</strong> {userData.firstName}</h2>
-                            <h2><strong>Last Name:</strong> {userData.lastName}</h2>
-                            <h2><strong>Username:</strong> {userData.username}</h2>
-                            <h2><strong>Email:</strong> {userData.email}</h2>
+                        <div className="row mt-2">
+                            <div className="col-md-6">
+                                <label className="labels"><strong>First Name:</strong></label>
+                                <input type="text" className="form-control" value={userData.firstName} readOnly/>
+                            </div>
+                            <div className="col-md-6">
+                                <label className="labels"><strong>Last Name:</strong></label>
+                                <input type="text" className="form-control" value={userData.lastName} readOnly/>
+                            </div>
+                            <div className="col-md-6">
+                                <label className="labels"><strong>Username: </strong></label>
+                                <input type="text" className="form-control" value={userData.username} readOnly/>
+                            </div>
+                            <div className="col-md-6">
+                                <label className="labels"><strong>Email: </strong></label>
+                                <input type="text" className="form-control" value={userData.email} readOnly/>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {/*<div className="col-12">*/}
