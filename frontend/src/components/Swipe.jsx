@@ -23,8 +23,7 @@ function Swipe() {
     const [swipingComplete, setSwipingComplete] = useState(false);
     const [topThree, setTopThree] = useState([]);
     const [fetchResultComplete, setFetchResultComplete] = useState(false);
-    // const [reset, setReset] = useState(false);
-    // const [view, setView] = useState('swipe');
+    const [reset, setReset] = useState(false);
 
     let startX = 0;
 
@@ -39,7 +38,7 @@ function Swipe() {
         // Fetch movie data when the component mounts
         fetchMovieData();
         fetchResult();
-    }, []);
+    }, [reset]);
 
     // useEffect(() => {
     //     fetchResult();
@@ -65,7 +64,6 @@ function Swipe() {
     }, [swipingComplete, combinedList]);
 
     const swipe = (direction) => {
-
             swipefunction(
                 direction,
                 cards,
@@ -154,23 +152,6 @@ function Swipe() {
         </div>
     );
 
-    const renderTopThree = (movies) => (
-        <div>
-            <ul className="result-list">
-                {Array.isArray(movies) && movies
-                    .map((movie, index) => (
-                        <li key={index}>
-                            <div className="resultPoster">
-                                <img src={movie.image} alt={`Card ${movie.id}`} />
-                                <div className="movieTitle">
-                                    <span className="idNumber">#{index + 1}.</span> {movie.title}
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-            </ul>
-        </div>
-    );
 
     const handleResult = async (moviesId) => {
         try {
@@ -209,10 +190,19 @@ function Swipe() {
         return typeOrder[a.type] - typeOrder[b.type];
     };
 
-    // const handleReset = () => {
-    //
-    // };
+    const handleReset = () => {
+        setLikedCards([]);
+        setDislikedCards([]);
+        setMaybeCards([]);
+        setCombinedList([]);
+        setSwipeIndex(0);
+        setSwipingComplete(false);
+        setFetchResultComplete(false);
+        setReset(true);
+        setCurrentCard(0);
+    };
 
+    console.log(fetchResultComplete);
 
     return (
         <div className="App">
@@ -265,16 +255,16 @@ function Swipe() {
                         <div className="cm-form result">
                             <h1>Your Top 3!</h1>
                             {renderMoviesList(combinedList.sort(sortByType))}
-                            {/*<div className="reset-button">*/}
-                            {/*    <button onClick={handleReset}>Reset</button>*/}
-                            {/*</div>*/}
+                            <div className="reset-button">
+                                <button onClick={handleReset}>Reset</button>
+                            </div>
                         </div>
                     )}
                 </div>
             ) : (
                 <div className="cm-form result">
                     <h1>Your Top 3!</h1>
-                    {renderTopThree(topThree)}
+                    {renderMoviesList(topThree)}
                     {/*<div className="reset-button">*/}
                     {/*    <button onClick={handleReset}>Reset</button>*/}
                     {/*</div>*/}
