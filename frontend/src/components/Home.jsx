@@ -23,7 +23,7 @@ function Home() {
             <SideMenu />
             <div className="Profile container">
                 <div className="col-sm-12 gx-0">
-                    <h1>Welcome {userData.firstName}!</h1>
+                    <h1>~Welcome {userData.firstName}~</h1>
                 </div>
                 <div className="row pro">
                     <div className="col-6">
