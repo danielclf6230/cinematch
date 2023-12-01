@@ -19,8 +19,6 @@ const connectedUsers = {};
 
 //connected user
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
   connectedUsers[socket.id] = {};
 
   socket.on('sendFriendRequest', (request) => {
@@ -49,11 +47,10 @@ io.on('connection', (socket) => {
 
 
 
-  socket.on('create_room', (room) => {
-    console.log(`Room: ${room}`)
-
+  socket.on('create_room', ({room, userID}) => {
     rooms[room] = [];
-    rooms[room].push({ id: socket.id, choice: undefined });
+    rooms[room].push({ id: socket.id, choice: undefined, userid: userID});
+    console.log(rooms[room]);
     //User join the room
     socket.join(room);
 
@@ -65,14 +62,14 @@ io.on('connection', (socket) => {
 
     //Check the number of user
     if (rooms[room].length === 2) {
-      const users = rooms[room].map(user => user.id);
+      const users = rooms[room].map(user => ({ id: user.id, userID: user.userID }) );
       io.to(room).emit('room_ready', users);
     }
   });
 
 
 // join room event, if room not exist, create a new room
-  socket.on('join_room', (room) => {
+  socket.on('join_room', ({ room, userID }) => {
     console.log(rooms[room]);
     // Check if the room exists
     if (!rooms[room]) {
@@ -86,14 +83,15 @@ io.on('connection', (socket) => {
       return;
     }
 
-    rooms[room].push({ id: socket.id, choice: undefined });
+    rooms[room].push({ id: socket.id, choice: undefined, userid: userID });
     socket.join(room);
 
     if (rooms[room].length === 2) {
-      const users = rooms[room].map(user => user.id);
+      const users = rooms[room].map(user => ({ id: user.id, userID: user.userID }));
       io.to(room).emit('room_ready', users);
     }
 
+    console.log(rooms[room]);
   });
 
 
@@ -124,8 +122,8 @@ io.on('connection', (socket) => {
 
 
   function combineAndSortScores(choices) {
-    // Initialize combinedScores object
-    const combinedScores = {};
+    // Initialize combinedScores array
+    const combinedScores = [];
 
     // Iterate through each user's choices
     choices.forEach(userChoices => {
@@ -135,18 +133,35 @@ io.on('connection', (socket) => {
         userChoices[cardType].forEach(card => {
           const cardId = card.id;
           const score = getScoreByCardType(cardType); // Get the score based on the card type
-          combinedScores[cardId] = {
-            id: cardId,
-            title: card.title, // Include the title in the result
-            poster: card.image,
-            score: (combinedScores[cardId] ? combinedScores[cardId].score : 0) + score,
-          };
+          const existingCard = combinedScores.find(existing => existing.id === cardId);
+
+          if (existingCard) {
+            // Update existing card score
+            existingCard.score += score;
+          } else {
+            // Add new card to combinedScores array
+            combinedScores.push({
+              id: cardId,
+              title: card.title, // Include the title in the result
+              poster: card.image,
+              score: score,
+              year: card.year,
+            });
+          }
         });
       });
     });
 
+
     // Convert combinedScores object to an array of objects
-    return Object.values(combinedScores).sort((a, b) => b.score - a.score);
+    return combinedScores.sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score; // Sort by combined score in descending order
+      } else {
+        return b.year - a.year; // Sort by movie year in descending order
+      }
+    });
+
   }
 
 // Helper function to get score based on card type
