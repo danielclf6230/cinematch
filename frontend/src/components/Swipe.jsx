@@ -21,28 +21,17 @@ function Swipe() {
     const [totalCards, setTotalCards] = useState(0);
     const [swipeIndex, setSwipeIndex] = useState(0);
     const [swipingComplete, setSwipingComplete] = useState(false);
-    const [topThree, setTopThree] = useState([]);
-    const [fetchResultComplete, setFetchResultComplete] = useState(false);
-    const [reset, setReset] = useState(false);
+    // const [topThree, setTopThree] = useState([]);
+    // const [fetchResultComplete, setFetchResultComplete] = useState(false);
+    // const [reset, setReset] = useState(false);
 
     let startX = 0;
 
     useEffect(() => {
-        // // Check local storage for the reset flag on page load
-        // const storedReset = localStorage.getItem('reset');
-        // if (storedReset) {
-        //     setReset(true);
-        //     localStorage.removeItem('reset'); // Remove the flag after using it
-        // }
-
         // Fetch movie data when the component mounts
         fetchMovieData();
-        fetchResult();
-    }, [reset]);
+    }, []);
 
-    // useEffect(() => {
-    //     fetchResult();
-    // }, [reset, view]); // Add 'view' to the dependency array
 
 
     useEffect(() => {
@@ -52,6 +41,7 @@ function Swipe() {
         setCombinedList(updatedCombinedList);
     }, [likedCards, maybeCards, dislikedCards]);
 
+
     useEffect(() => {
         // Call handleResult when swiping is complete
         if (swipingComplete) {
@@ -60,7 +50,6 @@ function Swipe() {
                 .slice(0, 3)
                 .map((movie) => movie.id);
             console.log(movieIds);
-            handleResult(movieIds);
         }
     }, [swipingComplete, combinedList]);
 
@@ -157,29 +146,29 @@ function Swipe() {
     );
 
 
-    const handleResult = async (moviesId) => {
-        try {
-            await entitiesApi.addFavorites(moviesId);
-            console.log('Movie Result Saved');
-        } catch (error) {
-            console.error('Error movie save:', error);
-        }
-    };
+    // const handleResult = async (moviesId) => {
+    //     try {
+    //         await entitiesApi.addFavorites(moviesId);
+    //         console.log('Movie Result Saved');
+    //     } catch (error) {
+    //         console.error('Error movie save:', error);
+    //     }
+    // };
 
-    const fetchResult = async () => {
-        try {
-            const FavouriteListData = await entitiesApi.getFavourites();
-            if (FavouriteListData.data.length === 0) {
-                setFetchResultComplete(false);
-            } else {
-                setFetchResultComplete(true);
-                setTopThree(FavouriteListData);
-            }
-        } catch (error) {
-            setFetchResultComplete(false);
-            console.error('Error fetching Favourite List:', error);
-        }
-    };
+    // const fetchResult = async () => {
+    //     try {
+    //         const FavouriteListData = await entitiesApi.getFavourites();
+    //         if (FavouriteListData.data.length === 0) {
+    //             setFetchResultComplete(false);
+    //         } else {
+    //             setFetchResultComplete(true);
+    //             setTopThree(FavouriteListData);
+    //         }
+    //     } catch (error) {
+    //         setFetchResultComplete(false);
+    //         console.error('Error fetching Favourite List:', error);
+    //     }
+    // };
 
     const showInfo = () => {
         setShowDescription(true);
@@ -201,26 +190,23 @@ function Swipe() {
     };
 
 
-
-
-    const handleReset = () => {
-        setLikedCards([]);
-        setDislikedCards([]);
-        setMaybeCards([]);
-        setCombinedList([]);
-        setSwipeIndex(0);
-        setSwipingComplete(false);
-        setFetchResultComplete(false);
-        setReset(true);
-        setCurrentCard(0);
-    };
-
-    console.log(fetchResultComplete);
+    //
+    // const handleReset = () => {
+    //     setLikedCards([]);
+    //     setDislikedCards([]);
+    //     setMaybeCards([]);
+    //     setCombinedList([]);
+    //     setSwipeIndex(0);
+    //     setSwipingComplete(false);
+    //     setFetchResultComplete(false);
+    //     setReset(true);
+    //     setCurrentCard(0);
+    // };
 
     return (
         <div className="App">
             <SideMenu />
-            {!fetchResultComplete ? (
+
                 <div className="cardArea">
                     {cards.length > 0 ? (
                         <div
@@ -268,21 +254,12 @@ function Swipe() {
                         <div className="cm-form result">
                             <h1>Your Top 3!</h1>
                             {renderMoviesList(combinedList.sort(sortByScoreAndYear))}
-                            <div className="reset-button">
-                                <button onClick={handleReset}>Reset</button>
-                            </div>
+                            {/*<div className="reset-button">*/}
+                            {/*    <button onClick={handleReset}>Reset</button>*/}
+                            {/*</div>*/}
                         </div>
                     )}
                 </div>
-            ) : (
-                <div className="cm-form result">
-                    <h1>Your Top 3!</h1>
-                    {renderMoviesList(topThree)}
-                    {/*<div className="reset-button">*/}
-                    {/*    <button onClick={handleReset}>Reset</button>*/}
-                    {/*</div>*/}
-                </div>
-            )}
         </div>
     );
 }
