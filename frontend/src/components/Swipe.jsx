@@ -9,7 +9,6 @@ import LikeButton from "./LikeButton";
 import MaybeButton from "./MaybeButton";
 import cardData from "./cardData";
 import { HiOutlineInformationCircle } from "react-icons/hi";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 
 function Swipe() {
     const [cards, setCards] = useState(cardData);
@@ -24,17 +23,28 @@ function Swipe() {
     const [swipingComplete, setSwipingComplete] = useState(false);
     const [topThree, setTopThree] = useState([]);
     const [fetchResultComplete, setFetchResultComplete] = useState(false);
-    const [reset, setReset] = useState(false);
-
-    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    // const [reset, setReset] = useState(false);
+    // const [view, setView] = useState('swipe');
 
     let startX = 0;
 
     useEffect(() => {
+        // // Check local storage for the reset flag on page load
+        // const storedReset = localStorage.getItem('reset');
+        // if (storedReset) {
+        //     setReset(true);
+        //     localStorage.removeItem('reset'); // Remove the flag after using it
+        // }
+
         // Fetch movie data when the component mounts
         fetchMovieData();
         fetchResult();
     }, []);
+
+    // useEffect(() => {
+    //     fetchResult();
+    // }, [reset, view]); // Add 'view' to the dependency array
+
 
     useEffect(() => {
         // Update the combined list whenever liked, maybe, or disliked cards change
@@ -55,16 +65,7 @@ function Swipe() {
     }, [swipingComplete, combinedList]);
 
     const swipe = (direction) => {
-        if (reset) {
-            setLikedCards([]);
-            setDislikedCards([]);
-            setMaybeCards([]);
-            setCombinedList([]);
-            setSwipeIndex(0);
-            setSwipingComplete(false);
-            setReset(false); // Reset the reset flag
-        } else {
-            // Continue with normal swiping logic
+
             swipefunction(
                 direction,
                 cards,
@@ -74,12 +75,11 @@ function Swipe() {
                 setDislikedCards
             );
             setSwipeIndex((prevIndex) => prevIndex + 1);
-
             // Check if all swipes are completed
             if (swipeIndex === totalCards - 1) {
                 setSwipingComplete(true);
             }
-        }
+
     };
 
     const handleDragStart = (e) => {
@@ -99,6 +99,11 @@ function Swipe() {
         const updatedMaybe = [...maybeCards, { ...cards[currentCard], score: 3 }];
         setMaybeCards(updatedMaybe);
         setCards((prevCards) => prevCards.filter((_, index) => index !== currentCard));
+        setSwipeIndex((prevIndex) => prevIndex + 1);
+        if (swipeIndex === totalCards - 1) {
+            setSwipingComplete(true);
+        }
+
     };
 
     const fetchMovieData = async () => {
@@ -179,7 +184,7 @@ function Swipe() {
     const fetchResult = async () => {
         try {
             const FavouriteListData = await entitiesApi.getFavourites();
-            if (FavouriteListData.data.length === 0 || reset) {
+            if (FavouriteListData.data.length === 0) {
                 setFetchResultComplete(false);
             } else {
                 setFetchResultComplete(true);
@@ -204,10 +209,10 @@ function Swipe() {
         return typeOrder[a.type] - typeOrder[b.type];
     };
 
-    const handleReset = () => {
-        setReset(true);
-        window.location.reload();
-    };
+    // const handleReset = () => {
+    //
+    // };
+
 
     return (
         <div className="App">
@@ -260,9 +265,9 @@ function Swipe() {
                         <div className="cm-form result">
                             <h1>Your Top 3!</h1>
                             {renderMoviesList(combinedList.sort(sortByType))}
-                            <div className="reset-button">
-                                <button onClick={handleReset}>Reset</button>
-                            </div>
+                            {/*<div className="reset-button">*/}
+                            {/*    <button onClick={handleReset}>Reset</button>*/}
+                            {/*</div>*/}
                         </div>
                     )}
                 </div>
@@ -270,9 +275,9 @@ function Swipe() {
                 <div className="cm-form result">
                     <h1>Your Top 3!</h1>
                     {renderTopThree(topThree)}
-                    <div className="reset-button">
-                        <button onClick={handleReset}>Reset</button>
-                    </div>
+                    {/*<div className="reset-button">*/}
+                    {/*    <button onClick={handleReset}>Reset</button>*/}
+                    {/*</div>*/}
                 </div>
             )}
         </div>
