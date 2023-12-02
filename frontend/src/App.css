@@ -57,6 +57,7 @@ html body {
   -webkit-text-stroke: 1px #FFBC10;
   font-family: Helvetica, sans-serif;
   margin-bottom: 0 !important;
+  text-shadow: -5px 8px 4px rgba(0, 0, 0, 1); /* Adjust values as needed */
 }
 
 header > .row {
@@ -107,6 +108,10 @@ header > .row {
   to {
     transform: rotate(360deg);
   }
+}
+
+.Profile h1 {
+  color: white;
 }
 
 /* Form CSS */
@@ -538,6 +543,13 @@ ul {
   background-color: #aaa !important;
   padding: 5px;
   margin-top: 7% !important;
+}
+
+.cm-form.result h1{
+  color: black !important; /* or any other color you prefer */
+  -webkit-text-stroke: 1px #FFBC10;
+  font-family: Helvetica, sans-serif;
+  text-shadow: -2px 6px 5px rgba(0, 0, 0, 1); /* Adjust values as needed */
 }
 
 .result-list {

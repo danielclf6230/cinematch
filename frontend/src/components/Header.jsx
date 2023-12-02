@@ -1,11 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from './res/logo_v1.png';
-import { useAuth,  handleLogError } from '../security/AuthContext';
+import { useAuth, handleLogError } from '../security/AuthContext';
 
+/**
+ * React functional component representing the header/navigation bar of the application.
+ *
+ * @component
+ * @example
+ * // Example usage within another React component
+ * import Header from './Header';
+ * //...
+ * <Header />
+ */
 const Header = () => {
+    /**
+     * Object containing authentication-related information and functions.
+     * @type {Object}
+     * @property {Object} user - User information if authenticated.
+     * @property {Function} logout - Function to log out the user.
+     */
     const { user, logout } = useAuth();
 
+    /**
+     * Renders the Header component.
+     *
+     * @returns {JSX.Element} - JSX representation of the Header component.
+     */
     return (
         <div>
             <header>
@@ -43,4 +64,8 @@ const Header = () => {
     );
 };
 
+/**
+ * Default export of the Header component.
+ * @exports Header
+ */
 export default Header;

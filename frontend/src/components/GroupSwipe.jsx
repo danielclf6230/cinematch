@@ -1,42 +1,117 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import cardData from "./cardData";
-import {swipefunction} from "./swipeUtils";
+import { swipefunction } from "./swipeUtils";
 import Button from "./SwipeButton";
-import {entitiesApi} from "../api/entitiesApi";
-import {imagesApi} from "../api/imagesApi";
+import { entitiesApi } from "../api/entitiesApi";
+import { imagesApi } from "../api/imagesApi";
 import DislikeButton from "./DislikeButton";
 import MaybeButton from "./MaybeButton";
 import LikeButton from "./LikeButton";
-import {HiOutlineInformationCircle} from "react-icons/hi";
+import { HiOutlineInformationCircle } from "react-icons/hi";
 
+/**
+ * React functional component for handling group swiping actions, including card swiping, button interactions,
+ * and displaying match results.
+ *
+ * @component
+ * @param {Object} props - The component properties.
+ * @param {SocketIO.Socket} props.socket - The Socket.IO socket instance.
+ * @param {string} props.username - The username of the current user.
+ * @param {string} props.room - The room identifier for the group swipe session.
+ * @example
+ * // Example usage within another React component
+ * import GroupSwipe from './GroupSwipe';
+ * //...
+ * <GroupSwipe socket={socket} username="JohnDoe" room="group123" />
+ */
 function GroupSwipe({ socket, username, room }) {
+    /**
+     * State to manage the array of cards used for swiping.
+     * @type {Object[]}
+     */
     const [cards, setCards] = useState(cardData);
+
+    /**
+     * State to manage the index of the current card being displayed.
+     * @type {number}
+     */
     const [currentCard, setCurrentCard] = useState(0);
+
+    /**
+     * State to store the array of liked cards.
+     * @type {Object[]}
+     */
     const [likedCards, setLikedCards] = useState([]);
+
+    /**
+     * State to store the array of disliked cards.
+     * @type {Object[]}
+     */
     const [dislikedCards, setDislikedCards] = useState([]);
+
+    /**
+     * State to store the array of maybe cards.
+     * @type {Object[]}
+     */
     const [maybeCards, setMaybeCards] = useState([]);
+
+    /**
+     * State to indicate whether the component is waiting for match results.
+     * @type {boolean}
+     */
     const [waiting, setWaiting] = useState(false);
+
+    /**
+     * State to store the formatted result of matched cards.
+     * @type {JSX.Element[] | string}
+     */
     const [result, setResult] = useState('');
+
+    /**
+     * State to control the visibility of the card description modal.
+     * @type {boolean}
+     */
     const [showDescription, setShowDescription] = useState(false);
+
+    /**
+     * State to store the total number of cards in the session.
+     * @type {number}
+     */
     const [totalCards, setTotalCards] = useState(0);
+
+    /**
+     * State to store the index of the current swipe action.
+     * @type {number}
+     */
     const [swipeIndex, setSwipeIndex] = useState(0);
 
-    console.log(cards)
+    /**
+     * Log the current cards array to the console.
+     */
+    console.log(cards);
 
+    /**
+     * Variable to store the starting X-coordinate during drag.
+     * @type {number}
+     */
     let startX = 0;
+
+    /**
+     * Effect hook to fetch movie data when the component mounts.
+     */
     useEffect(() => {
-        // Fetch movie data when the component mounts
         fetchMovieData();
     }, []);
 
+    /**
+     * Effect hook to set up event listeners for match results and cleanup on unmount.
+     */
     useEffect(() => {
-
         if (cards.length === 0) {
             handleChooseMovie();
         }
 
         socket.on('match_result', (matchedCardsWithScores) => {
-            console.log(matchedCardsWithScores);
             const formattedResult = matchedCardsWithScores
                 .slice(0, 3)
                 .map((card, index) => (
@@ -50,24 +125,22 @@ function GroupSwipe({ socket, username, room }) {
                                 <span className="idNumber">#{index + 1}.</span> {card.title}
                             </div>
                         </div>
-                        {/*(Score: {card.score})*/}
                     </li>
                 ));
             setResult(formattedResult);
             setWaiting(false);
         });
 
-        // socket.on('no_match_result', (choices) => {
-        //     setResult(`Sorry, no match found. Your choice: ${numberInput}, Other's choice: ${choices.find(num => num !== parseInt(numberInput))}`);
-        //     setWaiting(false);
-        // });
-
         return () => {
             socket.off('match_result');
-            // socket.off('no_match_result');
         };
     }, [cards]);
 
+    /**
+     * Handles the swipe action based on the drag direction.
+     *
+     * @param {string} direction - The direction of the swipe ("left" or "right").
+     */
     const swipe = (direction) => {
         swipefunction(
             direction,
@@ -80,10 +153,20 @@ function GroupSwipe({ socket, username, room }) {
         setSwipeIndex((prevIndex) => prevIndex + 1);
     };
 
+    /**
+     * Handles the start of a drag action.
+     *
+     * @param {React.MouseEvent} e - The drag start event.
+     */
     const handleDragStart = (e) => {
         startX = e.clientX;
     };
 
+    /**
+     * Handles the end of a drag action, determining the drag direction and triggering a swipe.
+     *
+     * @param {React.MouseEvent} e - The drag end event.
+     */
     const handleDragEnd = (e) => {
         const dragDirection = e.clientX - startX < 0 ? "left" : "right";
         if (dragDirection === "left") {
@@ -93,6 +176,9 @@ function GroupSwipe({ socket, username, room }) {
         }
     };
 
+    /**
+     * Moves the current card to the "Maybe" category.
+     */
     const maybe = () => {
         const updatedMaybe = [...maybeCards, { ...cards[currentCard] }];
         setMaybeCards(updatedMaybe);
@@ -101,65 +187,73 @@ function GroupSwipe({ socket, username, room }) {
         );
     };
 
-
+    /**
+     * Handles the end of the group swipe session, triggering the server to process match results.
+     */
     const handleChooseMovie = () => {
         if (likedCards !== null && room !== '') {
-            // Signal the server to reset scores
             socket.emit('reset_scores', { room });
-
-            // Pass the likedMovie and the room to server
             socket.emit('choose_movie', { likedCards, dislikedCards, maybeCards, room });
             setWaiting(true);
         }
     };
 
+    /**
+     * Fetches movie data from the server and updates the cards state.
+     */
     const fetchMovieData = async () => {
         try {
-            // Fetch movie data from the MovieList component
             const movieData = await entitiesApi.getMovies();
-
-            // Use Promise.all to fetch all posters concurrently
             const posterPromises = movieData.map(movie => fetchMoviePoster(movie.id));
             const posterDataArray = await Promise.all(posterPromises);
-
-            // Update cardData with the formatted movie data including posters
             const updatedCardData = movieData.map((movie, index) => ({
                 id: movie.id,
                 image: URL.createObjectURL(new Blob([posterDataArray[index]])),
-                title: movie.title, //this allows to print the title after
+                title: movie.title,
                 rated: movie.rated,
                 description: movie.description,
                 year: movie.year,
             }));
             setCards(updatedCardData);
-            setTotalCards(updatedCardData.length); // Set the total number of cards
-
+            setTotalCards(updatedCardData.length);
         } catch (error) {
             console.error('Error fetching movie data:', error);
         }
     };
 
+    /**
+     * Fetches the movie poster for a given movie ID.
+     *
+     * @param {number} movieId - The ID of the movie.
+     * @returns {Promise<Blob>} - The movie poster data.
+     */
     const fetchMoviePoster = async (movieId) => {
         try {
-            // Fetch the movie poster using getMoviePosterById with movieId
-            // Return the poster data
             return await imagesApi.getMoviePosterById(movieId);
         } catch (error) {
             console.error('Error fetching movie poster:', error);
-            // Return a placeholder or default poster data in case of an error
-            // return defaultPosterData;
         }
     };
 
+    /**
+     * Shows the description modal for the current card.
+     */
     const showInfo = () => {
         setShowDescription(true);
     };
 
+    /**
+     * Hides the description modal.
+     */
     const hideInfo = () => {
         setShowDescription(false);
     };
 
-
+    /**
+     * Renders the GroupSwipe component.
+     *
+     * @returns {JSX.Element} - JSX representation of the GroupSwipe component.
+     */
     return (
         <div>
             <div className="cardArea">
@@ -224,11 +318,14 @@ function GroupSwipe({ socket, username, room }) {
                             </React.Fragment>
                         )}
                     </div>
-
                 )}
             </div>
         </div>
     );
 }
 
+/**
+ * Default export of the GroupSwipe component.
+ * @exports GroupSwipe
+ */
 export default GroupSwipe;

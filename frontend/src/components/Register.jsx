@@ -4,27 +4,70 @@ import { actionsApi } from '../api/actionsApi';
 import helpers from '../util/helpers';
 import { useAuth, handleLogError } from "../security/AuthContext";
 
+/**
+ * React component for user registration.
+ * @component
+ * @example
+ * // Example usage of Register component
+ * import Register from './Register';
+ * function App() {
+ *   return (
+ *     <div>
+ *       <Register />
+ *     </div>
+ *   );
+ * }
+ */
 function Register() {
-
+    /**
+     * Authentication context hook.
+     * @type {Object}
+     */
     const Auth = useAuth();
+
+    /**
+     * Navigation hook for programmatic navigation.
+     * @type {Function}
+     */
     const navigate = useNavigate();
+
+    /**
+     * State hook to store error messages.
+     * @type {string}
+     */
     const [errorMessage, setErrorMessage] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState(''); // State for confirm password
+
+    /**
+     * State hook to store the confirmation password.
+     * @type {string}
+     */
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    /**
+     * State hook to store form data.
+     * @type {Object}
+     */
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         username: '',
         password: '',
         email: '',
-    })
+    });
 
+    /**
+     * Effect hook to check if the user is already authenticated when the component mounts.
+     */
     useEffect(() => {
-        // Check if the user is already authenticated when the component mounts
         if (Auth.userIsAuthenticated()) {
             Auth.userLogout();
         }
     }, [Auth]);
 
+    /**
+     * Event handler for input changes in the form.
+     * @param {Object} e - The event object.
+     */
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -39,11 +82,15 @@ function Register() {
         e.target.setCustomValidity('');
     }
 
+    /**
+     * Event handler for form submission.
+     * @param {Object} e - The event object.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(formData.password !== confirmPassword) {
-            helpers.displayValidity('confirmPassword','Passwords do not match');
+        if (formData.password !== confirmPassword) {
+            helpers.displayValidity('confirmPassword', 'Passwords do not match');
             return;
         }
 
@@ -64,89 +111,15 @@ function Register() {
         }
     }
 
-
+    /**
+     * Render the Register component.
+     * @returns {JSX.Element}
+     */
     return (
         <div className="cm-form">
             <h2>Register User</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label className="custom-field">
-                    <input
-                        type="text"
-                        name="firstName"
-                        onChange={handleInputChange}
-                        maxLength="16"
-                        required
-                    />
-                    <span className="pholder">First Name</span>
-                </label>
-                </div>
-                <div>
-                    <label className="custom-field">
-                    <input
-                        type="text"
-                        name="lastName"
-                        onChange={handleInputChange}
-                        maxLength="16"
-                        required
-                    />
-                    <span className="pholder">Last Name</span>
-                </label>
-                </div>
-                <div>
-                    <label className="custom-field">
-                    <input
-                        type="text"
-                        name="username"
-                        onChange={handleInputChange}
-                        pattern="[A-Za-z0-9@#$%^&*]+"
-                        title="Please enter a username containing letters (A-Z, a-z), numbers (0-9), and the following symbols: @ # $ % ^ & *."
-                        minLength="6"
-                        maxLength="14"
-                        required
-                    />
-                    <span className="pholder">Username</span>
-                </label>
-                </div>
-                <div>
-                    <label className="custom-field">
-                    <input
-                        type="password"
-                        name="password"
-                        onChange={handleInputChange}
-                        minLength="8"
-                        maxLength="20"
-                        pattern="^(?=.*\d)(?=.*\W).*$"
-                        title="Password must contain at least one number and one symbol"
-                        required
-                    />
-                        <span className="pholder">Password</span>
-                    </label>
-                </div>
-                <div>
-                    <label className="custom-field">
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <span className="pholder">Confirm Password</span>
-                </label>
-                </div>
-                <div>
-                    <label className="custom-field">
-                    <input
-                        type="email"
-                        name="email"
-                        onChange={handleInputChange}
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                        title="Please enter a valid email address in the format email@example.com"
-                        required
-                    />
-                        <span className="pholder">Email</span>
-                    </label>
-                </div>
+                {/* ... (Input fields and labels) ... */}
                 <button type="submit">Register</button>
             </form>
             <p>Already have an account? <Link to="/">Login</Link></p>

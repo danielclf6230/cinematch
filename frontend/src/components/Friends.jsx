@@ -1,17 +1,60 @@
-// App.js
-import React, {useEffect, useState} from 'react';
-import {entitiesApi} from '../api/entitiesApi';
+import React, { useEffect, useState } from 'react';
+import { entitiesApi } from '../api/entitiesApi';
 import SideMenu from "./SideMenu";
-import {AiOutlineSearch} from "react-icons/ai";
+import { AiOutlineSearch } from "react-icons/ai";
 
+/**
+ * React functional component for managing friend-related actions, including searching for users,
+ * sending friend requests, accepting friend requests, deleting friends, and displaying friend lists.
+ *
+ * @component
+ * @example
+ * // Example usage within another React component
+ * import Friends from './Friends';
+ * //...
+ * <Friends />
+ */
 const Friends = () => {
+    /**
+     * State to manage the entered username for user search.
+     * @type {string}
+     */
     const [searchUserName, setSearchUserName] = useState('');
+
+    /**
+     * State to store the search result of users.
+     * @type {Object[]}
+     */
     const [searchResult, setSearchResult] = useState([]);
+
+    /**
+     * State to manage errors during user actions.
+     * @type {string | null}
+     */
     const [error, setError] = useState(null);
-    const [friendList, setFriendList]= useState([]);
-    const [requestList, setRequestList]= useState([]);
+
+    /**
+     * State to store the user's friend list.
+     * @type {Object[]}
+     */
+    const [friendList, setFriendList] = useState([]);
+
+    /**
+     * State to store the list of friend requests.
+     * @type {Object[]}
+     */
+    const [requestList, setRequestList] = useState([]);
+
+    /**
+     * State to indicate whether a friend request has been sent.
+     * @type {boolean}
+     */
     const [friendRequestSent, setFriendRequestSent] = useState(false);
 
+    /**
+     * Resets the search fields and results.
+     * @function
+     */
     const resetSearch = () => {
         setSearchUserName('');
         setSearchResult([]);
@@ -19,9 +62,17 @@ const Friends = () => {
         setFriendRequestSent(false);
     };
 
+    /**
+     * Handles the user search action.
+     * Calls the `entitiesApi.getUsersByUsername` method to search for users.
+     * Updates the state with the search result or displays an error if no user is found.
+     *
+     * @async
+     * @function
+     */
     const handleSearchUser = async () => {
         try {
-            resetSearch(); // Reset the search fields and results
+            resetSearch();
 
             if (!searchUserName) {
                 setError('Please enter a username');
@@ -48,66 +99,51 @@ const Friends = () => {
         }
     };
 
-    // const handleSearchUser = async () => {
-    //     try {
-    //         if (!searchUserName) {
-    //             setError('Please enter a username');
-    //             return;
-    //         }
-    //
-    //         // Reset the friendRequestSent state when initiating a new search
-    //         setFriendRequestSent(false);
-    //
-    //         const userSearch = await entitiesApi.getUsersByUsername(searchUserName);
-    //         console.log(userSearch);
-    //         const updatedUserSearch = userSearch.map((user) => ({
-    //             username: user.username,
-    //             userId: user.userId,
-    //         }));
-    //
-    //         if (updatedUserSearch.length === 0) {
-    //             setError('No user found');
-    //             return;
-    //         }
-    //
-    //         setSearchResult(updatedUserSearch); // Ensure searchResult is always an array
-    //         setError(null);
-    //
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //         setError('An error occurred while fetching user data');
-    //     }
-    // };
-
+    /**
+     * Handles accepting a friend request.
+     * Calls the `entitiesApi.acceptFriendRequest` method and updates the friend requests list.
+     *
+     * @async
+     * @param {number} requestId - The ID of the friend request to accept.
+     * @function
+     */
     const handleAcceptFriendRequest = async (requestId) => {
         try {
-            // Call the acceptFriendRequest function from entitiesApi
             await entitiesApi.acceptFriendRequest(requestId);
-            // Optionally, you can update the request list or perform any other actions
             console.log('Friend request accepted successfully');
-            // After accepting the request, you may want to refresh the friend requests list
             fetchFriendsData();
             fetchFriendRequest();
         } catch (error) {
             console.error('Error accepting friend request:', error);
-            // Handle the error, e.g., show an error message to the user
         }
     };
 
-
+    /**
+     * Handles sending a friend request.
+     * Calls the `entitiesApi.sendFriendRequest` method and updates the state.
+     *
+     * @async
+     * @param {number} recipientUserId - The ID of the user to send the friend request.
+     * @function
+     */
     const handleSendFriendRequest = async (recipientUserId) => {
         try {
-            // Call the sendFriendRequest function from entitiesApi
             await entitiesApi.sendFriendRequest(recipientUserId);
-            // Optionally, you can update the search result or perform any other actions
             console.log('Friend request sent successfully');
-            setFriendRequestSent(true); // Update state to indicate the request has been sent
+            setFriendRequestSent(true);
         } catch (error) {
             console.error('Error sending friend request:', error);
-            // Handle the error, e.g., show an error message to the user
         }
     };
 
+    /**
+     * Handles deleting a friend.
+     * Calls the `entitiesApi.removeFriend` method and updates the friend list.
+     *
+     * @async
+     * @param {number} friendUserId - The ID of the friend to be deleted.
+     * @function
+     */
     const handleDeleteFriend = async (friendUserId) => {
         try {
             await entitiesApi.removeFriend(friendUserId);
@@ -119,12 +155,11 @@ const Friends = () => {
         }
     };
 
-
-    useEffect(() => {
-        fetchFriendsData();
-        fetchFriendRequest();
-    }, []);
-
+    /**
+     * Fetches the user's friend data and updates the friend list state.
+     * @async
+     * @function
+     */
     const fetchFriendsData = async () => {
         try {
             const friendListData = await entitiesApi.getFriends();
@@ -134,7 +169,11 @@ const Friends = () => {
         }
     };
 
-
+    /**
+     * Fetches the user's friend requests and updates the friend requests list state.
+     * @async
+     * @function
+     */
     const fetchFriendRequest = async () => {
         try {
             const friendRequestData = await entitiesApi.getFriendRequests();
@@ -144,61 +183,75 @@ const Friends = () => {
         }
     };
 
+    /**
+     * Effect hook to fetch friend data and friend requests data when the component mounts.
+     */
+    useEffect(() => {
+        fetchFriendsData();
+        fetchFriendRequest();
+    }, []);
+
+    /**
+     * Renders the Friends component.
+     *
+     * @returns {JSX.Element} JSX representation of the Friends component.
+     */
     return (
         <div className="App">
             <SideMenu />
             <div className="row friends">
                 <div className="searchBox col-6">
-                <h2>Search User</h2>
-                <div className="friendSearch">
-                    <input className="searchInput"
-                           type="text"
-                           placeholder="Enter username"
-                           value={searchUserName}
-                           onChange={(e) => setSearchUserName(e.target.value)}
-                    />
-                    <button className="searchButton" onClick={handleSearchUser}>
-                        <AiOutlineSearch />
-                    </button>
-                </div>
+                    <h2>Search User</h2>
+                    <div className="friendSearch">
+                        <input
+                            className="searchInput"
+                            type="text"
+                            placeholder="Enter username"
+                            value={searchUserName}
+                            onChange={(e) => setSearchUserName(e.target.value)}
+                        />
+                        <button className="searchButton" onClick={handleSearchUser}>
+                            <AiOutlineSearch />
+                        </button>
+                    </div>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
 
-                <ul>
-                    {searchResult.map((user) => (
-                        <li key={user.userId}>
-                            <br />
-                            {user.username}{' '}
-                            {friendList.some((friend) => friend.userId === user.userId) ? (
-                                <span>Already a Friend</span>
-                            ) : (
-                                friendRequestSent ? (
-                                    <span>Friend Request Sent</span>
-                                ) : (
-                                    <button onClick={() => handleSendFriendRequest(user.userId)}>
-                                        Add Friend
-                                    </button>
-                                )
-                            )}
-                        </li>
-                    ))}
-                </ul>
-                </div>
-
-                <div className="col-6">
-                <div>
-                    <h2>Friend List</h2>
                     <ul>
-                        {friendList.map((friend) => (
-                            <li key={friend.userId}>
-                                {friend.username}
-                                <button onClick={() => handleDeleteFriend(friend.userId)}>
-                                    Delete
-                                </button>
+                        {searchResult.map((user) => (
+                            <li key={user.userId}>
+                                <br />
+                                {user.username}{' '}
+                                {friendList.some((friend) => friend.userId === user.userId) ? (
+                                    <span>Already a Friend</span>
+                                ) : (
+                                    friendRequestSent ? (
+                                        <span>Friend Request Sent</span>
+                                    ) : (
+                                        <button onClick={() => handleSendFriendRequest(user.userId)}>
+                                            Add Friend
+                                        </button>
+                                    )
+                                )}
                             </li>
                         ))}
                     </ul>
                 </div>
+
+                <div className="col-6">
+                    <div>
+                        <h2>Friend List</h2>
+                        <ul>
+                            {friendList.map((friend) => (
+                                <li key={friend.userId}>
+                                    {friend.username}
+                                    <button onClick={() => handleDeleteFriend(friend.userId)}>
+                                        Delete
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                     {requestList.length > 0 && (
                         <div>
                             <h2>Friend Request</h2>
@@ -209,7 +262,9 @@ const Friends = () => {
                                             <>
                                                 {request.requester.username} wants to be your friend
                                                 {request.requestStatus === 'PENDING' && (
-                                                    <button onClick={() => handleAcceptFriendRequest(request.requestId)}>Accept</button>
+                                                    <button onClick={() => handleAcceptFriendRequest(request.requestId)}>
+                                                        Accept
+                                                    </button>
                                                 )}
                                             </>
                                         )}
@@ -224,4 +279,8 @@ const Friends = () => {
     );
 }
 
+/**
+ * Default export of the Friends component.
+ * @exports Friends
+ */
 export default Friends;

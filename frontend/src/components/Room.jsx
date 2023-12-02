@@ -4,9 +4,41 @@ import GroupSwipe from "./GroupSwipe";
 import SideMenu from "./SideMenu";
 import {useAuth} from "../security/AuthContext";
 
+/**
+ * Room component for creating and joining chat rooms with group swiping functionality.
+ *
+ * @component
+ * @example
+ * // Usage within a React functional component or JSX
+ * import Room from './Room';
+ * // ...
+ * function App() {
+ *   return (
+ *     <Room />
+ *   );
+ * }
+ */
 const socket = io.connect('http://localhost:3001');
 
+/**
+ * @typedef {Object} UserData
+ * @property {string} userId - The user ID.
+ */
 
+/**
+ * @typedef {Object} Props
+ * @property {Object} socket - The socket.io client socket.
+ * @property {string} username - The username of the user.
+ * @property {string} room - The room ID.
+ */
+
+/**
+ * Room component for creating and joining chat rooms with group swiping functionality.
+ *
+ * @component
+ * @param {Props} props - The component props.
+ * @returns {JSX.Element} The rendered Room component.
+ */
 function Room() {
     const [username, setUsername] = useState("");
     const [room, setRoom] = useState('');
@@ -15,12 +47,24 @@ function Room() {
     const [waitingMessage, setWaitingMessage] = useState('');
     const [waiting, setWaiting] = useState(false);
 
+    /**
+     * Access the user data from the context.
+     *
+     * @type {Function}
+     * @returns {UserData} The user data.
+     */
     const { getUserData } = useAuth(); // Access the user data from the context
     const userData = getUserData();
     const userID = userData.userId;
 
     console.log(userID);
 
+    /**
+     * Creates a new chat room.
+     *
+     * @function
+     * @returns {void}
+     */
     const createRoom = () => {
         const userID = userData.userId;
         console.log(userID);
@@ -35,6 +79,12 @@ function Room() {
         });
     };
 
+    /**
+     * Joins an existing chat room.
+     *
+     * @function
+     * @returns {void}
+     */
     const joinRoom = () => {
         if (room.trim() === "") {
             setErrorMessage('Please enter a room number');
@@ -50,7 +100,12 @@ function Room() {
         }
     };
 
-
+    /**
+     * useEffect hook to manage socket events and component cleanup.
+     *
+     * @function
+     * @returns {void}
+     */
     useEffect(() => {
 
         socket.on('waiting', (waitingMessage) => {

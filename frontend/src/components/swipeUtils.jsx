@@ -1,3 +1,18 @@
+/**
+ * Function to handle swiping action and update card lists accordingly.
+ *
+ * @param {string} direction - The direction of the swipe ("left" or "right").
+ * @param {Object[]} cards - The array of card objects.
+ * @param {number} currentCard - The index of the current card in the cards array.
+ * @param {Function} setCards - The state update function for the cards array.
+ * @param {Function} setLikedCards - The state update function for the liked cards array.
+ * @param {Function} setDislikedCards - The state update function for the disliked cards array.
+ * @returns {void}
+ *
+ * @example
+ * // Example usage of swipefunction
+ * swipefunction("left", cards, currentCard, setCards, setLikedCards, setDislikedCards);
+ */
 export const swipefunction = (
     direction,
     cards,
@@ -13,9 +28,7 @@ export const swipefunction = (
     if (direction === "left") {
         const currentDislikedCard = { ...cards[currentCard], score: 0};
         setDislikedCards((prevDislikedCards) => [
-            //This is a way to make a copy of the previous dislikedCards state array
             ...prevDislikedCards,
-            //value that you want to add
             currentDislikedCard,
         ]);
         setCards((prevCards) =>

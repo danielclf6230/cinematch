@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { entitiesApi } from '../api/entitiesApi';
 import Profile from './Profile'; // Import the Profile component
 
+/**
+ * UserList component displays a list of users, allowing searching and opening profiles.
+ *
+ * @component
+ * @example
+ * // Example usage of UserList
+ * <UserList />
+ */
 function UserList() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);

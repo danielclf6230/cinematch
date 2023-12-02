@@ -1,24 +1,49 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useAuth } from '../security/AuthContext';
 import UserList from './UserList';
 import Profile from './AvatarPreview';
 import AvatarPreview from "./AvatarPreview";
 import AvatarUpload from "./AvatarUpload";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import SideMenu from "./SideMenu";
 
-
+/**
+ * React functional component representing the home page of the application.
+ *
+ * @component
+ * @example
+ * // Example usage within another React component
+ * import Home from './Home';
+ * //...
+ * <Home />
+ */
 function Home() {
-    const { getUserData } = useAuth(); // Access the user data from the context
+    /**
+     * Object containing authentication-related information and functions.
+     * @type {Object}
+     * @property {Function} getUserData - Function to retrieve user data.
+     */
+    const { getUserData } = useAuth();
+
+    /**
+     * User data obtained from the authentication context.
+     * @type {Object}
+     */
     const userData = getUserData();
 
-
+    /**
+     * Effect hook to log the user data when it changes.
+     */
     useEffect(() => {
-        console.log('hi !' +userData)
+        console.log('hi !' + userData);
     }, [userData]);
-    //this was just to test
-    return (
 
+    /**
+     * Renders the Home component.
+     *
+     * @returns {JSX.Element} - JSX representation of the Home component.
+     */
+    return (
         <div className="App">
             <SideMenu />
             <div className="Profile container">
@@ -34,19 +59,19 @@ function Home() {
                         <div className="row mt-2">
                             <div className="col-md-6">
                                 <label className="labels"><strong>First Name:</strong></label>
-                                <input type="text" className="form-control" value={userData.firstName} readOnly/>
+                                <input type="text" className="form-control" value={userData.firstName} readOnly />
                             </div>
                             <div className="col-md-6">
                                 <label className="labels"><strong>Last Name:</strong></label>
-                                <input type="text" className="form-control" value={userData.lastName} readOnly/>
+                                <input type="text" className="form-control" value={userData.lastName} readOnly />
                             </div>
                             <div className="col-md-6">
                                 <label className="labels"><strong>Username: </strong></label>
-                                <input type="text" className="form-control" value={userData.username} readOnly/>
+                                <input type="text" className="form-control" value={userData.username} readOnly />
                             </div>
                             <div className="col-md-6">
                                 <label className="labels"><strong>Email: </strong></label>
-                                <input type="text" className="form-control" value={userData.email} readOnly/>
+                                <input type="text" className="form-control" value={userData.email} readOnly />
                             </div>
                         </div>
                     </div>
@@ -59,4 +84,8 @@ function Home() {
     );
 }
 
+/**
+ * Default export of the Home component.
+ * @exports Home
+ */
 export default Home;

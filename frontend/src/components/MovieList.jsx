@@ -3,25 +3,50 @@ import {entitiesApi} from "../api/entitiesApi";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
+/**
+ * React component for displaying a list of movies.
+ * @component
+ * @example
+ * // Example usage of MovieList component
+ * import MovieList from './MovieList';
+ * function App() {
+ *   return (
+ *     <div>
+ *       <MovieList />
+ *     </div>
+ *   );
+ * }
+ */
 function MovieList() {
+    /**
+     * State hook to manage the list of movies.
+     * @type {Array}
+     */
     const [movies, setMovies] = useState([]);
+
+    /**
+     * State hook to track the loading status of the movies.
+     * @type {boolean}
+     */
     const [loading, setLoading] = useState(true);
 
-
+    /**
+     * Effect hook to fetch all movies on component mount.
+     */
     useEffect(() => {
-        // Initially, fetch all movies
         fetchAllMoviesRef.current();
     }, []);
 
+    /**
+     * Asynchronous function to fetch all movies from the API.
+     * @async
+     * @function
+     * @returns {Promise<void>}
+     */
     const fetchAllMovies = async () => {
         try {
             const movieData = await entitiesApi.getMovies();
             setMovies(movieData);
-
-            // // If the onFetchMovieData callback is provided, call it with the fetched movie data
-            // if (onFetchMovieData) {
-            //     onFetchMovieData(movieData);
-            // }
         } catch (error) {
             console.error('Error fetching movies:', error);
         } finally {
@@ -29,27 +54,40 @@ function MovieList() {
         }
     };
 
+    /**
+     * Reference to the fetchAllMovies function.
+     * @type {React.MutableRefObject<function>}
+     */
     const fetchAllMoviesRef = useRef(fetchAllMovies);
 
-
-
+    /**
+     * Asynchronous function to handle the deletion of a movie.
+     * @async
+     * @function
+     * @param {Object} selectedMovie - The movie object to be deleted.
+     * @returns {Promise<void>}
+     */
     const handleDeleteMovie = async (selectedMovie) => {
         try {
-            const response = await entitiesApi.deleteMovie(selectedMovie.id);
-            fetchAllMoviesRef.current(); // Use the ref to call fetchAllMovies
+            await entitiesApi.deleteMovie(selectedMovie.id);
+            fetchAllMoviesRef.current();
         } catch (error) {
             console.error('Error deleting movie:', error);
         }
     };
 
-    // Expose fetchAllMovies through a ref
+    /**
+     * Effect hook to expose fetchAllMovies through a ref.
+     */
     const fetchAllMoviesExposed = useRef(fetchAllMovies);
     useEffect(() => {
         fetchAllMoviesRef.current = fetchAllMoviesExposed.current;
     }, [fetchAllMoviesExposed]);
 
-
-
+    /**
+     * Render the MovieList component.
+     * @returns {JSX.Element}
+     */
     return (
         <div className="row">
             {loading ? (
@@ -79,8 +117,11 @@ function MovieList() {
                                     <td className="col-2">{movie.title}</td>
                                     <td className="desc col-7">{movie.description}</td>
                                     <td className="col-1">{movie.rated}</td>
-                                    <td className="col-1"><button onClick={() => handleDeleteMovie(movie)}><FontAwesomeIcon icon={faTrash} />
-                                    </button></td>
+                                    <td className="col-1">
+                                        <button onClick={() => handleDeleteMovie(movie)}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>
