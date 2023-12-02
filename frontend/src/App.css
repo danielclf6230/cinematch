@@ -88,6 +88,18 @@ header > .row {
   background-color: #FBE4A9; /* Optional: Set a background color for the side menu */
 }
 
+
+.sideMenuContainer{
+  padding: 10px;
+}
+
+.sideButton{
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #000000;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -429,6 +441,9 @@ ul {
   object-fit: cover;
   border-radius: 50%;
   display: block;
+  border: 5px solid rgba(0, 0, 0, 0.26);
+
+
 
   /* Add any additional styles you need for the image here */
 }
@@ -436,7 +451,52 @@ ul {
 .userInfo {
   padding: 5%;
   text-align: left;
+  font-size: 1.5rem;
 }
+
+
+.pro {
+  border: 2px solid rgba(0, 0, 0, 0.26);
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 10px; /* Adjust the value based on how rounded you want the corners to be */
+  padding: 20px;
+  color: #FFBC10;
+}
+
+.uploadButton {
+  background-color: #FFBC10;
+  color: #000000;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.uploadButton input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.separateButton {
+  background-color: #FFBC10;
+  color: #000000;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
 
 /*Room styling*/
 .Room h1 {
@@ -537,7 +597,6 @@ ul {
 .friends {
   background-color: rgba(255, 255, 255, 0.5); /* Red with 50% opacity */
   min-width: 20rem;
-  max-width: 20rem;
   text-align: left; /* Center text inside the box */
   padding: 30px;
   border: 1px solid #ccc;
@@ -560,6 +619,10 @@ ul {
   width: 100%;
   position: relative;
   display: flex;
+}
+
+.searchBox{
+  border-right: 1px solid red;
 }
 
 

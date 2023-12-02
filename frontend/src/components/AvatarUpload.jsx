@@ -32,20 +32,31 @@ function AvatarUpload() {
             } catch (error) {
                 console.error('Error uploading avatar:', error);
             }
-
+        window.location.reload();
     };
 
         return (
             <div className="avatarUpload">
-                <h4>Avatar Upload</h4>
-                <input type="file" onChange={handleFileChange} accept=".jpg, .jpeg, .png, .gif, .bmp, .svg, .webp" />
+                <br/>
+                <label className="uploadButton">
+                    Upload Image
+                    <input
+                        type="file"
+                        onChange={handleFileChange}
+                        accept=".jpg, .jpeg, .png, .gif, .bmp, .svg, .webp"
+                        style={{ display: 'none' }}
+                    />
+                </label>
                 {src && (
                     <>
-                        <img src={src} ref={imageRef} alt="Selected Image" />
-                        <button onClick={handleUpload}>Upload Image</button>
+                        <img className="Avatar" src={src} ref={imageRef} alt="Selected Image" />
+                        <button className="separateButton" onClick={handleUpload}>
+                            Confirm
+                        </button>
                     </>
                 )}
             </div>
+
         );
 
 }
