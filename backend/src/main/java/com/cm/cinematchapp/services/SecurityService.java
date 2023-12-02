@@ -103,7 +103,14 @@ public class SecurityService {
 
         return userRepository.findByUsernameIgnoreCase(username);
     }
-
+    /**
+     * Retrieves the user ID of the currently authenticated user.
+     * This method uses Spring Security's SecurityContextHolder to obtain the
+     * username of the currently authenticated user and then queries the UserRepository
+     * to fetch the corresponding user entity and retrieve the user ID.
+     *
+     * @return The user ID of the currently authenticated user.
+     */
     public Long getCurrentLoginUserId() {
         String username = SecurityContextHolder
                 .getContext()

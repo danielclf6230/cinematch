@@ -1,11 +1,14 @@
 package com.cm.cinematchapp.security;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.io.IOException;
 
 /**
  * Configuration class for defining Cross-Origin Resource Sharing (CORS) configuration.
@@ -17,6 +20,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig implements CorsConfigurationSource {
 
 
+    /**
+     * Handle access denied exceptions.
+     *
+     * @param request The HTTP request.
+     * @return  CorsConfiguration object "config"
+     */
     @Override
     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         CorsConfiguration config = new CorsConfiguration();

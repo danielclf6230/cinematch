@@ -7,7 +7,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
 import java.util.List;
-
+/**
+ * The `StreamingInfoEntity` class defines an Entity that is used to store information about part of the results
+ * provided from the API into the database.
+ *
+ * @author Mateus Souza
+ */
 @Embeddable
 @Data
 public class StreamingInfo {

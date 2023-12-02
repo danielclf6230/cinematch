@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * The `MoviePoster` class defines an Entity that is used to store information about movie posters in the database.
+ *
+ * @author Mateus Souza
+ */
 @Entity
 @Data
 @NoArgsConstructor

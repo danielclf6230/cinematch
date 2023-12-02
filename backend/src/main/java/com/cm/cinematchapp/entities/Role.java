@@ -12,6 +12,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The `RoleEntity` class defines an Entity that is used to store information about user roles in the database.
+ *
+ * @author Mateus Souza
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
