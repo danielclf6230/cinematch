@@ -7,6 +7,11 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * The `MovieEntity` class defines an Entity that is used to store information about movies in the database.
+ *
+ * @author Mateus Souza
+ */
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)

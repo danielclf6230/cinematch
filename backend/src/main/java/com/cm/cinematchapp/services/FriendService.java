@@ -77,7 +77,11 @@ public class FriendService {
         // Save the friend request to the repository
         return friendRequestRepository.save(friendRequest);
     }
-
+    /**
+     * Removes a friend request.
+     *
+     * @param recipientId The ID of the recipient user.
+     */
 
     public void removeFriendRequest(Long recipientId) {
         // Retrieve the requester (logged-in user) and the recipient by their IDs

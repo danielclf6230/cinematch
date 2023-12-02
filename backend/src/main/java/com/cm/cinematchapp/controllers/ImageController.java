@@ -16,6 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+/**
+ * The `ImageController` class is responsible for handling HTTP requests related to user avatars and movie posters
+ * This controller essentially provides API endpoints for managing user avatars and movie posters, which appropriate
+ * security constraints on who can perform each operation.
+ * @author Mateus Souza
+ */
 @RestController
 @RequestMapping(value="/api/images")
 @Slf4j

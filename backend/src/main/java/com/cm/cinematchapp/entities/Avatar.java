@@ -9,7 +9,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/**
+ * The `AvatarEntity` class defines an Entity that is used to store information about user avatars in the database.
+ *
+ * @author Mateus Souza
+ */
 @Entity
 @Data
 @NoArgsConstructor
